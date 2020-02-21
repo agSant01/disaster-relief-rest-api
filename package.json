@@ -1,0 +1,26 @@
+{
+  "name": "disaster-relief-rest-api",
+  "version": "1.0.0",
+  "description": "Backend System for Disaster Site Resources Locator",
+  "main": "index.js",
+  "engines": {
+    "node": "12.13.0"
+  },
+  "scripts": {
+    "test": "node test.js",
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/agSant01/disaster-relief-rest-api.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/agSant01/disaster-relief-rest-api/issues"
+  },
+  "homepage": "https://github.com/agSant01/disaster-relief-rest-api#readme",
+  "dependencies": {
+    "express": "4.17.1"
+  }
+}
