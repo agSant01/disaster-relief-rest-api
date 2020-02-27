@@ -4,10 +4,8 @@
   "main": "app.js",
   "private": true,
   "scripts": {
-    "frontend": "webpack --config ./node_modules/@vue/cli-service/webpack.config.js --watch",
     "backend": "nodemon app.js",
-    "build": "vue-cli-service build",
-    "start": "concurrently \"npm run frontend\" \"npm run backend\" "
+    "start": "npm run backend"
   },
   "dependencies": {
     "cookie-parser": "~1.4.3",
