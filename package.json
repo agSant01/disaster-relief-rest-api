@@ -1,26 +1,34 @@
 {
-  "name": "disaster-relief-rest-api",
-  "version": "1.0.0",
-  "description": "Backend System for Disaster Site Resources Locator",
-  "main": "index.js",
-  "engines": {
-    "node": "12.13.0"
-  },
+  "name": "disaster-relief",
+  "description": "Data Base Course Project",
+  "main": "app.js",
+  "private": true,
   "scripts": {
-    "test": "node test.js",
-    "start": "node app.js"
+    "frontend": "webpack --config ./node_modules/@vue/cli-service/webpack.config.js --watch",
+    "backend": "nodemon app.js",
+    "build": "vue-cli-service build",
+    "start": "concurrently \"npm run frontend\" \"npm run backend\" "
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/agSant01/disaster-relief-rest-api.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/agSant01/disaster-relief-rest-api/issues"
-  },
-  "homepage": "https://github.com/agSant01/disaster-relief-rest-api#readme",
   "dependencies": {
-    "express": "4.17.1"
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.6.9",
+    "express": "~4.16.0",
+    "morgan": "~1.9.0",
+    "request": "^2.88.0"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^3.2.0",
+    "@vue/cli-service": "^3.2.0",
+    "@vue/eslint-config-standard": "^4.0.0",
+    "babel-eslint": "^10.0.1",
+    "concurrently": "^4.1.0",
+    "eslint": "^5.8.0",
+    "eslint-plugin-vue": "^5.0.0-0",
+    "node-sass": "^4.9.0",
+    "nodemon": "^1.18.9",
+    "sass-loader": "^7.0.1",
+    "vue": "^2.5.17",
+    "vue-template-compiler": "^2.5.17",
+    "webpack-cli": "^3.2.1"
   }
 }
