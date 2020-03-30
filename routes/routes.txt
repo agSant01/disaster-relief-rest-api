@@ -1,0 +1,65 @@
+1. Register as….
+
+POST /api/register/
+{
+“Type”: admin | supplier | requester | organization | representative
+“Username”: “”
+	“Password”: “”,
+	“Name”: {
+“First Name”: “”,
+	“Middle Initial”: “”,
+	“Last Name”: “”
+},
+	“Date of Birth”: date
+	“Address”: {“street1” , “street2” , “city” , “country” , “zip code”}
+	“Gender”: “male | female | other”,
+	“Email”: “”
+	“Created Date”
+}
+
+Get all roles
+GET /api/user/roles
+Return:
+[
+	“roles”: {
+	“Admin”,
+	“Supplier”,
+	“Requester”,
+	“organization admin”,
+	“organization representative”
+}
+]
+
+GET /api/user/:id/requests
+
+POST /api/login
+{‘username’: ‘*****’, “password”: “************”}
+
+POST /api/request
+{
+“Customer id”
+	“resource_type”: “”,
+	“qty”: “”,
+	“Location”
+	“Delivery Method”
+	“Created Date”
+}
+
+
+GET /api/providers
+GET /api/requesters
+
+GET /api/resources/types
+This is for
+GET api/resources/available/:provider/:keyword
+
+To get 
+GET api/resources/requests/:userID/:provider/keyword
+
+Cancelled, withdrawn
+PUT api/resources/:id/update-status
+
+GET api/statistics/:type
+
+
+

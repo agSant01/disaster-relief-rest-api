@@ -6,7 +6,7 @@ const express = require('express');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 
-const messageRouter = require('./routes/message');
+const api = require('./routes/api');
 
 const app = express();
 
@@ -17,7 +17,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 //app.use(express.static(path.join(__dirname, 'dist')))
 
-app.use('/message', messageRouter);
+app.use('/api', api);
 
 /**
  * Get port from environment and store in Express.
@@ -92,4 +92,5 @@ function onListening() {
     ? 'pipe ' + addr
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
+  console.log('Listening on ' + bind);
 }
