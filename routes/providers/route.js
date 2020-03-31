@@ -5,4 +5,4 @@ var router = express.Router();
 //get providers list
 router.get('/', handler.getProviders);
 
-module.exports = router
+module.exports = router;

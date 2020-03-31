@@ -5,4 +5,4 @@ var router = express.Router();
 //login opperations
 router.post('/', handler.postLogin);
 
-module.exports = router
+module.exports = router;
