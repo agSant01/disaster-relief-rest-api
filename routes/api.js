@@ -6,6 +6,7 @@ var resourcesRoute = require('./resources/route');
 var statisticsRoute = require('./statistics/route');
 var loginRoute = require('./login/route');
 var organizationRoute = require('./organization/route');
+
 var router = express.Router();
 
 router.use('/user', userRoute);

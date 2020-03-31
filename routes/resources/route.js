@@ -17,4 +17,16 @@ router.get('/requests/:userID/:keyword', handler.getRequests);
 // Update
 router.put('/:id/update-status', handler.putUpdate);
 
+// Submit resource
+router.post('/add', handler.postResource);
+
+// Submit resource request
+router.post('/add/request', handler.postResourceRequest);
+
+// Reserve resource
+router.post('/reserve', handler.postReserveResource);
+
+// Buy resource
+router.post('/buy', handler.postBuyResource);
+
 module.exports = router;
