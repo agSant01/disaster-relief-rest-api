@@ -1,10 +1,6 @@
-
-exports.getProviders = (req, res, next)=> {
+exports.getProviders = (req, res, next) => {
     let msg = {
-        providers:[{},{}]
+        providers: [{}, {}]
     };
     res.json(msg).end();
-}
-
-
-
+};

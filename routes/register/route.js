@@ -5,7 +5,4 @@ var router = express.Router();
 /* GET users listing. */
 router.post('/', handler.postRegister);
 
-  
-  
-
-module.exports = router
+module.exports = router;
