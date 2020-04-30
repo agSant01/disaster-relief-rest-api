@@ -1,9 +1,9 @@
-const { Pool } = require('pg');
+const { Client } = require('pg');
 
 /**
  * Create Database connection.
  */
-const databaseConnection = new Pool({
+const databaseConnection = new Client({
     connectionString: process.env.DATABASE_URL,
     ssl: true,
 });
