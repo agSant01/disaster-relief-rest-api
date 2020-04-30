@@ -4,7 +4,7 @@ const cors = require('cors');
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
-const { Client } = require('pg');
+const db = require('./database');
 
 const api = require('./routes/api');
 
@@ -30,40 +30,14 @@ app.set('port', port);
 const server = http.createServer(app);
 
 /**
- * Create Database connection.
- */
-const client = new Client({
-    connectionString: process.env.DATABASE_URL,
-    ssl: true,
-});
-
-/**
  * Listen on provided port, on all network interfaces.
  */
-client.connect((err) => {
-    console.log(process.env.DATABASE_URL);
-
-    if (err) {
-        console.error('connection error', err.stack);
-    } else {
-        console.log('connected to ' + process.env.DATABASE_URL);
-    }
-
-    // start server
-    server.listen(port, function() {
-        console.log(`Listening at PORT: ${port}`);
-    });
-    server.on('error', onError);
-    server.on('listening', onListening);
+// start server
+server.listen(port, function() {
+    console.log(`Listening at PORT: ${port}`);
 });
-
-app.get('/dbtest', (req, res) => {
-    console.log('S');
-    client.query('Select * from mytest1;', (error, result) => {
-        if (error) return res.json(error);
-        res.json(result);
-    });
-});
+server.on('error', onError);
+server.on('listening', onListening);
 
 /**
  * Normalize a port into a number, string, or false.
