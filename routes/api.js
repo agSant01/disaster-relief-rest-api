@@ -42,8 +42,9 @@ router.get('/dbtest3', (req, res, next) => {
     db.query('SELECT * FROM mytest1;', (err, result) => {
         console.log(err);
         console.log(result);
+        console.log(process.env.DATABASE_URL);
 
-        res.json(result ? result : err).end();
+        res.json({ results: result, err: err }).end();
     });
 });
 

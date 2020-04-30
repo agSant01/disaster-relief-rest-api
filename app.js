@@ -34,6 +34,7 @@ const server = http.createServer(app);
  */
 // start server
 server.listen(port, function() {
+    console.log(`Database: ${process.env.DATABASE_URL}`);
     console.log(`Listening at PORT: ${port}`);
 });
 server.on('error', onError);
