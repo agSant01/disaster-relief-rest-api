@@ -277,3 +277,26 @@ insert into organization_representative (
 insert into delivery_method(method_name) value('Delivery')
 insert into delivery_method(method_name) value('Pick-up')
 insert into delivery_method(method_name) value('Delivery or Pick-up')
+
+-- insert measurments
+    --Length
+insert into measurment(unit_type) values('1 millimeter ');
+insert into measurment(unit_type) values('1 centimeter');
+insert into measurment(unit_type) values('1 meter');
+insert into measurment(unit_type) values('1 kilometer');
+insert into measurment(unit_type) values('1 inch');
+insert into measurment(unit_type) values('1 foo');
+insert into measurment(unit_type) values('1 yard');
+
+    --Volume and Capacity (Liquid and Dry)
+insert into measurment(unit_type) values('1 milliliter');
+insert into measurment(unit_type) values('1 liter');
+insert into measurment(unit_type) values('1 U.S. fluid ounce ');
+insert into measurment(unit_type) values('1 U.S. gallon');
+
+    --Weight
+insert into measurment(unit_type) values('1 milligram');
+insert into measurment(unit_type) values('1 gram');
+insert into measurment(unit_type) values('1 pound');
+insert into measurment(unit_type) values('1 kilogram');
+insert into measurment(unit_type) values('1 ounce');

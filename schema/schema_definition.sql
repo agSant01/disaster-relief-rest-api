@@ -81,3 +81,38 @@ create table delivery_method (
     method_name varchar(20) not null,
     primary key (method_id)
 );
+
+create table measurment(
+    measurment_id serial not null,
+    unit_type varchar(20),
+    primary key (measurment_id)   
+);
+
+create table orders(
+    order_id serial not null,
+    resource_quantity integer not null,
+    order_price real not null,
+    userid integer not null, 
+    order_timestamp timestamp without time zone default localtimestamp not null,
+    primary key (order_id),
+    foreign key (userid) references users_table(userid)    
+);
+
+create table resource(
+    resource_id serial not null,
+    resource_quantity integer not null,
+    resource_price real not null, 
+    resource_location_latitude float not null, 
+    resource_location_longitude float not null, 
+    resource_status varchar(15) not null,
+    is_for_sale boolean not null,
+    measurment_id integer not null, 
+    senate_region_id integer not null,
+    order_id integer not null, 
+    userid integer not null, 
+    primary key (resource_id),    
+    foreign key (measurment_id) references measurment(measurment_id),
+    foreign key (senate_region_id) references senate_region(senate_region_id),
+    foreign key (order_id) references orders(order_id),
+    foreign key (userid) references users_table(userid)       
+);
