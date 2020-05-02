@@ -200,7 +200,7 @@ VALUES (
     (select country_id from country where country_name = 'Puerto Rico'),
     'Male',
     'gabriel.santiago16@upr.edu',
-    9392001002,
+    '9392001002',
     true,
     (select role_id from roles where role_name = 'Supplier Organization Administrator')
 );
@@ -251,7 +251,7 @@ insert into organization (
     country_id,
     phone_number,
     email,
-    is_enabled,
+    is_enabled
 )
 values(
     'ICOM Helpers',
@@ -260,13 +260,13 @@ values(
     (select cityid from city where city_name = 'Mayaguez'),
     '00681',
     (select country_id from country where country_name = 'Puerto Rico'),
-    7875550021,
+    '7875550021',
     'uprmhelpers@gmail.com',
     true
 );
 
 insert into organization_representative (
-    organization_represenative_id,
+    organization_representative_id,
     organization_id
 ) values 
 (
@@ -274,29 +274,65 @@ insert into organization_representative (
     (select organization_id from organization where organization_name = 'ICOM Helpers')
 );
 
-insert into delivery_method(method_name) value('Delivery')
-insert into delivery_method(method_name) value('Pick-up')
-insert into delivery_method(method_name) value('Delivery or Pick-up')
 
--- insert measurments
-    --Length
-insert into measurment(unit_type) values('1 millimeter ');
-insert into measurment(unit_type) values('1 centimeter');
-insert into measurment(unit_type) values('1 meter');
-insert into measurment(unit_type) values('1 kilometer');
-insert into measurment(unit_type) values('1 inch');
-insert into measurment(unit_type) values('1 foo');
-insert into measurment(unit_type) values('1 yard');
+-- insert delivery methods
+insert into delivery_method(method_name) values('Delivery');
+insert into delivery_method(method_name) values('Pick-up');
+insert into delivery_method(method_name) values('Delivery or Pick-up');
 
-    --Volume and Capacity (Liquid and Dry)
-insert into measurment(unit_type) values('1 milliliter');
-insert into measurment(unit_type) values('1 liter');
-insert into measurment(unit_type) values('1 U.S. fluid ounce ');
-insert into measurment(unit_type) values('1 U.S. gallon');
+-- insert measurements
+--Length
+insert into measurement(unit_type) values('millimeter ');
+insert into measurement(unit_type) values('centimeter');
+insert into measurement(unit_type) values('meter');
+insert into measurement(unit_type) values('kilometer');
+insert into measurement(unit_type) values('inch');
+insert into measurement(unit_type) values('yard');
 
-    --Weight
-insert into measurment(unit_type) values('1 milligram');
-insert into measurment(unit_type) values('1 gram');
-insert into measurment(unit_type) values('1 pound');
-insert into measurment(unit_type) values('1 kilogram');
-insert into measurment(unit_type) values('1 ounce');
+--Volume and Capacity (Liquid and Dry)
+insert into measurement(unit_type) values('milliliter');
+insert into measurement(unit_type) values('liter');
+insert into measurement(unit_type) values('U.S. fluid ounce ');
+insert into measurement(unit_type) values('U.S. gallon');
+
+--Weight
+insert into measurement(unit_type) values('milligram');
+insert into measurement(unit_type) values('gram');
+insert into measurement(unit_type) values('pound');
+insert into measurement(unit_type) values('kilogram');
+insert into measurement(unit_type) values('ounce');
+
+-- payment methods
+insert into payment_method(payment_method_name) values('Credit Card');
+insert into payment_method(payment_method_name) values('Debit');
+insert into payment_method(payment_method_name) values('Cash');
+insert into payment_method(payment_method_name) values('WIC');
+
+-- request status
+insert into request_status(request_status_name, request_status_description) values('Unfulfilled', 'Resources have not been bought or  reserved');
+insert into request_status(request_status_name, request_status_description) values('Cancelled', 'Ticket was cancelled by System  Administrator ');
+insert into request_status(request_status_name, request_status_description) values('Fulfilled', 'Resources have not been bought or  reserved');
+insert into request_status(request_status_name, request_status_description) values('Withdrawn', 'Request ticket was withdrawn by the  requesto');
+
+
+-- resource status
+insert into resource_status(resource_status_name, resource_status_description) values('Available', 'Resources of ticket still available');
+insert into resource_status(resource_status_name, resource_status_description) values('Cancelled', 'Ticket was cancelled by System  Administrator');
+insert into resource_status(resource_status_name, resource_status_description) values('Exhausted', 'Resources of ticket depleted');
+insert into resource_status(resource_status_name, resource_status_description) values('Withdrawn', 'Remaining resources of the ticket were  withdrawn by the supplier');
+
+-- insert resource types
+insert into resource_type(resource_type_name) values('Water');
+insert into resource_type(resource_type_name) values('Medication');
+insert into resource_type(resource_type_name) values('Baby Food');
+insert into resource_type(resource_type_name) values('Canned Food');
+insert into resource_type(resource_type_name) values('Dry Food');
+insert into resource_type(resource_type_name) values('Ice');
+insert into resource_type(resource_type_name) values('Fuel');
+insert into resource_type(resource_type_name) values('Medical Device');
+insert into resource_type(resource_type_name) values('Heavy Equipment');
+insert into resource_type(resource_type_name) values('Tool');
+insert into resource_type(resource_type_name) values('Clothing');
+insert into resource_type(resource_type_name) values('Power Generator');
+insert into resource_type(resource_type_name) values('Battery');
+
