@@ -4,6 +4,12 @@ exports.getTypes = (req, res, next) => {
     };
     res.json(msg).end();
 };
+exports.getAllResources = (req, res, next) => {
+    let msg = {
+        resources: []
+    };
+    res.json(msg).end();
+};
 
 /*
 Returns the attributes associated with a particular resource type.

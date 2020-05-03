@@ -3,6 +3,9 @@ var handler = require('./handlers');
 var router = express.Router();
 
 // Get the types of resources that the system supports
+router.get('/', handler.getAllResources);
+
+// Get the types of resources that the system supports
 router.get('/types', handler.getTypes);
 
 // Get the attribute of a certain resource type

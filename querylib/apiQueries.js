@@ -99,5 +99,16 @@ module.exports = {
         (select organization_id from organization where organization_id = $2)
     );`,
 
+    //resources
+    qAllTypes:`select * from resource_type`,
+
+    qAttributeByResourceType:`select resource_type_field_name, resource_type_field_value
+    from resource_attribute_definition
+    where resource_attribute_id in (select P.resource_attribute_id 
+                   from resource_attribute_definition as P
+                    natural inner join resource_type as T 
+                    where T.resource_type_name = '$1')`,
+    
+    
     
 }
