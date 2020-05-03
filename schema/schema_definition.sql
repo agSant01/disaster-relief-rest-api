@@ -81,12 +81,6 @@ create table delivery_method (
     primary key (delivery_method_id)
 );
 
-create table measurement(
-    measurement_id serial not null,
-    unit_type varchar(40) not null,
-    primary key (measurement_id)
-);
-
 create table resource_type(
     resource_type_id serial not null,
     resource_type_name varchar(40) unique not null,
@@ -95,11 +89,11 @@ create table resource_type(
 
 -- resource attributes allowed
 create table resource_attribute_definition(
-    resource_atribute_id serial not null, 
+    resource_attribute_id serial not null, 
     resource_type_id integer references resource_type(resource_type_id) not null,
     resource_type_field_name varchar(40) not null,
     resource_type_field_value varchar(40) null,
-    primary key (resource_atribute_id)
+    primary key (resource_attribute_id)
 ); 
 
 create table resource_status(
@@ -116,7 +110,6 @@ create table resource (
     resource_location_longitude float not null,
     resource_type_id integer references resource_type(resource_type_id),
     resource_status_id integer references resource_status(resource_status_id) not null,
-    measurement_id integer references measurement(measurement_id) not null,
     senate_region_id integer references senate_region(senate_region_id) not null,
     primary key (resource_id)
 );
@@ -164,16 +157,25 @@ create table reserves(
     primary key (reserve_id)
 );
 
-create table request_status(
+create table request_status (
     request_status_id serial not null,
     request_status_name varchar(20) not null,
     request_status_description text not null,
     primary key (request_status_id)
 );
 
-create table requests (
+create table request (
     request_id serial not null,
-    qunatity integer not null,
-    request_status integer,
-    date_reserved timestamptz default transaction_timestamp() not null
+    resource_id integer references resource(resource_id) not null,
+    request_status integer references request_status(request_status_id) not null,
+    userid integer references users_table(userid) not null,
+    request_status_id timestamptz default transaction_timestamp() not null,
+    primary key (request_id)
+);
+
+create table request_transactions(
+    request_id integer references request(request_id) not null,
+    resource_id integer references resource(resource_id) not null,
+    transaction_quantity integer not null,
+    transaction_date timestamptz default transaction_timestamp() not null
 );
