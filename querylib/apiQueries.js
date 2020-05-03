@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 module.exports = {
     //users route
     qAllUsers: `select * from users_table;`,
@@ -113,6 +112,4 @@ module.exports = {
     
     
 }
-=======
-module.exports = {};
->>>>>>> gabriel
+
