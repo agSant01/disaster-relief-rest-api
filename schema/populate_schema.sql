@@ -280,36 +280,6 @@ insert into delivery_method(method_name) values('Delivery');
 insert into delivery_method(method_name) values('Pick-up');
 insert into delivery_method(method_name) values('Delivery or Pick-up');
 
--- insert measurements
---Length
-insert into measurement(unit_type) values('millimeter ');
-insert into measurement(unit_type) values('centimeter');
-insert into measurement(unit_type) values('meter');
-insert into measurement(unit_type) values('kilometer');
-insert into measurement(unit_type) values('inch');
-insert into measurement(unit_type) values('yard');
-
---Volume and Capacity (Liquid and Dry)
-insert into measurement(unit_type) values('milliliter');
-insert into measurement(unit_type) values('liter');
-insert into measurement(unit_type) values('U.S. fluid ounce');
-insert into measurement(unit_type) values('U.S. gallon');
-
---Weight
-insert into measurement(unit_type) values('milligram');
-insert into measurement(unit_type) values('gram');
-insert into measurement(unit_type) values('pound');
-insert into measurement(unit_type) values('kilogram');
-insert into measurement(unit_type) values('ounce');
-
---clothes
-insert into measurement(unit_type) values('Small');
-insert into measurement(unit_type) values('Medium');
-insert into measurement(unit_type) values('Large');
-insert into measurement(unit_type) values('30');
-insert into measurement(unit_type) values('34');
-insert into measurement(unit_type) values('36');
-
 -- payment methods
 insert into payment_method(payment_method_name) values('Credit Card');
 insert into payment_method(payment_method_name) values('Debit');
@@ -343,8 +313,9 @@ insert into resource_type(resource_type_name) values('Tool');
 insert into resource_type(resource_type_name) values('Clothing');
 insert into resource_type(resource_type_name) values('Power Generator');
 insert into resource_type(resource_type_name) values('Battery');
---insert resource_attribute_definition
-    --Water
+
+
+--Water
 insert into resource_attribute_definition (    
     resource_type_id,
     resource_type_field_name,
@@ -352,10 +323,9 @@ insert into resource_attribute_definition (
     )
 values(
     (SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Water'),
-    "Water type",
-    "Purified"
+    'Water Type',
+    'Purified'
 );  
-
 insert into resource_attribute_definition (    
     resource_type_id,
     resource_type_field_name,
@@ -363,10 +333,9 @@ insert into resource_attribute_definition (
     )
 values(
     (SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Water'),
-    "Water type",
-    "Distilled "
+    'Water Type',
+    'Distilled '
 );   
-
 insert into resource_attribute_definition (    
     resource_type_id,
     resource_type_field_name,
@@ -374,42 +343,19 @@ insert into resource_attribute_definition (
     )
 values(
     (SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Water'),
-    "Expiration Date",
-    "mm/dd/yyyy"
+    'Expiration Date',
+    'mm/dd/yyyy'
 );
-
-
-    -- Medications
+ 
 insert into resource_attribute_definition (    
     resource_type_id,
     resource_type_field_name,
     resource_type_field_value
     )
 values(
-    (SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Medication'),
-    "Medication type",
-    "Probiotics"
-);
-insert into resource_attribute_definition (    
-    resource_type_id,
-    resource_type_field_name,
-    resource_type_field_value
-    )
-values(
-    (SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Medication'),
-    "Medication name",
-    "Florajen"
-);
-
-insert into resource_attribute_definition (    
-    resource_type_id,
-    resource_type_field_name,
-    resource_type_field_value
-    )
-values(
-    (SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Medication'),
-    "Medication type",
-    "Antipsychotics"
+    (SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Water'),
+    'Container Size',
+    '16oz.'
 );
 insert into resource_attribute_definition (    
     resource_type_id,
@@ -417,11 +363,52 @@ insert into resource_attribute_definition (
     resource_type_field_value
     )
 values(
-    (SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Medication'),
-    "Medication name",
-    "Clozapine"
+    (SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Water'),
+    'Container Size',
+    '64oz. (1 Gal.)' 
+);
+insert into resource_attribute_definition (    
+    resource_type_id,
+    resource_type_field_name,
+    resource_type_field_value
+    )
+values(
+    (SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Water'),
+    'Quantity Per Unit',
+    null
 );
 
+-- Medications
+insert into resource_attribute_definition (    
+    resource_type_id,
+    resource_type_field_name,
+    resource_type_field_value
+    )
+values(
+    (SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Medication'),
+    'Medication Name',
+    null
+);
+insert into resource_attribute_definition (    
+    resource_type_id,
+    resource_type_field_name,
+    resource_type_field_value
+    )
+values(
+    (SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Medication'),
+    'Medication Type',
+    'Probiotics'
+);
+insert into resource_attribute_definition (    
+    resource_type_id,
+    resource_type_field_name,
+    resource_type_field_value
+    )
+values(
+    (SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Medication'),
+    'Medication Type',
+    'Antipsychotics'
+);
 insert into resource_attribute_definition (    
 resource_type_id,
 resource_type_field_name,
@@ -429,21 +416,8 @@ resource_type_field_value
 )
 values(
 (SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Medication'),
-"Expiration Date",
-"mm/dd/yyyy"
-);
-
-
-    -- Baby Food 
-insert into resource_attribute_definition (    
-    resource_type_id,
-    resource_type_field_name,
-    resource_type_field_value
-    )
-values(
-    (SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Baby Food'),
-    "Baby Food type",
-    "Gerber"
+'Expiration Date',
+'mm/dd/yyyy'
 );
 insert into resource_attribute_definition (    
     resource_type_id,
@@ -451,11 +425,24 @@ insert into resource_attribute_definition (
     resource_type_field_value
     )
 values(
-    (SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Baby Food'),
-    "Baby Food name",
-    "Banana"
+    (SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Medication'),
+    'Quantity Per Unit',
+    null
 );
 
+-- Baby Food 
+insert into resource_attribute_definition (resource_type_id,resource_type_field_name,resource_type_field_value)
+values((SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Baby Food'),'Baby Food Type','Stage 1');
+insert into resource_attribute_definition (resource_type_id,resource_type_field_name,resource_type_field_value)
+values((SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Baby Food'),'Baby Food Type','Stage 2');
+insert into resource_attribute_definition (resource_type_id,resource_type_field_name,resource_type_field_value)
+values((SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Baby Food'),'Baby Food Type','Stage 3');
+insert into resource_attribute_definition (resource_type_id,resource_type_field_name,resource_type_field_value)
+values((SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Baby Food'),'Baby Food Type','Stage 4');
+insert into resource_attribute_definition (resource_type_id,resource_type_field_name,resource_type_field_value)
+values((SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Baby Food'),'Baby Food Name', null);
+insert into resource_attribute_definition (resource_type_id,resource_type_field_name,resource_type_field_value)
+values((SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Baby Food'),'Expiration Date','mm/dd/yyyy');
 insert into resource_attribute_definition (    
     resource_type_id,
     resource_type_field_name,
@@ -463,33 +450,11 @@ insert into resource_attribute_definition (
     )
 values(
     (SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Baby Food'),
-    "Baby Food type",
-    "Ella’s Kitchen"
-);
-insert into resource_attribute_definition (    
-    resource_type_id,
-    resource_type_field_name,
-    resource_type_field_value
-    )
-values(
-    (SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Baby Food'),
-    "Baby Food name",
-    "Carrot"
+    'Quantity Per Unit',
+    null
 );
 
-insert into resource_attribute_definition (    
-resource_type_id,
-resource_type_field_name,
-resource_type_field_value
-)
-values(
-(SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Baby Food'),
-"Expiration Date",
-"mm/dd/yyyy"
-);
-  
-
-    --Canned Food
+--Canned Food
 insert into resource_attribute_definition (    
     resource_type_id,
     resource_type_field_name,
@@ -497,8 +462,8 @@ insert into resource_attribute_definition (
     )
 values(
     (SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Canned Food'),
-    "Canned Food type",
-    "Soups"
+    'Quantity Per Unit',
+    null
 );
 insert into resource_attribute_definition (    
     resource_type_id,
@@ -507,19 +472,8 @@ insert into resource_attribute_definition (
     )
 values(
     (SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Canned Food'),
-    "Canned Food name",
-    "Campbell's Condensed Chicken Noodle Soup "
-);
-
-insert into resource_attribute_definition (    
-    resource_type_id,
-    resource_type_field_name,
-    resource_type_field_value
-    )
-values(
-    (SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Canned Food'),
-    "Canned Food type",
-    "Fruits and Vegetables"
+    'Canned Food Name',
+    null
 );
 insert into resource_attribute_definition (    
     resource_type_id,
@@ -528,10 +482,49 @@ insert into resource_attribute_definition (
     )
 values(
     (SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Canned Food'),
-    "Canned Food name",
-    "Dole Crushed Pineapple"
+    'Canned Food Type',
+    'Soups'
 );
-
+insert into resource_attribute_definition (    
+    resource_type_id,
+    resource_type_field_name,
+    resource_type_field_value
+    )
+values(
+    (SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Canned Food'),
+    'Canned Food Type',
+    'Fruits'
+);
+insert into resource_attribute_definition (    
+    resource_type_id,
+    resource_type_field_name,
+    resource_type_field_value
+    )
+values(
+    (SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Canned Food'),
+    'Canned Food Type',
+    'Vegetables'
+);
+insert into resource_attribute_definition (    
+    resource_type_id,
+    resource_type_field_name,
+    resource_type_field_value
+    )
+values(
+    (SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Canned Food'),
+    'Canned Food Type',
+    'Beans'
+);
+insert into resource_attribute_definition (    
+    resource_type_id,
+    resource_type_field_name,
+    resource_type_field_value
+    )
+values(
+    (SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Canned Food'),
+    'Canned Food Type',
+    'Meat/Chicken'
+);
 insert into resource_attribute_definition (    
 resource_type_id,
 resource_type_field_name,
@@ -539,54 +532,26 @@ resource_type_field_value
 )
 values(
 (SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Canned Food'),
-"Expiration Date",
-"mm/dd/yyyy"
+'Expiration Date',
+'mm/dd/yyyy'
 );
 
 
-    --Dry Food 
-insert into resource_attribute_definition (    
-    resource_type_id,
-    resource_type_field_name,
-    resource_type_field_value
-    )
-values(
-    (SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Dry Food'),
-    "Dry Food type",
-    "Powdered eggs"
-);
-insert into resource_attribute_definition (    
-    resource_type_id,
-    resource_type_field_name,
-    resource_type_field_value
-    )
-values(
-    (SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Dry Food'),
-    "Dry Food name",
-    "OvaEasy Powdered Whole Eggs"
-);
-
-insert into resource_attribute_definition (    
-    resource_type_id,
-    resource_type_field_name,
-    resource_type_field_value
-    )
-values(
-    (SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Dry Food'),
-    "Dry Food type",
-    "Evaporated milk "
-);
-insert into resource_attribute_definition (    
-    resource_type_id,
-    resource_type_field_name,
-    resource_type_field_value
-    )
-values(
-    (SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Dry Food'),
-    "Dry Food name",
-    "Great Value Evaporated Milk"
-);
-
+--Dry Food 
+insert into resource_attribute_definition (resource_type_id,resource_type_field_name,resource_type_field_value)
+values((SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Dry Food'),'Dry Food Type','Powdered eggs');
+insert into resource_attribute_definition (resource_type_id,resource_type_field_name,resource_type_field_value)
+values((SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Dry Food'),'Dry Food Type','Rice');
+insert into resource_attribute_definition (resource_type_id,resource_type_field_name,resource_type_field_value)
+values((SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Dry Food'),'Dry Food Type','Bread');
+insert into resource_attribute_definition (resource_type_id,resource_type_field_name,resource_type_field_value)
+values((SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Dry Food'),'Dry Food Type','Cereal');
+insert into resource_attribute_definition (resource_type_id,resource_type_field_name,resource_type_field_value)
+values((SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Dry Food'),'Dry Food Type','Condensed Milk');
+insert into resource_attribute_definition (resource_type_id,resource_type_field_name,resource_type_field_value)
+values((SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Dry Food'),'Dry Food Type','Evaporated Milk');
+values((SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Dry Food'),'Dry Food Name', null);
+insert into resource_attribute_definition (resource_type_id,resource_type_field_name,resource_type_field_value)
 insert into resource_attribute_definition (    
 resource_type_id,
 resource_type_field_name,
@@ -594,21 +559,8 @@ resource_type_field_value
 )
 values(
 (SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Dry Food'),
-"Expiration Date",
-"mm/dd/yyyy"
-);
-
-
-    --Ice
-insert into resource_attribute_definition (    
-    resource_type_id,
-    resource_type_field_name,
-    resource_type_field_value
-    )
-values(
-    (SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Ice'),
-    "Ice type",
-    "Ice cube"
+'Expiration Date',
+'mm/dd/yyyy'
 );
 insert into resource_attribute_definition (    
     resource_type_id,
@@ -616,9 +568,41 @@ insert into resource_attribute_definition (
     resource_type_field_value
     )
 values(
+    (SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Dry Food'),
+    'Quantity Per Unit',
+    null
+);
+
+--Ice
+insert into resource_attribute_definition (    
+    resource_type_id,
+    resource_type_field_name,
+    resource_type_field_value
+    )
+values(
     (SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Ice'),
-    "Ice type",
-    "Ice chips"
+    'Ice Type',
+    'Ice Bag'
+);
+insert into resource_attribute_definition (    
+    resource_type_id,
+    resource_type_field_name,
+    resource_type_field_value
+    )
+values(
+    (SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Ice'),
+    'Lbs',
+    null
+);
+insert into resource_attribute_definition (    
+    resource_type_id,
+    resource_type_field_name,
+    resource_type_field_value
+    )
+values(
+    (SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Ice'),
+    'Quantity Per Unit',
+    null
 );
 
 -- fuel 
@@ -631,44 +615,154 @@ insert into resource_attribute_definition(resource_type_id, resource_type_field_
 values((select resource_type_id from resource_type where resource_type_name = 'Fuel'), 'Fuel Type','Gas');
 -- fuel octane
 insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
-values((select resource_type_id from resource_type where resource_type_name = 'Fuel'),'Octane','93');
-insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
-values((select resource_type_id from resource_type where resource_type_name = 'Fuel'),'Octane','87');
+values((select resource_type_id from resource_type where resource_type_name = 'Fuel'),'Octane', null);
 
--- medical device 
--- Fuel type 
+-- medical device
 insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
-values((select resource_type_id from resource_type where resource_type_name = 'Medical Devices'), 'Medical Device Type', 'Ventilator');
+values((select resource_type_id from resource_type where resource_type_name = 'Medical Device'), 'Medical Device Type', 'Ventilator');
 insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
-values((select resource_type_id from resource_type where resource_type_name = 'Medical Devices'), 'Medical Device Type', 'Diabetis Monitor');
+values((select resource_type_id from resource_type where resource_type_name = 'Medical Device'), 'Medical Device Type', 'Diabetis Monitor');
 insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
-values((select resource_type_id from resource_type where resource_type_name = 'Medical Devices'), 'Device Name', null);
+values((select resource_type_id from resource_type where resource_type_name = 'Medical Device'), 'Device Name', null);
+insert into resource_attribute_definition (    
+    resource_type_id,
+    resource_type_field_name,
+    resource_type_field_value
+    )
+values(
+    (SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Medical Device'),
+    'Quantity Per Unit',
+    null
+);
 
 -- heavy equipment 
 -- Equipment Type
 insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
-values((select resource_type_id from resource_type where resource_type_name = 'Heavy Equipment'), 'Equipment Type', '');
+values((select resource_type_id from resource_type where resource_type_name = 'Heavy Equipment'), 'Equipment Type', 'Excavators');
 insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
-values((select resource_type_id from resource_type where resource_type_name = 'Heavy Equipment'), 'Equipment Type', '');
+values((select resource_type_id from resource_type where resource_type_name = 'Heavy Equipment'), 'Equipment Type', 'Bulldozers');
 insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
-values((select resource_type_id from resource_type where resource_type_name = 'Heavy Equipment'), 'Equipment Type', null);
+values((select resource_type_id from resource_type where resource_type_name = 'Heavy Equipment'), 'Equipment Type', 'Dump Trucks');
+insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
+values((select resource_type_id from resource_type where resource_type_name = 'Heavy Equipment'), 'Fuel Type', 'Gasoline');
+insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
+values((select resource_type_id from resource_type where resource_type_name = 'Heavy Equipment'), 'Fuel Type', 'Diesel');
+insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
+values((select resource_type_id from resource_type where resource_type_name = 'Heavy Equipment'),'Transaction Type', 'Buy');
+insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
+values((select resource_type_id from resource_type where resource_type_name = 'Heavy Equipment'),'Transaction Type', 'Rent');
+insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
+values((select resource_type_id from resource_type where resource_type_name = 'Heavy Equipment'),'Duration Period Unit', 'Week(s)');
+insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
+values((select resource_type_id from resource_type where resource_type_name = 'Heavy Equipment'),'Duration Period Unit', 'Day(s)');
+insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
+values((select resource_type_id from resource_type where resource_type_name = 'Heavy Equipment'),'Duration Period Unit', 'Hour(s)');
+insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
+values((select resource_type_id from resource_type where resource_type_name = 'Heavy Equipment'),'Price Per Duration Unit', null);
 
+-- tool
+insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
+values((select resource_type_id from resource_type where resource_type_name = 'Tool'), 'Tool Name', 'Chainsaw');
+insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
+values((select resource_type_id from resource_type where resource_type_name = 'Tool'), 'Tool Name', 'Chipping Hammer');
+insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
+values((select resource_type_id from resource_type where resource_type_name = 'Tool'), 'Tool Name', 'Drill');
+insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
+values((select resource_type_id from resource_type where resource_type_name = 'Tool'), 'Power Type', 'Gasoline');
+insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
+values((select resource_type_id from resource_type where resource_type_name = 'Tool'), 'Power Type', 'Electric');
+insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
+values((select resource_type_id from resource_type where resource_type_name = 'Heavy Equipment'),'Transaction Type', 'Buy');
+insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
+values((select resource_type_id from resource_type where resource_type_name = 'Heavy Equipment'),'Transaction Type', 'Rent');
+insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
+values((select resource_type_id from resource_type where resource_type_name = 'Heavy Equipment'),'Duration Period Unit', 'Week(s)');
+insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
+values((select resource_type_id from resource_type where resource_type_name = 'Heavy Equipment'),'Duration Period Unit', 'Day(s)');
+insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
+values((select resource_type_id from resource_type where resource_type_name = 'Heavy Equipment'),'Duration Period Unit', 'Hour(s)');
+insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
+values((select resource_type_id from resource_type where resource_type_name = 'Heavy Equipment'),'Price Per Duration Unit', null);
 
+-- clothing
+insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
+values((select resource_type_id from resource_type where resource_type_name = 'Clothing'), 'Piece of Clothing', 'T-Shirt');
+insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
+values((select resource_type_id from resource_type where resource_type_name = 'Clothing'), 'Piece of Clothing', 'Pant');
+insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
+values((select resource_type_id from resource_type where resource_type_name = 'Clothing'), 'Color', 'Black');
+insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
+values((select resource_type_id from resource_type where resource_type_name = 'Clothing'), 'Color', 'Blue');
+insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
+values((select resource_type_id from resource_type where resource_type_name = 'Clothing'), 'Color', null);
+insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
+values((select resource_type_id from resource_type where resource_type_name = 'Clothing'), 'Gender', 'Male');
+insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
+values((select resource_type_id from resource_type where resource_type_name = 'Clothing'), 'Gender', 'Female');
+insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
+values((select resource_type_id from resource_type where resource_type_name = 'Clothing'), 'Size', 'XXS');
+insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
+values((select resource_type_id from resource_type where resource_type_name = 'Clothing'), 'Size', 'XS');
+insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
+values((select resource_type_id from resource_type where resource_type_name = 'Clothing'), 'Size', 'Small');
+insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
+values((select resource_type_id from resource_type where resource_type_name = 'Clothing'), 'Size', 'Medium');
+insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
+values((select resource_type_id from resource_type where resource_type_name = 'Clothing'), 'Size', 'Large');
+insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
+values((select resource_type_id from resource_type where resource_type_name = 'Clothing'), 'Size', 'XLarge');
+insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
+values((select resource_type_id from resource_type where resource_type_name = 'Clothing'), 'Size', 'XXLarge');
+insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
+values((select resource_type_id from resource_type where resource_type_name = 'Clothing'), 'Size', '3XLarge');
+insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
+values((select resource_type_id from resource_type where resource_type_name = 'Clothing'), 'Size', '(Plus) 1X');
+insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
+values((select resource_type_id from resource_type where resource_type_name = 'Clothing'), 'Size', '(Plus) 2X');
+insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
+values((select resource_type_id from resource_type where resource_type_name = 'Clothing'), 'Size', '(Plus) 3X');
+insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
+values((select resource_type_id from resource_type where resource_type_name = 'Clothing'), 'Size', '(Plus) 4X');
+insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
+values((select resource_type_id from resource_type where resource_type_name = 'Clothing'), 'Quantity Per Unit', null);
 
+-- power generator
 insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
-values(
-    type_i, 'Clothing Type', 'T-Shirt'
-)
+values((select resource_type_id from resource_type where resource_type_name = 'Power Generator'), 'Generator Type', 'Portable');
 insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
-values(
-    type_i, 'Clothing Type', 'Pant'
-)
+values((select resource_type_id from resource_type where resource_type_name = 'Power Generator'), 'Generator Type', 'Inverter');
+insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
+values((select resource_type_id from resource_type where resource_type_name = 'Power Generator'), 'Generator Type', 'Standby');
+values((select resource_type_id from resource_type where resource_type_name = 'Power Generator'), 'Fuel Type', 'Gasoline');
+insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
+values((select resource_type_id from resource_type where resource_type_name = 'Power Generator'), 'Fuel Type', 'Diesel');
+insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
+values((select resource_type_id from resource_type where resource_type_name = 'Power Generator'), 'Power Rating (Watts)', null);
+insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
+values((select resource_type_id from resource_type where resource_type_name = 'Power Generator'), 'Voltage (Volts)', null);
+insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
+values((select resource_type_id from resource_type where resource_type_name = 'Power Generator'), 'Amperage (Amps)', null);
+insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
+values((select resource_type_id from resource_type where resource_type_name = 'Power Generator'),'Transaction Type', 'Buy');
+insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
+values((select resource_type_id from resource_type where resource_type_name = 'Power Generator'),'Transaction Type', 'Rent');
+insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
+values((select resource_type_id from resource_type where resource_type_name = 'Power Generator'),'Duration Period Unit', 'Week(s)');
+insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
+values((select resource_type_id from resource_type where resource_type_name = 'Power Generator'),'Duration Period Unit', 'Day(s)');
+insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
+values((select resource_type_id from resource_type where resource_type_name = 'Power Generator'),'Duration Period Unit', 'Hour(s)');
+insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
+values((select resource_type_id from resource_type where resource_type_name = 'Power Generator'),'Price Per Duration Unit', null);
 
+-- batteries
 insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
-values(
-    type_i, 'Color', 'Black'
-)
+values((select resource_type_id from resource_type where resource_type_name = 'Battery'), 'Battery Type', 'AA');
 insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
-values(
-    type_i, 'Color', 'Blue'
-);
+values((select resource_type_id from resource_type where resource_type_name = 'Battery'), 'Battery Type', 'AAA');
+insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
+values((select resource_type_id from resource_type where resource_type_name = 'Battery'), 'Battery Type', 'C');
+insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
+values((select resource_type_id from resource_type where resource_type_name = 'Battery'), 'Battery Type', 'D');
+insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
+values((select resource_type_id from resource_type where resource_type_name = 'Battery'), 'Battery Type', 'E (9-Volt)');

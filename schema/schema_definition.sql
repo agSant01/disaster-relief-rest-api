@@ -81,12 +81,6 @@ create table delivery_method (
     primary key (delivery_method_id)
 );
 
-create table measurement(
-    measurement_id serial not null,
-    unit_type varchar(40) not null,
-    primary key (measurement_id)
-);
-
 create table resource_type(
     resource_type_id serial not null,
     resource_type_name varchar(40) unique not null,
@@ -95,7 +89,7 @@ create table resource_type(
 
 -- resource attributes allowed
 create table resource_attribute_definition(
-    resource_atribute_id serial not null, 
+    resource_attribute_id serial not null, 
     resource_type_id integer references resource_type(resource_type_id) not null,
     resource_type_field_name varchar(40) not null,
     resource_type_field_value varchar(40) null,
@@ -116,7 +110,6 @@ create table resource (
     resource_location_longitude float not null,
     resource_type_id integer references resource_type(resource_type_id),
     resource_status_id integer references resource_status(resource_status_id) not null,
-    measurement_id integer references measurement(measurement_id) not null,
     senate_region_id integer references senate_region(senate_region_id) not null,
     primary key (resource_id)
 );
