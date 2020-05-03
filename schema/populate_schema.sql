@@ -292,7 +292,7 @@ insert into measurement(unit_type) values('yard');
 --Volume and Capacity (Liquid and Dry)
 insert into measurement(unit_type) values('milliliter');
 insert into measurement(unit_type) values('liter');
-insert into measurement(unit_type) values('U.S. fluid ounce ');
+insert into measurement(unit_type) values('U.S. fluid ounce');
 insert into measurement(unit_type) values('U.S. gallon');
 
 --Weight
@@ -301,6 +301,14 @@ insert into measurement(unit_type) values('gram');
 insert into measurement(unit_type) values('pound');
 insert into measurement(unit_type) values('kilogram');
 insert into measurement(unit_type) values('ounce');
+
+--clothes
+insert into measurement(unit_type) values('Small');
+insert into measurement(unit_type) values('Medium');
+insert into measurement(unit_type) values('Large');
+insert into measurement(unit_type) values('30');
+insert into measurement(unit_type) values('34');
+insert into measurement(unit_type) values('36');
 
 -- payment methods
 insert into payment_method(payment_method_name) values('Credit Card');
@@ -336,3 +344,281 @@ insert into resource_type(resource_type_name) values('Clothing');
 insert into resource_type(resource_type_name) values('Power Generator');
 insert into resource_type(resource_type_name) values('Battery');
 
+
+--insert resource_attribute_definition
+    --Water
+insert into resource_attribute_definition (    
+    resource_type_id,
+    resource_type_field_name,
+    resource_type_field_value
+    )
+values(
+    (SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Water'),
+    "Water type",
+    "Purified"
+);  
+
+insert into resource_attribute_definition (    
+    resource_type_id,
+    resource_type_field_name,
+    resource_type_field_value
+    )
+values(
+    (SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Water'),
+    "Water type",
+    "Distilled "
+);   
+
+insert into resource_attribute_definition (    
+    resource_type_id,
+    resource_type_field_name,
+    resource_type_field_value
+    )
+values(
+    (SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Water'),
+    "Expiration Date",
+    "mm/dd/yyyy"
+);
+
+
+    -- Medications
+insert into resource_attribute_definition (    
+    resource_type_id,
+    resource_type_field_name,
+    resource_type_field_value
+    )
+values(
+    (SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Medication'),
+    "Medication type",
+    "Probiotics"
+);
+insert into resource_attribute_definition (    
+    resource_type_id,
+    resource_type_field_name,
+    resource_type_field_value
+    )
+values(
+    (SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Medication'),
+    "Medication name",
+    "Florajen"
+);
+
+insert into resource_attribute_definition (    
+    resource_type_id,
+    resource_type_field_name,
+    resource_type_field_value
+    )
+values(
+    (SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Medication'),
+    "Medication type",
+    "Antipsychotics"
+);
+insert into resource_attribute_definition (    
+    resource_type_id,
+    resource_type_field_name,
+    resource_type_field_value
+    )
+values(
+    (SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Medication'),
+    "Medication name",
+    "Clozapine"
+);
+
+insert into resource_attribute_definition (    
+resource_type_id,
+resource_type_field_name,
+resource_type_field_value
+)
+values(
+(SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Medication'),
+"Expiration Date",
+"mm/dd/yyyy"
+);
+
+
+    -- Baby Food 
+insert into resource_attribute_definition (    
+    resource_type_id,
+    resource_type_field_name,
+    resource_type_field_value
+    )
+values(
+    (SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Baby Food'),
+    "Baby Food type",
+    "Gerber"
+);
+insert into resource_attribute_definition (    
+    resource_type_id,
+    resource_type_field_name,
+    resource_type_field_value
+    )
+values(
+    (SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Baby Food'),
+    "Baby Food name",
+    "Banana"
+);
+
+insert into resource_attribute_definition (    
+    resource_type_id,
+    resource_type_field_name,
+    resource_type_field_value
+    )
+values(
+    (SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Baby Food'),
+    "Baby Food type",
+    "Ella’s Kitchen"
+);
+insert into resource_attribute_definition (    
+    resource_type_id,
+    resource_type_field_name,
+    resource_type_field_value
+    )
+values(
+    (SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Baby Food'),
+    "Baby Food name",
+    "Carrot"
+);
+
+insert into resource_attribute_definition (    
+resource_type_id,
+resource_type_field_name,
+resource_type_field_value
+)
+values(
+(SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Baby Food'),
+"Expiration Date",
+"mm/dd/yyyy"
+);
+  
+
+    --Canned Food
+insert into resource_attribute_definition (    
+    resource_type_id,
+    resource_type_field_name,
+    resource_type_field_value
+    )
+values(
+    (SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Canned Food'),
+    "Canned Food type",
+    "Soups"
+);
+insert into resource_attribute_definition (    
+    resource_type_id,
+    resource_type_field_name,
+    resource_type_field_value
+    )
+values(
+    (SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Canned Food'),
+    "Canned Food name",
+    "Campbell's Condensed Chicken Noodle Soup "
+);
+
+insert into resource_attribute_definition (    
+    resource_type_id,
+    resource_type_field_name,
+    resource_type_field_value
+    )
+values(
+    (SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Canned Food'),
+    "Canned Food type",
+    "Fruits and Vegetables"
+);
+insert into resource_attribute_definition (    
+    resource_type_id,
+    resource_type_field_name,
+    resource_type_field_value
+    )
+values(
+    (SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Canned Food'),
+    "Canned Food name",
+    "Dole Crushed Pineapple"
+);
+
+insert into resource_attribute_definition (    
+resource_type_id,
+resource_type_field_name,
+resource_type_field_value
+)
+values(
+(SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Canned Food'),
+"Expiration Date",
+"mm/dd/yyyy"
+);
+
+
+    --Dry Food 
+insert into resource_attribute_definition (    
+    resource_type_id,
+    resource_type_field_name,
+    resource_type_field_value
+    )
+values(
+    (SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Dry Food'),
+    "Dry Food type",
+    "Powdered eggs"
+);
+insert into resource_attribute_definition (    
+    resource_type_id,
+    resource_type_field_name,
+    resource_type_field_value
+    )
+values(
+    (SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Dry Food'),
+    "Dry Food name",
+    "OvaEasy Powdered Whole Eggs"
+);
+
+insert into resource_attribute_definition (    
+    resource_type_id,
+    resource_type_field_name,
+    resource_type_field_value
+    )
+values(
+    (SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Dry Food'),
+    "Dry Food type",
+    "Evaporated milk "
+);
+insert into resource_attribute_definition (    
+    resource_type_id,
+    resource_type_field_name,
+    resource_type_field_value
+    )
+values(
+    (SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Dry Food'),
+    "Dry Food name",
+    "Great Value Evaporated Milk"
+);
+
+insert into resource_attribute_definition (    
+resource_type_id,
+resource_type_field_name,
+resource_type_field_value
+)
+values(
+(SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Dry Food'),
+"Expiration Date",
+"mm/dd/yyyy"
+);
+
+
+    --Ice
+insert into resource_attribute_definition (    
+    resource_type_id,
+    resource_type_field_name,
+    resource_type_field_value
+    )
+values(
+    (SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Ice'),
+    "Ice type",
+    "Ice cube"
+);
+insert into resource_attribute_definition (    
+    resource_type_id,
+    resource_type_field_name,
+    resource_type_field_value
+    )
+values(
+    (SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Ice'),
+    "Ice type",
+    "Ice chips"
+);
