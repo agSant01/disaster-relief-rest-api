@@ -266,7 +266,7 @@ values(
 );
 
 insert into organization_representative (
-    organization_representative_id,
+    userid,
     organization_id
 ) values 
 (
