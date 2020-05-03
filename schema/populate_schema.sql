@@ -550,28 +550,12 @@ insert into resource_attribute_definition (resource_type_id,resource_type_field_
 values((SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Dry Food'),'Dry Food Type','Condensed Milk');
 insert into resource_attribute_definition (resource_type_id,resource_type_field_name,resource_type_field_value)
 values((SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Dry Food'),'Dry Food Type','Evaporated Milk');
-values((SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Dry Food'),'Dry Food Name', null);
 insert into resource_attribute_definition (resource_type_id,resource_type_field_name,resource_type_field_value)
-insert into resource_attribute_definition (    
-resource_type_id,
-resource_type_field_name,
-resource_type_field_value
-)
-values(
-(SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Dry Food'),
-'Expiration Date',
-'mm/dd/yyyy'
-);
-insert into resource_attribute_definition (    
-    resource_type_id,
-    resource_type_field_name,
-    resource_type_field_value
-    )
-values(
-    (SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Dry Food'),
-    'Quantity Per Unit',
-    null
-);
+values((SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Dry Food'),'Dry Food Name', null);
+insert into resource_attribute_definition(resource_type_id,resource_type_field_name,resource_type_field_value)
+values((SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Dry Food'),'Expiration Date','mm/dd/yyyy');
+insert into resource_attribute_definition (resource_type_id,resource_type_field_name,resource_type_field_value)
+values((SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Dry Food'),'Quantity Per Unit',null);
 
 --Ice
 insert into resource_attribute_definition (    
@@ -733,6 +717,7 @@ insert into resource_attribute_definition(resource_type_id, resource_type_field_
 values((select resource_type_id from resource_type where resource_type_name = 'Power Generator'), 'Generator Type', 'Inverter');
 insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
 values((select resource_type_id from resource_type where resource_type_name = 'Power Generator'), 'Generator Type', 'Standby');
+insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
 values((select resource_type_id from resource_type where resource_type_name = 'Power Generator'), 'Fuel Type', 'Gasoline');
 insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
 values((select resource_type_id from resource_type where resource_type_name = 'Power Generator'), 'Fuel Type', 'Diesel');

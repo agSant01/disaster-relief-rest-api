@@ -93,7 +93,7 @@ create table resource_attribute_definition(
     resource_type_id integer references resource_type(resource_type_id) not null,
     resource_type_field_name varchar(40) not null,
     resource_type_field_value varchar(40) null,
-    primary key (resource_atribute_id)
+    primary key (resource_attribute_id)
 ); 
 
 create table resource_status(
@@ -169,7 +169,8 @@ create table request (
     resource_id integer references resource(resource_id) not null,
     request_status integer references request_status(request_status_id) not null,
     userid integer references users_table(userid) not null,
-    request_status_id timestamptz default transaction_timestamp() not null
+    request_status_id timestamptz default transaction_timestamp() not null,
+    primary key (request_id)
 );
 
 create table request_transactions(
@@ -178,4 +179,3 @@ create table request_transactions(
     transaction_quantity integer not null,
     transaction_date timestamptz default transaction_timestamp() not null
 );
-
