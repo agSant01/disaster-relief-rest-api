@@ -108,7 +108,18 @@ module.exports = {
                    from resource_attribute_definition as P
                     natural inner join resource_type as T 
                     where T.resource_type_name = '$1')`,
-    
+    //// #TODO: test this query
+    qAllRequestsAvailables:`with resource_remaing as (
+        select 	
+        res.resource_id, o.resource_quantity + reserves.quantity as qty 
+        from resource as res
+        natural join reserves
+        natural join orders as o
+        )
+        select * 
+        from resource 
+        natural join resource_remaing
+        where resource.resource_quantity > resource_remaing.qty;`
     
     
 }

@@ -2,7 +2,7 @@ var express = require('express');
 var handler = require('./handlers');
 var router = express.Router();
 
-// Get the types of resources that the system supports
+// Get all resources
 router.get('/', handler.getAllResources);
 
 // Get the types of resources that the system supports
