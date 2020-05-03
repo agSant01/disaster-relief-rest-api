@@ -70,9 +70,9 @@ create table organization (
 );
 
 create table organization_representative(
-    organization_representative_id integer not null references users_table(userid),
+    userid integer not null references users_table(userid),
     organization_id integer not null references organization(organization_id),
-    primary key (organization_representative_id, organization_id)
+    primary key (userid, organization_id)
 );
 
 create table delivery_method (
