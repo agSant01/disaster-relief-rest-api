@@ -336,3 +336,63 @@ insert into resource_type(resource_type_name) values('Clothing');
 insert into resource_type(resource_type_name) values('Power Generator');
 insert into resource_type(resource_type_name) values('Battery');
 
+-- fuel 
+-- Fuel type 
+insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
+values((select resource_type_id from resource_type where resource_type_name = 'Fuel'), 'Fuel Type','Gasoline');
+insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
+values((select resource_type_id from resource_type where resource_type_name = 'Fuel'), 'Fuel Type','Diesel');
+insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
+values((select resource_type_id from resource_type where resource_type_name = 'Fuel'), 'Fuel Type','Gas');
+-- fuel octane
+insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
+values((select resource_type_id from resource_type where resource_type_name = 'Fuel'),'Octane','93');
+insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
+values((select resource_type_id from resource_type where resource_type_name = 'Fuel'),'Octane','87');
+
+-- medical device 
+-- Fuel type 
+insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
+values((select resource_type_id from resource_type where resource_type_name = 'Medical Devices'), 'Medical Device Type', 'Ventilator');
+insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
+values((select resource_type_id from resource_type where resource_type_name = 'Medical Devices'), 'Medical Device Type', 'Diabetis Monitor');
+insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
+values((select resource_type_id from resource_type where resource_type_name = 'Medical Devices'), 'Device Name', null);
+
+-- heavy equipment 
+-- Equipment Type
+insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
+values((select resource_type_id from resource_type where resource_type_name = 'Heavy Equipment'), 'Equipment Type', '');
+insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
+values((select resource_type_id from resource_type where resource_type_name = 'Heavy Equipment'), 'Equipment Type', '');
+insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
+values((select resource_type_id from resource_type where resource_type_name = 'Heavy Equipment'), 'Equipment Type', null);
+
+
+
+insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
+values(
+    type_i, 'Clothing Type', 'T-Shirt'
+)
+insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
+values(
+    type_i, 'Clothing Type', 'Pant'
+)
+
+insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
+values(
+    type_i, 'Color', 'Black'
+)
+insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
+values(
+    type_i, 'Color', 'Blue'
+);
+
+
+
+
+
+
+
+
+
