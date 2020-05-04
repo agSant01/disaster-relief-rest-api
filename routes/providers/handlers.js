@@ -2,14 +2,13 @@ const querylib = require('./queries');
 const db = require('../../database');
 
 exports.getProviders = (req, res, next) => {
-    let msg = {
-        providers: [{}, {}],
-    };
-
+    // callback
     db.query(querylib.qGetAllProviders, (err, result) => {
         console.log(err, result);
 
-        msg = {
+        if (err) res.json(err).end();
+
+        let msg = {
             providers: result.rows,
             count: result.rowCount,
         };
@@ -18,33 +17,53 @@ exports.getProviders = (req, res, next) => {
     });
 };
 
-exports.getOrganizations = (req, res, next) => {
-    let response = {
-        organizations: [
-            {
-                organization_id: 1241,
-                organization_name: 'Disaster Relief Aid',
-                address: {
-                    street_1: 'MCS Plaza 152, #87',
-                    street_2: null,
-                    city: 'Hato Rey',
-                    country: {
-                        name: 'Puerto Rico',
-                        abbreviation: 'PR',
-                    },
-                    zip_code: '00865',
-                },
-                phone: {
-                    area_code: '939',
-                    line_number: '5555555',
-                },
-                administrator_username: 'juandelpueblo',
-                email: 'disasteraid@pr.com',
-            },
-        ],
+exports.getProviderById = (req, res, next) => {
+    const provid = Number(req.params.id);
+
+    if (isNaN(provid)) {
+        res.status(401).json({
+            error: "Invalid param for 'provider id'. Must be 'Integer' type.",
+            invalid_param: req.params.id,
+        });
+    }
+
+    const query = {
+        text: querylib.qGetProviderById,
+        values: [provid],
     };
 
-    res.json(response).end();
+    console.log(query.values);
+
+    // callback
+    db.query(query, (err, result) => {
+        console.log(err, result);
+
+        if (err) res.json(err).end();
+
+        let msg = {
+            provider: result.rows,
+        };
+
+        res.json(result ? msg : err).end();
+    });
+};
+
+exports.getOrganizations = (req, res, next) => {
+    console.log(querylib.qAllOrganizations);
+
+    // callback
+    db.query(querylib.qAllOrganizations, (err, result) => {
+        console.log(err, result);
+
+        if (err) res.json(err).end();
+
+        let msg = {
+            organizations: result.rows,
+            count: result.rowCount,
+        };
+
+        res.json(msg).end();
+    });
 };
 
 exports.postRegister = (req, res, next) => {
@@ -95,91 +114,73 @@ exports.postRegister = (req, res, next) => {
 };
 
 exports.getOrganization = (req, res, next) => {
-    let organization_id = Number(req.params.orgID);
+    const organization_id = Number(req.params.orgID);
 
-    let response = {
-        organization: {
-            organization_id: organization_id,
-            organization_name: 'Disaster Relief Aid',
-            address: {
-                street_1: 'MCS Plaza 152, #87',
-                street_2: null,
-                city: 'Hato Rey',
-                country: {
-                    name: 'Puerto Rico',
-                    abbreviation: 'PR',
-                },
-                zip_code: '00865',
-            },
-            phone: {
-                area_code: '939',
-                line_number: '5555555',
-            },
-            administrator_username: 'juandelpueblo',
-            email: 'disasteraid@pr.com',
-        },
+    if (isNaN(organization_id)) {
+        res.status(401).json({
+            error:
+                "Invalid param for 'organization id'. Must be 'Integer' type.",
+            invalid_param: req.params.orgID,
+        });
+    }
+
+    const query = {
+        text: querylib.qOrganizationByID,
+        values: [organization_id],
     };
 
-    res.json(response).end();
+    console.log(query);
+
+    // callback
+    db.query(query, (err, result) => {
+        console.log(err, result);
+
+        if (err) res.json(err).end();
+
+        console.log(result);
+
+        let msg = {
+            organization: result.rows,
+        };
+
+        res.json(msg).end();
+    });
 };
 
 exports.getRepresentatives = (req, res, next) => {
-    let organization_id = Number(req.params.orgID);
+    const orgid = Number(req.params.orgID);
 
-    let response = {
-        representatives: [
-            {
-                user_id: 190,
-                first_name: 'Marcelo',
-                last_name: 'Rios',
-                dob: '15/05/1985',
-                address: {
-                    street_1: 'Bo. Caraizo, Calle Ramirez 5',
-                    street_2: null,
-                    city: 'Coamo',
-                    country: {
-                        name: 'Puerto Rico',
-                        abbreviation: 'PR',
-                    },
-                    zip_code: '00395',
-                },
-                phone: {
-                    area_code: '787',
-                    line_number: '5555555',
-                },
-                username: 'marcelo78',
-                email: 'marcelo@gmail.com',
-                gender: 'Male',
-                user_type: 'Organization Representative',
-            },
-            {
-                user_id: 191,
-                first_name: 'Marcelo',
-                last_name: 'Rios',
-                dob: '15/05/1985',
-                address: {
-                    street_1: 'Bo. Caraizo, Calle Ramirez 5',
-                    street_2: null,
-                    city: 'Coamo',
-                    country: {
-                        name: 'Puerto Rico',
-                        abbreviation: 'PR',
-                    },
-                    zip_code: '00395',
-                },
-                phone: {
-                    area_code: '787',
-                    line_number: '5555555',
-                },
-                username: 'marcelo78',
-                email: 'marcelo@gmail.com',
-                gender: 'Male',
-                user_type: 'Organization Representative',
-            },
-        ],
+    if (isNaN(orgid)) {
+        res.status(401).json({
+            error:
+                "Invalid param for 'organization id'. Must be 'Integer' type.",
+            invalid_param: req.params.orgID,
+        });
+    }
+
+    const query = {
+        text: querylib.qOrganizationRepresentative,
+        values: [orgid],
     };
 
-    res.json(response).end();
+    console.log(query);
+
+    // callback
+    db.query(query, (err, result) => {
+        console.log(err, result);
+
+        if (err) res.json(err).end();
+
+        console.log(result);
+
+        const msg = {
+            organization_id: orgid,
+            representatives: result.rows,
+            count: result.rowCount,
+        };
+
+        res.json(msg).end();
+    });
 };
 
 exports.postAddRepresentative = (req, res, next) => {

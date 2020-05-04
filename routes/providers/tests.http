@@ -1,0 +1,19 @@
+### Get providers
+GET http://localhost:3000/api/providers HTTP/1.1
+
+### Get provider by Id
+
+GET http://localhost:3000/api/providers/2 HTTP/1.1
+
+
+###
+
+GET http://localhost:3000/api/providers/organizations HTTP/1.1
+
+###
+
+GET http://localhost:3000/api/providers/organizations/1 HTTP/1.1
+
+###
+
+GET http://localhost:3000/api/providers/organizations/1/representatives HTTP/1.1

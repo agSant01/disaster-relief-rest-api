@@ -273,6 +273,14 @@ insert into organization_representative (
     (select userid from users_table where username = 'valeria'),
     (select organization_id from organization where organization_name = 'ICOM Helpers')
 );
+insert into organization_representative (
+    userid,
+    organization_id
+) values 
+(
+    (select userid from users_table where username = 'gabrielsantiago'),
+    (select organization_id from organization where organization_name = 'ICOM Helpers')
+);
 
 
 -- insert delivery methods

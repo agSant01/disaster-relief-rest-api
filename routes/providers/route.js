@@ -11,6 +11,9 @@ router.get('/organizations', handler.getOrganizations);
 // Register an organization
 router.post('/organizations', handler.postRegister);
 
+//get providers list by id
+router.get('/:id', handler.getProviderById);
+
 router.get('/organizations/:orgID', handler.getOrganization);
 
 // Get organization representatives
