@@ -6,7 +6,8 @@ const config = require('./config');
  */
 const databaseConnection = new Pool({
     connectionString: process.env.DATABASE_URL || config.DATABASE_URL,
-    ssl: false,
+    ssl: false
 });
+console.log(databaseConnection, process.env.DATABASE_URL);
 
 module.exports = databaseConnection;
