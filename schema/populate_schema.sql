@@ -845,6 +845,7 @@ values(
     (select senate_region_id from senate_region where senate_region_name = 'I - San Juan')
 );
 
+
 --orders
 insert into orders(resource_quantity,order_price,userid,resource_id,payment_method_id)
 values(
@@ -864,6 +865,8 @@ values(
     (select payment_method_id from payment_method where payment_method_name = 'WIC')
     
 );
+
+
 -- reserves
 insert into reserves(userid,resource_id,quantity)
 values(
@@ -909,7 +912,7 @@ insert into request(
     userid               
 )
 values(
-    (select resource_id from resource where resource_id = 2),
+    (select resource_id from resource where resource_id = 2), 
     (select request_status_id from request_status where request_status_id = 1),
     (select userid from users_table where username = 'valeria')
 );
@@ -969,9 +972,69 @@ values(
     (select userid from users_table where username = 'gabrielsantiago')
 );
   
-   
 
+-- request transaction 
 
+insert into request_transactions(
+    request_id,              
+    resource_id,            
+    transaction_quantity    
+)
+values(
+    (select request_id from request where request_id =  2),
+    (select resource_id from resource where resource_id = 2),
+    3
+);
 
+insert into request_transactions(
+    request_id,              
+    resource_id,             
+    transaction_quantity    
+)
+values(
+    (select request_id from request where request_id =  3),
+    (select resource_id from resource where resource_id =  3),
+    2
+);
 
+insert into request_transactions(
+    request_id,             
+    resource_id,            
+    transaction_quantity    
+)
+values(
+    (select request_id from request where request_id =  4),
+    (select resource_id from resource where resource_id =  4),
+    5
+);
 
+insert into request_transactions(
+    request_id,             
+    resource_id,             
+    transaction_quantity    
+)
+values(
+    (select request_id from request where request_id =  5),
+    (select resource_id from resource where resource_id =  5),
+    1
+);
+insert into request_transactions(
+    request_id,     
+    resource_id,             
+    transaction_quantity    
+)
+values(
+    (select request_id from request where request_id =  6),
+    (select resource_id from resource where resource_id =  8),
+    7
+);
+insert into request_transactions(
+    request_id,            
+    resource_id,            
+    transaction_quantity    
+)
+values(
+    (select request_id from request where request_id =  7),
+    (select resource_id from resource where resource_id =  6),
+    3
+);
