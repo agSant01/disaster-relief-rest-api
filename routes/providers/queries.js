@@ -1,6 +1,25 @@
 module.exports = {
     qAllOrganizations: `select * from organization`,
 
+    qGetAllProviders: `
+        SELECT 
+            first_name,
+            last_name,
+            username,
+            role_name,
+            role_description,
+            email,
+            phone_number,
+            city.city_name
+        FROM users_table 
+        NATURAL join roles as r
+        inner join city on users_table.city = city.cityid
+        WHERE 
+            (r.role_id = 3 or 
+            r.role_id = 5 or 
+            r.role_id = 6) AND
+            is_enabled = true;`,
+
     qRegisterOrganization: `insert into organization (
         organization_name, 
         organization_manager_id,

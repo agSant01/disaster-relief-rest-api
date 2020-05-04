@@ -1,4 +1,5 @@
 module.exports = {
+    // @todo: add get all administrator query
     //users route
     qAllUsers: `select * from users_table;`,
     qUser: `select * from users_table where userid=$1;`,
