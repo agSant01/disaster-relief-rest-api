@@ -759,3 +759,116 @@ insert into resource_attribute_definition(resource_type_id, resource_type_field_
 values((select resource_type_id from resource_type where resource_type_name = 'Battery'), 'Battery Type', 'D');
 insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
 values((select resource_type_id from resource_type where resource_type_name = 'Battery'), 'Battery Type', 'E (9-Volt)');
+
+-- resource
+
+insert into resource (resource_quantity,resource_location_latitude,resource_location_longitude,resource_type_id,resource_status_id, senate_region_id)
+values(
+    10,
+    18.19614793,
+    67.14750767,
+    (select resource_type_id from resource_type where resource_type_name = 'Battery'),
+    (select resource_status_id from resource_status where resource_status_name = 'Available'),
+    (select senate_region_id from senate_region where senate_region_name = 'IV - Mayaguez-Aguadilla')
+);
+insert into resource (resource_quantity,resource_location_latitude,resource_location_longitude,resource_type_id,resource_status_id, senate_region_id)
+values(
+    10,
+    18.19614793,
+    67.14750767,
+    (select resource_type_id from resource_type where resource_type_name = 'Water'),
+    (select resource_status_id from resource_status where resource_status_name = 'Available'),
+    (select senate_region_id from senate_region where senate_region_name = 'IV - Mayaguez-Aguadilla')
+);
+insert into resource (resource_quantity,resource_location_latitude,resource_location_longitude,resource_type_id,resource_status_id, senate_region_id)
+values(
+    10,
+    18.19583876,
+    -67.13626385,
+    (select resource_type_id from resource_type where resource_type_name = 'Power Generator'),
+    (select resource_status_id from resource_status where resource_status_name = 'Available'),
+    (select senate_region_id from senate_region where senate_region_name = 'IV - Mayaguez-Aguadilla')
+);
+insert into resource (resource_quantity,resource_location_latitude,resource_location_longitude,resource_type_id,resource_status_id, senate_region_id)
+values(
+    1,
+    18.19583876,
+    -67.13626385,
+    (select resource_type_id from resource_type where resource_type_name = 'Water'),
+    (select resource_status_id from resource_status where resource_status_name = 'Available'),
+    (select senate_region_id from senate_region where senate_region_name = 'IV - Mayaguez-Aguadilla')
+);
+insert into resource (resource_quantity,resource_location_latitude,resource_location_longitude,resource_type_id,resource_status_id, senate_region_id)
+values(
+    500,
+    18.39367141,
+    -65.99685431,
+    (select resource_type_id from resource_type where resource_type_name = 'Clothing'),
+    (select resource_status_id from resource_status where resource_status_name = 'Available'),
+    (select senate_region_id from senate_region where senate_region_name = 'I - San Juan')
+);
+
+insert into resource (resource_quantity,resource_location_latitude,resource_location_longitude,resource_type_id,resource_status_id, senate_region_id)
+values(
+    1000,
+    18.39367141,
+    -65.99685431,
+    (select resource_type_id from resource_type where resource_type_name = 'Water'),
+    (select resource_status_id from resource_status where resource_status_name = 'Available'),
+    (select senate_region_id from senate_region where senate_region_name = 'I - San Juan')
+);
+
+--orders
+insert into orders(resource_quantity,order_price,userid,resource_id,payment_method_id)
+values(
+    1,
+    20,
+    (select userid from users_table where username = 'valeria'),
+    (select resource_id from resource where resource_id = 5),
+    (select payment_method_id from payment_method where payment_method_name = 'Debit')
+    
+);
+insert into orders(resource_quantity,order_price,userid,resource_id,payment_method_id)
+values(
+    1,
+    10,
+    (select userid from users_table where username = 'valeria'),
+    (select resource_id from resource where resource_id = 5),
+    (select payment_method_id from payment_method where payment_method_name = 'WIC')
+    
+);
+-- reserves
+insert into reserves(userid,resource_id,quantity)
+values(
+    (select userid from users_table where username = 'valeria'),
+    (select resource_id from resource where resource_id = 5),
+    2
+    
+);
+insert into reserves(userid,resource_id,quantity)
+values(
+    (select userid from users_table where username = 'valeria'),
+    (select resource_id from resource where resource_id = 2),
+    1
+    
+);
+insert into reserves(userid,resource_id,quantity)
+values(
+    (select userid from users_table where username = 'valeria'),
+    (select resource_id from resource where resource_id = 5),
+    14
+    
+);
+insert into reserves(userid,resource_id,quantity)
+values(
+    (select userid from users_table where username = 'valeria'),
+    (select resource_id from resource where resource_id = 4),
+    10
+    
+);
+
+--request 
+
+
+
+
