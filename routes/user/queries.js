@@ -39,7 +39,8 @@ module.exports = {
     qUserDebug: `select * from users_table where userid=$1 and is_enabled = $2;`,
     qRoles: `select * from roles;`,
     qRequestsFromUser: `
-    select * from request 
+    select * 
+    from request 
     where request_id 
     in (select distinct request_id 
         from request natural inner join users_table 
@@ -70,4 +71,33 @@ module.exports = {
         inner join country on country.country_id = users_table.country_id
         inner join roles on roles.role_id = users_table.role_id
         where roles.role_id = 1 or roles.role_id = 2;`,
+
+    qGetReservesByUserId: `
+        select 
+            reserve_id,
+            reserves.quantity as reserved_quantity,
+            reserves.date_reserved,
+        (
+            select row_to_json((SELECT d FROM (SELECT 
+                resource.resource_id,
+                resource.resource_location_latitude,
+                resource.resource_location_longitude,
+                resource.resource_status_id,
+                resource_type.resource_type_name,
+                resource.resource_quantity,
+                (
+                    select json_agg(row_to_json((SELECT d FROM (SELECT 
+                        resource_type_field_name,
+                        resource_type_field_value
+                    ) d)))
+                    from  resource_attribute 
+                    where resource_attribute.resource_id = resource.resource_id
+                ) as attributes
+                ) d)) 
+                from resource 
+                natural join resource_type
+                where reserves.resource_id = resource.resource_id
+            ) as resource
+        from reserves
+        where reserves.userid = $1;`,
 };

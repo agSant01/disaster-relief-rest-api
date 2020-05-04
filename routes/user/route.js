@@ -17,4 +17,7 @@ router.get('/:id', handler.getUser);
 // Get Requests submited by user
 router.get('/:id/requests', handler.getRequests);
 
+// Get reserved by user
+router.get('/:id/reserves', handler.getReserves);
+
 module.exports = router;

@@ -111,11 +111,35 @@ exports.getUser = (req, res, next) => {
         }
     });
 };
+
 exports.getRequests = (req, res, next) => {
     let user_id = req.params.id;
 
     const query = {
         text: querylib.qRequestsFromUser,
+        values: [user_id],
+    };
+
+    // callback
+    db.query(query, (qerr, qres) => {
+        if (qerr) {
+            res.json(qerr.stack).end();
+        } else {
+            const msg = {
+                requests: qres.rows,
+                count: qres.rowCount,
+            };
+
+            res.json(msg).end();
+        }
+    });
+};
+
+exports.getReserves = (req, res, next) => {
+    let user_id = req.params.id;
+
+    const query = {
+        text: querylib.qGetReservesByUserId,
         values: [user_id],
     };
 

@@ -761,6 +761,32 @@ insert into resource_attribute_definition(resource_type_id, resource_type_field_
 values((select resource_type_id from resource_type where resource_type_name = 'Battery'), 'Battery Type', 'E (9-Volt)');
 
 -- resource
+with first_id as (
+    insert into resource (resource_quantity,resource_location_latitude,resource_location_longitude,resource_type_id,resource_status_id, senate_region_id)
+    values(
+        5,
+        18.19614793,
+        67.14750767,
+        (select resource_type_id from resource_type where resource_type_name = 'Fuel'),
+        (select resource_status_id from resource_status where resource_status_name = 'Available'),
+        (select senate_region_id from senate_region where senate_region_name = 'IV - Mayaguez-Aguadilla')
+    ) RETURNING resource_id
+), second_id as (
+    insert into resource_attribute(resource_id, resource_type_field_name, resource_type_field_value)
+    values((select resource_id from first_id), 'Fuel Type', 'Gasoline') 
+    RETURNING resource_id
+), third_id as (
+    insert into resource_attribute(resource_id, resource_type_field_name, resource_type_field_value)
+    values((select resource_id from SECOND_id), 'Octane', '83')
+    RETURNING resource_id
+)
+insert into reserves(userid,resource_id,quantity)
+values(
+    (select userid from users_table where username = 'valeria'),
+    (select resource_id from third_id),
+    3
+);
+
 
 insert into resource (resource_quantity,resource_location_latitude,resource_location_longitude,resource_type_id,resource_status_id, senate_region_id)
 values(
@@ -771,6 +797,7 @@ values(
     (select resource_status_id from resource_status where resource_status_name = 'Available'),
     (select senate_region_id from senate_region where senate_region_name = 'IV - Mayaguez-Aguadilla')
 );
+
 insert into resource (resource_quantity,resource_location_latitude,resource_location_longitude,resource_type_id,resource_status_id, senate_region_id)
 values(
     10,
@@ -841,10 +868,17 @@ values(
 insert into reserves(userid,resource_id,quantity)
 values(
     (select userid from users_table where username = 'valeria'),
+    (select resource_id from resource where resource_type_id = 7),
+    2
+);
+
+insert into reserves(userid,resource_id,quantity)
+values(
+    (select userid from users_table where username = 'valeria'),
     (select resource_id from resource where resource_id = 5),
     2
-    
 );
+
 insert into reserves(userid,resource_id,quantity)
 values(
     (select userid from users_table where username = 'valeria'),
