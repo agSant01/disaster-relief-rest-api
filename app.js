@@ -1,3 +1,4 @@
+const config = require('./config');
 const debug = require('debug')('e-template:server');
 const http = require('http');
 const cors = require('cors');
@@ -34,7 +35,7 @@ const server = http.createServer(app);
  */
 // start server
 server.listen(port, function() {
-    console.log(`Database: ${process.env.DATABASE_URL}`);
+    console.log(`Database: ${process.env.DATABASE_URL || config.DATABASE_URL}`);
     console.log(`Listening at PORT: ${port}`);
 });
 server.on('error', onError);
