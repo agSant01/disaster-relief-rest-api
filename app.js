@@ -1,3 +1,4 @@
+const config = require('./config');
 const debug = require('debug')('e-template:server');
 const http = require('http');
 const cors = require('cors');
@@ -5,7 +6,7 @@ const express = require('express');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const db = require('./database');
-var bodyParser = require('body-parser')
+var bodyParser = require('body-parser');
 
 const api = require('./routes/api');
 
@@ -17,10 +18,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.use(cookieParser());
-app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.urlencoded({ extended: false }));
 
 // parse application/json
-app.use(bodyParser.json())
+app.use(bodyParser.json());
 
 app.use('/api', api);
 
@@ -40,7 +41,7 @@ const server = http.createServer(app);
  */
 // start server
 server.listen(port, function() {
-    console.log(`Database: ${process.env.DATABASE_URL || 'postgresql://localhost:5432/disaster?user=common&password=common'}`);
+    console.log(`Database: ${process.env.DATABASE_URL || config.DATABASE_URL}`);
     console.log(`Listening at PORT: ${port}`);
 });
 server.on('error', onError);
