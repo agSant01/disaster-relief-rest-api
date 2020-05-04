@@ -1,0 +1,47 @@
+###
+
+GET http://localhost:3000/api/users/roles
+
+###
+
+GET http://localhost:3000/api/users
+
+###
+
+GET http://localhost:3000/api/users?debug=true
+
+###
+
+GET http://localhost:3000/api/users/2
+
+###
+
+GET http://localhost:3000/api/users/2?debug=true
+
+###
+
+GET http://localhost:3000/api/users/2?enabled=false&debug=true
+
+###
+
+GET http://localhost:3000/api/users/2?enabled=true&debug=false
+
+###
+
+GET http://localhost:3000/api/users/administrators
+
+###
+
+GET http://localhost:3000/api/users/administrators?debug=true
+
+###
+
+GET http://localhost:3000/api/users/2/requests
+
+###
+
+GET http://localhost:3000/api/users/2/reserves
+
+###
+
+GET http://localhost:3000/api/users/2/purchases

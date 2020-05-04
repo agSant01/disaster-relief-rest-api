@@ -9,7 +9,7 @@ const db = require('../database');
 
 var router = express.Router();
 
-router.use('/user', userRoute);
+router.use('/users', userRoute);
 router.use('/register', registerRoute);
 router.use('/providers', providersRoute);
 router.use('/resources', resourcesRoute);
