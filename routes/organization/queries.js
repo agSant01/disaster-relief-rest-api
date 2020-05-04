@@ -14,15 +14,15 @@ module.exports = {
         is_enabled
     )
     values(
-        '$1',
-        (select userid from users_table where username='$2'),
-        '$3',
-        '$4',
-        (select cityid from city where city_name = '$5'),
-        '$6',
-        (select country_id from country where country_name = '$7'),
-        '$8',
-        '$9',
+        $1,
+        (select userid from users_table where username=$2),
+        $3,
+        $4,
+        (select cityid from city where city_name = $5),
+        $6,
+        (select country_id from country where country_name = $7),
+        $8,
+        $9,
         $10
     );`,
     qOrganizationByID: `select * from organization where organization_id = $1`,
@@ -39,15 +39,15 @@ module.exports = {
         organization_id
     ) values 
     (
-        (select userid from users_table where username = '$1'),
-        (select organization_id from organization where organization_name = '$2')
+        (select userid from users_table where username = $1),
+        (select organization_id from organization where organization_name = $2)
     );`,
     qOrganizationAddRepresentative: `insert into organization_representative (
         userid,
         organization_id
     ) values 
     (
-        (select userid from users_table where username = '$1'),
+        (select userid from users_table where username = $1),
         (select organization_id from organization where organization_id = $2)
     );`,
 };
