@@ -903,6 +903,75 @@ values(
 
 --request 
 
+insert into request(
+    resource_id,         
+    request_status_id,   
+    userid               
+)
+values(
+    (select resource_id from resource where resource_id = 2),
+    (select request_status_id from request_status where request_status_id = 1),
+    (select userid from users_table where username = 'valeria')
+);
+
+insert into request(
+    resource_id,         
+    request_status_id,   
+    userid           
+)   
+values(
+    (select resource_id from resource where resource_id = 3),
+    (select request_status_id from request_status where request_status_id = 1),
+    (select userid from users_table where username = 'valeria')
+);
+
+insert into request(
+    resource_id,         
+    request_status_id,   
+    userid 
+)             
+values(
+    (select resource_id from resource where resource_id = 4),
+    (select request_status_id from request_status where request_status_id = 4),
+    (select userid from users_table where username = 'valeria')
+);
+
+insert into request(
+    resource_id,         
+    request_status_id,   
+    userid   
+)           
+values(
+    (select resource_id from resource where resource_id = 5),
+    (select request_status_id from request_status where request_status_id = 1),
+    (select userid from users_table where username = 'gabrielsantiago')
+);
+
+insert into request(
+    resource_id,         
+    request_status_id,   
+    userid 
+)             
+values(
+    (select resource_id from resource where resource_id = 8),
+    (select request_status_id from request_status where request_status_id = 1),
+    (select userid from users_table where username = 'gabrielsantiago')
+);
+
+insert into request(
+    resource_id,         
+    request_status_id,   
+    userid 
+)             
+values(
+    (select resource_id from resource where resource_id = 6),
+    (select request_status_id from request_status where request_status_id = 2),
+    (select userid from users_table where username = 'gabrielsantiago')
+);
+  
+   
+
+
 
 
 
