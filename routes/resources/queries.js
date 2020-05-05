@@ -72,4 +72,6 @@ module.exports = {
         from resource 
         natural join resource_remaing
         where resource.resource_quantity > resource_remaing.qty;`,
+    qAllOrders:``,
+    qAllReserves:``,
 };

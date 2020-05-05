@@ -67,7 +67,7 @@ exports.getResourceTypeAttributes = (req, res, next) => {
 };
 
 exports.getResourcesAvailable = (req, res, next) => {
-    const provider_id = req.query.provider;
+    const provider_id = req.query.providerID;
     const keyword = req.query.keyword;
 
     let query = querylib.qGetAllResourcesAvailable;
@@ -98,6 +98,49 @@ exports.getRequests = (req, res, next) => {
     };
     res.json(msg).end();
 };
+
+exports.getPurchase = (req, res, next) => {
+    const id = req.params.ID;
+    var msg;
+
+    if(id){
+        msg = {
+            id:id,
+            purchase: [],
+        };
+        res.json(msg).end();
+    }
+    else{
+        msg = {
+            purchase: [],
+        };
+        res.json(msg).end();
+    }
+    
+    
+};
+
+exports.getReserves = (req, res, next) => {
+    const id = req.params.ID;
+    var msg;
+
+    if(id){
+        msg = {
+            id:id,
+            purchase: [],
+        };
+        res.json(msg).end();
+    }
+    else{
+        msg = {
+            purchase: [],
+        };
+        res.json(msg).end();
+    }
+};
+
+
+
 
 exports.putUpdate = (req, res, next) => {
     let msg = {
