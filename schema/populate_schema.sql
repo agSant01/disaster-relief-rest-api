@@ -2261,6 +2261,168 @@ values(
 ); 
 
 ----- end of requst id 3
+
+--- start of request id 4
+with request_info as (
+    insert into request(                 
+        request_status_id,   
+        userid 
+    )             
+    values(    
+        (select request_status_id from request_status where request_status_id = 1),
+        (select userid from users_table where username = 'annaprentice')
+    ) RETURNING request_id
+)
+insert into requested_resources(
+    request_id,             
+    resource_id,   
+    resources_quantity    
+)
+values(
+    (select request_id from request_info),
+    1,
+    3
+);
+----- end of requst id 4
+
+--- start of request id 5
+with request_info as (
+    insert into request(                 
+        request_status_id,   
+        userid 
+    )             
+    values(    
+        (select request_status_id from request_status where request_status_id = 1),
+        (select userid from users_table where username = 'carlitos')
+    ) RETURNING request_id
+)
+insert into requested_resources(
+    request_id,             
+    resource_id,   
+    resources_quantity    
+)
+values(
+    (select request_id from request_info),
+    3,
+    1
+);
+----- end of requst id 5
+
+--- start of request id 6
+with request_info as (
+    insert into request(                 
+        request_status_id,   
+        userid 
+    )             
+    values(    
+        (select request_status_id from request_status where request_status_id = 2),
+        (select userid from users_table where username = 'juliatorres')
+    ) RETURNING request_id
+)
+insert into requested_resources(
+    request_id,             
+    resource_id,   
+    resources_quantity    
+)
+values(
+    (select request_id from request_info),
+    3,
+    1
+); 
+----- end of requst id 6
+ 
+--- start of request id 7 
+with request_info as (
+    insert into request(                 
+        request_status_id,   
+        userid 
+    )             
+    values(    
+        (select request_status_id from request_status where request_status_id = 4),
+        (select userid from users_table where username = 'annaprentice')
+    ) RETURNING request_id
+)
+insert into requested_resources(
+    request_id,             
+    resource_id,   
+    resources_quantity    
+)
+values(
+    (select request_id from request_info),
+    5,
+    13
+); 
+----- end of requst id 7
+
+--- start of request id 8 
+with request_info as (
+    insert into request(                 
+        request_status_id,   
+        userid 
+    )             
+    values(    
+        (select request_status_id from request_status where request_status_id = 3),
+        (select userid from users_table where username = 'carlitos')
+    ) RETURNING request_id
+)
+insert into requested_resources(
+    request_id,             
+    resource_id,   
+    resources_quantity    
+)
+values(
+    (select request_id from request_info),
+    3,
+    50
+); 
+----- end of requst id 8
+
+--- start of request id 9
+with request_info as (
+    insert into request(                 
+        request_status_id,   
+        userid 
+    )             
+    values(    
+        (select request_status_id from request_status where request_status_id = 4),
+        (select userid from users_table where username = 'juliatorres')
+    ) RETURNING request_id
+)
+insert into requested_resources(
+    request_id,             
+    resource_id,   
+    resources_quantity    
+)
+values(
+    (select request_id from request_info),
+    7,
+    2
+); 
+----- end of requst id 9
+
+--- start of request id 10
+with request_info as (
+    insert into request(                 
+        request_status_id,   
+        userid 
+    )             
+    values(    
+        (select request_status_id from request_status where request_status_id = 1),
+        (select userid from users_table where username = 'carlitos')
+    ) RETURNING request_id
+)
+insert into requested_resources(
+    request_id,             
+    resource_id,   
+    resources_quantity    
+)
+values(
+    (select request_id from request_info),
+    4,
+    5
+);
+----- end of requst id 10
+
 --- end of create resources as requested
 -------------------------------------------------
 ---------------------------------------------------
