@@ -116,7 +116,7 @@ exports.getRequests = (req, res, next) => {
     let user_id = req.params.id;
 
     const query = {
-        text: querylib.qRequestsFromUser,
+        text: querylib.qGetRequestsByUserId,
         values: [user_id],
     };
 
@@ -149,11 +149,28 @@ exports.getReserves = (req, res, next) => {
             res.json(qerr.stack).end();
         } else {
             const msg = {
-                requests: qres.rows,
+                reservations: qres.rows,
                 count: qres.rowCount,
             };
 
             res.json(msg).end();
         }
     });
+};
+
+exports.getUserOrders = (req, res, next) => {
+    const user_id = req.params.id;
+    const is_debug = req.query.debug == 'true';
+
+    let query_text;
+
+    console.log(is_debug);
+
+    if (is_debug) {
+        query_text = querylib.qAllUsersDebug;
+    } else {
+        query_text = querylib.qAllUsers;
+    }
+
+    console.log(query_text);
 };

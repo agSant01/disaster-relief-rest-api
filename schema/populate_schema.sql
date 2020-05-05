@@ -650,7 +650,7 @@ values((select resource_type_id from resource_type where resource_type_name = 'H
 insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
 values((select resource_type_id from resource_type where resource_type_name = 'Heavy Equipment'),'Duration Period Unit', 'Hour(s)');
 insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
-values((select resource_type_id from resource_type where resource_type_name = 'Heavy Equipment'),'Price Per Duration Unit', null);
+values((select resource_type_id from resource_type where resource_type_name = 'Heavy Equipment'),'Duration Period', null);
 
 -- tool
 insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
@@ -663,18 +663,6 @@ insert into resource_attribute_definition(resource_type_id, resource_type_field_
 values((select resource_type_id from resource_type where resource_type_name = 'Tool'), 'Power Type', 'Gasoline');
 insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
 values((select resource_type_id from resource_type where resource_type_name = 'Tool'), 'Power Type', 'Electric');
-insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
-values((select resource_type_id from resource_type where resource_type_name = 'Heavy Equipment'),'Transaction Type', 'Buy');
-insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
-values((select resource_type_id from resource_type where resource_type_name = 'Heavy Equipment'),'Transaction Type', 'Rent');
-insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
-values((select resource_type_id from resource_type where resource_type_name = 'Heavy Equipment'),'Duration Period Unit', 'Week(s)');
-insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
-values((select resource_type_id from resource_type where resource_type_name = 'Heavy Equipment'),'Duration Period Unit', 'Day(s)');
-insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
-values((select resource_type_id from resource_type where resource_type_name = 'Heavy Equipment'),'Duration Period Unit', 'Hour(s)');
-insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
-values((select resource_type_id from resource_type where resource_type_name = 'Heavy Equipment'),'Price Per Duration Unit', null);
 
 -- clothing
 insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
@@ -746,7 +734,7 @@ values((select resource_type_id from resource_type where resource_type_name = 'P
 insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
 values((select resource_type_id from resource_type where resource_type_name = 'Power Generator'),'Duration Period Unit', 'Hour(s)');
 insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
-values((select resource_type_id from resource_type where resource_type_name = 'Power Generator'),'Price Per Duration Unit', null);
+values((select resource_type_id from resource_type where resource_type_name = 'Power Generator'),'Duration Period', null);
 
 -- batteries
 insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
@@ -760,7 +748,7 @@ values((select resource_type_id from resource_type where resource_type_name = 'B
 insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
 values((select resource_type_id from resource_type where resource_type_name = 'Battery'), 'Battery Type', 'E (9-Volt)');
 
--- resource
+-- resource as  submitted by supplier
 with first_id as (
     insert into resource (resource_quantity,resource_location_latitude,resource_location_longitude,resource_type_id,resource_status_id, senate_region_id)
     values(
@@ -787,16 +775,47 @@ values(
     3
 );
 
-
-insert into resource (resource_quantity,resource_location_latitude,resource_location_longitude,resource_type_id,resource_status_id, senate_region_id)
+with first_id as (
+    insert into resource (resource_quantity,resource_location_latitude,resource_location_longitude,resource_type_id,resource_status_id, senate_region_id)
+    values(
+        100,
+        18.19614793,
+        67.14750767,
+        (select resource_type_id from resource_type where resource_type_name = 'Heavy Equipment'),
+        (select resource_status_id from resource_status where resource_status_name = 'Available'),
+        (select senate_region_id from senate_region where senate_region_name = 'IV - Mayaguez-Aguadilla')
+    ) RETURNING resource_id
+), second_id as (
+    insert into resource_attribute(resource_id, resource_type_field_name, resource_type_field_value)
+    values((select resource_id from first_id), 'Equipment Type', 'Bulldozers') 
+    RETURNING resource_id
+), third_id as (
+    insert into resource_attribute(resource_id, resource_type_field_name, resource_type_field_value)
+    values((select resource_id from first_id), 'Fuel Type', 'Diesel') 
+    RETURNING resource_id
+), fourth_id as (
+    insert into resource_attribute(resource_id, resource_type_field_name, resource_type_field_value)
+    values((select resource_id from first_id), 'Transaction Type', 'Rent') 
+    RETURNING resource_id
+), fifth_id as (
+    insert into resource_attribute(resource_id, resource_type_field_name, resource_type_field_value)
+    values((select resource_id from first_id), 'Duration Period Unit', 'Week(s)') 
+    RETURNING resource_id
+), sixth_id as (
+    insert into resource_attribute(resource_id, resource_type_field_name, resource_type_field_value)
+    values((select resource_id from first_id), 'Duration', 2) 
+    RETURNING resource_id
+),
+insert into submits_resource(resource_id, userid, resource_price, is_for_sale, delivery_method_id)
 values(
-    10,
-    18.19614793,
-    67.14750767,
-    (select resource_type_id from resource_type where resource_type_name = 'Battery'),
-    (select resource_status_id from resource_status where resource_status_name = 'Available'),
-    (select senate_region_id from senate_region where senate_region_name = 'IV - Mayaguez-Aguadilla')
+    (select resource_id from sixth_id),
+    (select userid from users_table where username = 'gabrielsantiago'),
+    12340.75, -- per unit
+    true,
+    (select delivery_method_id from delivery_method where method_name = 'Pick-up')
 );
+
+-- add into 
 
 insert into resource (resource_quantity,resource_location_latitude,resource_location_longitude,resource_type_id,resource_status_id, senate_region_id)
 values(

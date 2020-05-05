@@ -20,4 +20,10 @@ router.get('/:id/requests', handler.getRequests);
 // Get reserved by user
 router.get('/:id/reserves', handler.getReserves);
 
+// Get reserved by user
+router.get('/:id/orders/:orderid', handler.getUserOrders);
+
+// Get reserved by user
+router.get('/:id/orders', handler.getUserOrders);
+
 module.exports = router;
