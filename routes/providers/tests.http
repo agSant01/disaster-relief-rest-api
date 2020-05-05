@@ -1,3 +1,9 @@
+@localhost = http://localhost:3000
+@heroku = https://evening-tor-08768.herokuapp.com
+
+@url = {{localhost}}
+
+
 ### Get suppliers
 GET http://localhost:3000/api/suppliers HTTP/1.1
 
