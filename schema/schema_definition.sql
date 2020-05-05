@@ -36,7 +36,7 @@ create table users_table (
     date_of_birth date not null,
     street1 varchar(60) not null,
     street2 varchar(60) null,
-    city_id integer not null,
+    cityid integer not null,
     zip_code VARCHAR(10) not null,
     country_id integer not null,
     gender varchar(10) not null,
@@ -47,7 +47,7 @@ create table users_table (
     creation_timestamp timestamptz default transaction_timestamp() not null,
     primary key (userid),
     foreign key (country_id) references country(country_id),
-    foreign key (city_id) references city(cityid),
+    foreign key (cityid) references city(cityid),
     foreign key (role_id) references roles(role_id)
 );
 
@@ -57,7 +57,7 @@ create table organization (
     organization_manager_id integer references users_table(userid) not null,
     street1 varchar(60) not null,
     street2 varchar(60) null,
-    city_id integer not null,
+    cityid integer not null,
     zip_code VARCHAR(10) not null,
     country_id integer not null,
     phone_number varchar null,
@@ -66,7 +66,7 @@ create table organization (
     creation_timestamp timestamptz default transaction_timestamp() not null,
     primary key (organization_id),
     foreign key (country_id) references country(country_id),
-    foreign key (city_id) references city(cityid)
+    foreign key (cityid) references city(cityid)
 );
 
 create table organization_representative(
