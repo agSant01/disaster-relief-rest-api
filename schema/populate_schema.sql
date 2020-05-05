@@ -1198,6 +1198,18 @@ insert into resource_attribute_definition(resource_type_id, resource_type_field_
 values((select resource_type_id from resource_type where resource_type_name = 'Tool'), 'Power Type', 'Gasoline');
 insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
 values((select resource_type_id from resource_type where resource_type_name = 'Tool'), 'Power Type', 'Electric');
+insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
+values((select resource_type_id from resource_type where resource_type_name = 'Tool'),'Transaction Type', 'Buy');
+insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
+values((select resource_type_id from resource_type where resource_type_name = 'Tool'),'Transaction Type', 'Rent');
+insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
+values((select resource_type_id from resource_type where resource_type_name = 'Tool'),'Duration Period Unit', 'Week(s)');
+insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
+values((select resource_type_id from resource_type where resource_type_name = 'Tool'),'Duration Period Unit', 'Day(s)');
+insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
+values((select resource_type_id from resource_type where resource_type_name = 'Tool'),'Duration Period Unit', 'Hour(s)');
+insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
+values((select resource_type_id from resource_type where resource_type_name = 'Tool'),'Duration Period', null);
 
 -- clothing
 insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
@@ -1283,344 +1295,8 @@ values((select resource_type_id from resource_type where resource_type_name = 'B
 insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
 values((select resource_type_id from resource_type where resource_type_name = 'Battery'), 'Battery Type', 'E (9-Volt)');
 
--- resource
-insert into resource (resource_quantity,resource_location_latitude,resource_location_longitude,resource_type_id,resource_status_id, senate_region_id)
-values(
-    10,
-    18.19614793,
-    -67.14750767,
-    (select resource_type_id from resource_type where resource_type_name = 'Battery'),
-    (select resource_status_id from resource_status where resource_status_name = 'Available'),
-    (select senate_region_id from senate_region where senate_region_name = 'IV - Mayaguez-Aguadilla')
-);
-
-insert into resource (resource_quantity,resource_location_latitude,resource_location_longitude,resource_type_id,resource_status_id, senate_region_id)
-values(
-    10,
-    18.19614793,
-    -67.14750767,
-    (select resource_type_id from resource_type where resource_type_name = 'Water'),
-    (select resource_status_id from resource_status where resource_status_name = 'Available'),
-    (select senate_region_id from senate_region where senate_region_name = 'IV - Mayaguez-Aguadilla')
-);
-insert into resource (resource_quantity,resource_location_latitude,resource_location_longitude,resource_type_id,resource_status_id, senate_region_id)
-values(
-    10,
-    18.19614793,
-    -67.14750767,
-    (select resource_type_id from resource_type where resource_type_name = 'Water'),
-    (select resource_status_id from resource_status where resource_status_name = 'Available'),
-    (select senate_region_id from senate_region where senate_region_name = 'IV - Mayaguez-Aguadilla')
-);
-insert into resource (resource_quantity,resource_location_latitude,resource_location_longitude,resource_type_id,resource_status_id, senate_region_id)
-values(
-    10,
-    18.19614793,
-    -67.14750767,
-    (select resource_type_id from resource_type where resource_type_name = 'Water'),
-    (select resource_status_id from resource_status where resource_status_name = 'Available'),
-    (select senate_region_id from senate_region where senate_region_name = 'IV - Mayaguez-Aguadilla')
-);
-insert into resource (resource_quantity,resource_location_latitude,resource_location_longitude,resource_type_id,resource_status_id, senate_region_id)
-values(
-    10,
-    18.19583876,
-    -67.13626385,
-    (select resource_type_id from resource_type where resource_type_name = 'Power Generator'),
-    (select resource_status_id from resource_status where resource_status_name = 'Available'),
-    (select senate_region_id from senate_region where senate_region_name = 'IV - Mayaguez-Aguadilla')
-);
-insert into resource (resource_quantity,resource_location_latitude,resource_location_longitude,resource_type_id,resource_status_id, senate_region_id)
-values(
-    1,
-    18.19583876,
-    -67.13626385,
-    (select resource_type_id from resource_type where resource_type_name = 'Water'),
-    (select resource_status_id from resource_status where resource_status_name = 'Available'),
-    (select senate_region_id from senate_region where senate_region_name = 'IV - Mayaguez-Aguadilla')
-);
-insert into resource (resource_quantity,resource_location_latitude,resource_location_longitude,resource_type_id,resource_status_id, senate_region_id)
-values(
-    500,
-    18.39367141,
-    -65.99685431,
-    (select resource_type_id from resource_type where resource_type_name = 'Clothing'),
-    (select resource_status_id from resource_status where resource_status_name = 'Available'),
-    (select senate_region_id from senate_region where senate_region_name = 'I - San Juan')
-);
-
-insert into resource (resource_quantity,resource_location_latitude,resource_location_longitude,resource_type_id,resource_status_id, senate_region_id)
-values(
-    1000,
-    18.39367141,
-    -65.99685431,
-    (select resource_type_id from resource_type where resource_type_name = 'Water'),
-    (select resource_status_id from resource_status where resource_status_name = 'Available'),
-    (select senate_region_id from senate_region where senate_region_name = 'I - San Juan')
-);
-
-
---orders
-insert into orders(userid,payment_method_id)
-values(
-    (select userid from users_table where username = 'valeria'),
-    (select payment_method_id from payment_method where payment_method_name = 'Debit')
-    
-);
-insert into orders(userid,payment_method_id)
-values(
-    (select userid from users_table where username = 'valeria'),
-    (select payment_method_id from payment_method where payment_method_name = 'WIC')
-    
-);
-
-
--- reserves
-insert into reserves(userid)
-values(
-    (select userid from users_table where username = 'valeria')
-);
-
-insert into reserves(userid)
-values(
-    (select userid from users_table where username = 'valeria')
-);
-
-insert into reserves(userid)
-values(
-   (select userid from users_table where username = 'valeria')
-);
-insert into reserves(userid)
-values(
-    (select userid from users_table where username = 'valeria')
-);
-insert into reserves(userid)
-values(
-   (select userid from users_table where username = 'valeria')    
-);
-
--- adding requests and request transactions 
-with request_info as (
-    insert into request(
-                 
-        request_status_id,   
-        userid               
-    )
-    values(
-        (select request_status_id from request_status where request_status_id = 1),
-        (select userid from users_table where username = 'valeria')
-    ) RETURNING request_id
-)
-insert into request_transactions(
-    request_id,              
-            
-    transaction_quantity    
-)
-values(
-    (select request_id from request_info),
-    
-    3
-);
-
-with request_info as (
-    insert into request(
-              
-        request_status_id,   
-        userid           
-    )   
-    values(
-
-        (select request_status_id from request_status where request_status_id = 1),
-        (select userid from users_table where username = 'valeria')
-    ) RETURNING request_id
-)
-insert into request_transactions(
-    request_id,              
-                 
-    transaction_quantity    
-)
-values(
-    (select request_id from request_info),
-   
-    2
-);
-
-with request_info as (
-    insert into request(
-                 
-        request_status_id,   
-        userid 
-    )             
-    values(
-    
-        (select request_status_id from request_status where request_status_id = 4),
-        (select userid from users_table where username = 'valeria')
-    ) RETURNING request_id
-)
-insert into request_transactions(
-    request_id,             
-                
-    transaction_quantity    
-)
-values(
-    (select request_id from request_info),
-    
-    5
-);
-
-with request_info as (
-        insert into request(
-                 
-        request_status_id,   
-        userid   
-    )           
-    values(
-        
-        (select request_status_id from request_status where request_status_id = 1),
-        (select userid from users_table where username = 'gabrielsantiago')
-    ) RETURNING request_id
-)
-insert into request_transactions(
-    request_id,             
-                
-    transaction_quantity    
-)
-values(
-    (select request_id from request_info),
-   
-    1
-);
-
-with request_info as  (
-    insert into request(
-                 
-        request_status_id,   
-        userid 
-    )             
-    values(
-       
-        (select request_status_id from request_status where request_status_id = 1),
-        (select userid from users_table where username = 'gabrielsantiago')
-    )   RETURNING request_id
-)
-insert into request_transactions(
-    request_id,     
-               
-    transaction_quantity    
-)
-values(
-    (select request_id from request_info),
-    
-    7
-);
-
-with request_info as (
-    insert into request(
-                 
-        request_status_id,   
-        userid 
-    )             
-    values(
-       
-        (select request_status_id from request_status where request_status_id = 2),
-        (select userid from users_table where username = 'gabrielsantiago')
-    ) RETURNING request_id
-)
-insert into request_transactions(
-    request_id,            
-            
-    transaction_quantity    
-)
-values(
-    (select request_id from request_info),
-   
-    3
-);
-
---ordered resource 
-insert into resource_ordered(order_id, resource_id, order_price,resources_quantity)
-values(
-    (select order_id from orders where order_id = 1),
-    (select resource_id from resource where resource_id = 5),
-    12,
-    1
-);
-insert into resource_ordered(order_id,resource_id,order_price,resources_quantity)
-values(
-    (select order_id from orders where  order_id  = 1),
-    (select resource_id from resource where resource_id = 3),
-    13,
-    3
-);
-insert into resource_ordered(order_id,resource_id, order_price,resources_quantity)
-values(
-    (select order_id from orders where  order_id  = 1),
-    (select resource_id from resource where resource_id = 2),
-    20,
-    1
-);
-
-insert into resource_ordered(order_id,resource_id, order_price,resources_quantity)
-values(
-    (select order_id from orders where  order_id  = 2),
-    (select resource_id from resource where resource_id = 1),
-    4,
-    8
-);
-insert into resource_ordered(order_id,resource_id, order_price,resources_quantity)
-values(
-    (select order_id from orders where  order_id  = 2),
-    (select resource_id from resource where resource_id = 4),
-    7,
-    20
-);
-insert into resource_ordered(order_id,resource_id, order_price,resources_quantity)
-values(
-    (select order_id from orders where  order_id  = 2),
-    (select resource_id from resource where resource_id = 5),
-    14,
-    4
-);
-
---reserved_resources 
-insert into reserved_resources(reserve_id,resource_id,resources_quantity)
-values(
-    (select reserve_id from reserves where reserve_id = 1),
-    (select resource_id from resource where resource_id = 1),
-    1
-);
-insert into reserved_resources(reserve_id,resource_id,resources_quantity)
-values(
-    (select reserve_id from reserves where reserve_id = 1),
-    (select resource_id from resource where resource_id = 3),
-    10
-);
-insert into reserved_resources(reserve_id,resource_id,resources_quantity)
-values(
-    (select reserve_id from reserves where reserve_id = 2),
-    (select resource_id from resource where resource_id = 2),
-    5
-);
-
-insert into reserved_resources(reserve_id,resource_id,resources_quantity)
-values(
-    (select reserve_id from reserves where reserve_id = 3),
-    (select resource_id from resource where resource_id = 1),
-    6
-);
-insert into reserved_resources(reserve_id,resource_id,resources_quantity)
-values(
-    (select reserve_id from reserves where reserve_id = 3),
-    (select resource_id from resource where resource_id = 4),
-    2
-);
-insert into reserved_resources(reserve_id,resource_id,resources_quantity)
-values(
-    (select reserve_id from reserves where reserve_id = 3),
-    (select resource_id from resource where resource_id = 5),
-    7
-);
-
+-- resources
+---------------------------------------------
 -- create resources as submitted by supplier
 with first_id as (
     insert into resource (resource_quantity,resource_location_latitude,resource_location_longitude,resource_type_id,resource_status_id, senate_region_id)
@@ -1653,6 +1329,7 @@ with first_id as (
     values((select resource_id from first_id), 'Duration', 2) 
     RETURNING resource_id
 )
+-- submitted id 1
 insert into submits_resource(resource_id, userid, resource_price, is_for_sale, delivery_method_id)
 values(
     (select resource_id from sixth_id),
@@ -1689,12 +1366,13 @@ with first_id as (
     values((select resource_id from first_id), 'Expiration Date', '2025-05-09') 
     RETURNING resource_id
 )
+-- submitted id 2 is free is for reserver
 insert into submits_resource(resource_id, userid, resource_price, is_for_sale, delivery_method_id)
 values(
     (select resource_id from fifth_id),
     (select userid from users_table where username = 'valeria'),
-    25, -- per unit
-    true,
+    0, -- per unit
+    false,
     (select delivery_method_id from delivery_method where method_name = 'Pick-up')
 );
 
@@ -1726,6 +1404,7 @@ with first_id as (
     values((select resource_id from first_id), 'Medication Name', 'Anti-Inflammatory') 
     RETURNING resource_id
 )
+-- submitted id 3
 insert into submits_resource(resource_id, userid, resource_price, is_for_sale, delivery_method_id)
 values(
     (select resource_id from fifth_id),
@@ -1750,6 +1429,7 @@ with first_id as (
     values((select resource_id from first_id), 'Battery Type', 'AA') 
     RETURNING resource_id
 )
+-- submitted id 4
 insert into submits_resource(resource_id, userid, resource_price, is_for_sale, delivery_method_id)
 values(
     (select resource_id from second_id),
@@ -1786,6 +1466,7 @@ with first_id as (
     values((select resource_id from first_id), 'Quantity Per Unit', 20) 
     RETURNING resource_id
 )
+-- submitted id 5
 insert into submits_resource(resource_id, userid, resource_price, is_for_sale, delivery_method_id)
 values(
     (select resource_id from fifth_id),
@@ -1818,6 +1499,7 @@ with first_id as (
     values((select resource_id from SECOND_id), 'Measurement Unit', 'Liter')
     RETURNING resource_id
 )
+-- submitted id 6
 insert into submits_resource(resource_id, userid, resource_price, is_for_sale, delivery_method_id)
 values(
     (select resource_id from fourth_id),
@@ -1826,3 +1508,524 @@ values(
     true,
     (select delivery_method_id from delivery_method where method_name = 'Delivery')
 );
+--------------------------------------------------------------
+--------------------------------------------------------------
+-- create resources as requested
+with first_id as (
+    insert into resource (resource_quantity,resource_location_latitude,resource_location_longitude,resource_type_id,resource_status_id, senate_region_id)
+    values(
+        10,
+        18.19614793,
+        -67.14750767,
+        (select resource_type_id from resource_type where resource_type_name = 'Battery'),
+        (select resource_status_id from resource_status where resource_status_name = 'Available'),
+        (select senate_region_id from senate_region where senate_region_name = 'IV - Mayaguez-Aguadilla')
+    ) RETURNING resource_id
+)
+ -- id = 7
+insert into resource_attribute(resource_id, resource_type_field_name, resource_type_field_value)
+values((select resource_id from first_id), 'Battery Type', 'D');
+
+
+with first_id as (
+    insert into resource (resource_quantity,resource_location_latitude,resource_location_longitude,resource_type_id,resource_status_id, senate_region_id)
+    values(
+        10,
+        18.19614793,
+        -67.14750767,
+        (select resource_type_id from resource_type where resource_type_name = 'Water'),
+        (select resource_status_id from resource_status where resource_status_name = 'Available'),
+        (select senate_region_id from senate_region where senate_region_name = 'IV - Mayaguez-Aguadilla')
+    ) RETURNING resource_id
+), second_id as (
+    insert into resource_attribute(resource_id, resource_type_field_name, resource_type_field_value)
+    values((select resource_id from first_id), 'Water Type', 'Purified') 
+    RETURNING resource_id
+), third_id as (
+    insert into resource_attribute(resource_id, resource_type_field_name, resource_type_field_value)
+    values((select resource_id from SECOND_id), 'Expiration Date', '2025-12-04')
+    RETURNING resource_id
+), fourth_id as (
+    insert into resource_attribute(resource_id, resource_type_field_name, resource_type_field_value)
+    values((select resource_id from SECOND_id), 'Container Size', '16oz.')
+    RETURNING resource_id
+)
+-- resource id = 8
+insert into resource_attribute(resource_id, resource_type_field_name, resource_type_field_value)
+values((select resource_id from SECOND_id), 'Quantity Per Unit', '24');
+
+
+with first_id as (
+    insert into resource (resource_quantity,resource_location_latitude,resource_location_longitude,resource_type_id,resource_status_id, senate_region_id)
+    values(
+        50,
+        18.19614793,
+        -67.14750767,
+        (select resource_type_id from resource_type where resource_type_name = 'Water'),
+        (select resource_status_id from resource_status where resource_status_name = 'Available'),
+        (select senate_region_id from senate_region where senate_region_name = 'IV - Mayaguez-Aguadilla')
+    ) RETURNING resource_id
+), second_id as (
+    insert into resource_attribute(resource_id, resource_type_field_name, resource_type_field_value)
+    values((select resource_id from first_id), 'Water Type', 'Distilled') 
+    RETURNING resource_id
+), third_id as (
+    insert into resource_attribute(resource_id, resource_type_field_name, resource_type_field_value)
+    values((select resource_id from SECOND_id), 'Expiration Date', '2025-02-04')
+    RETURNING resource_id
+), fourth_id as (
+    insert into resource_attribute(resource_id, resource_type_field_name, resource_type_field_value)
+    values((select resource_id from SECOND_id), 'Container Size', '64oz. (1 Gal)')
+    RETURNING resource_id
+)
+-- resource id = 9
+insert into resource_attribute(resource_id, resource_type_field_name, resource_type_field_value)
+values((select resource_id from SECOND_id), 'Quantity Per Unit', '10');
+
+
+with first_id as (
+    insert into resource (resource_quantity,resource_location_latitude,resource_location_longitude,resource_type_id,resource_status_id, senate_region_id)
+    values(
+        45,
+        18.19614793,
+        -67.14750767,
+        (select resource_type_id from resource_type where resource_type_name = 'Water'),
+        (select resource_status_id from resource_status where resource_status_name = 'Available'),
+        (select senate_region_id from senate_region where senate_region_name = 'IV - Mayaguez-Aguadilla')
+    ) RETURNING resource_id
+), second_id as (
+    insert into resource_attribute(resource_id, resource_type_field_name, resource_type_field_value)
+    values((select resource_id from first_id), 'Water Type', 'Purified') 
+    RETURNING resource_id
+), third_id as (
+    insert into resource_attribute(resource_id, resource_type_field_name, resource_type_field_value)
+    values((select resource_id from SECOND_id), 'Expiration Date', '2025-01-04')
+    RETURNING resource_id
+), fourth_id as (
+    insert into resource_attribute(resource_id, resource_type_field_name, resource_type_field_value)
+    values((select resource_id from SECOND_id), 'Container Size', '16oz.')
+    RETURNING resource_id
+)
+-- resource id = 10
+insert into resource_attribute(resource_id, resource_type_field_name, resource_type_field_value)
+values((select resource_id from SECOND_id), 'Quantity Per Unit', '50');
+
+
+with first_id as (
+    insert into resource (resource_quantity,resource_location_latitude,resource_location_longitude,resource_type_id,resource_status_id, senate_region_id)
+    values(
+        5,
+        18.19614793,
+        -67.14750767,
+        (select resource_type_id from resource_type where resource_type_name = 'Tool'),
+        (select resource_status_id from resource_status where resource_status_name = 'Available'),
+        (select senate_region_id from senate_region where senate_region_name = 'IV - Mayaguez-Aguadilla')
+    ) RETURNING resource_id
+), second_id as (
+    insert into resource_attribute(resource_id, resource_type_field_name, resource_type_field_value)
+    values((select resource_id from first_id), 'Tool Name', 'Drill') 
+    RETURNING resource_id
+), third_id as (
+    insert into resource_attribute(resource_id, resource_type_field_name, resource_type_field_value)
+    values((select resource_id from SECOND_id), 'Power Type', 'Electric')
+    RETURNING resource_id
+)
+-- resource id = 11
+insert into resource_attribute(resource_id, resource_type_field_name, resource_type_field_value)
+values((select resource_id from SECOND_id), 'Transaction Type', 'Buy');
+
+with first_id as (
+    insert into resource(resource_quantity,resource_location_latitude,resource_location_longitude,resource_type_id,resource_status_id, senate_region_id)
+    values(
+        10,
+        18.19583876,
+        -67.13626385,
+        (select resource_type_id from resource_type where resource_type_name = 'Power Generator'),
+        (select resource_status_id from resource_status where resource_status_name = 'Available'),
+        (select senate_region_id from senate_region where senate_region_name = 'IV - Mayaguez-Aguadilla')
+    ) RETURNING resource_id
+), second_id as (
+    insert into resource_attribute(resource_id, resource_type_field_name, resource_type_field_value)
+    values((select resource_id from first_id), 'Generator Type', 'Inverter') 
+    RETURNING resource_id
+), third_id as (
+    insert into resource_attribute(resource_id, resource_type_field_name, resource_type_field_value)
+    values((select resource_id from first_id), 'Fuel Type', 'Gasoline') 
+    RETURNING resource_id
+), fourth_id as (
+    insert into resource_attribute(resource_id, resource_type_field_name, resource_type_field_value)
+    values((select resource_id from first_id), 'Power Rating (Watts)', '12,000-W') 
+    RETURNING resource_id
+), fifth_id as (
+    insert into resource_attribute(resource_id, resource_type_field_name, resource_type_field_value)
+    values((select resource_id from first_id), 'Voltage (Volts)', '120AC/240AC') 
+    RETURNING resource_id
+), sixth_id as (
+    insert into resource_attribute(resource_id, resource_type_field_name, resource_type_field_value)
+    values((select resource_id from first_id), 'Amperage', '30A/10A') 
+    RETURNING resource_id
+), seventh_id as (
+    insert into resource_attribute(resource_id, resource_type_field_name, resource_type_field_value)
+    values((select resource_id from first_id), 'Transaction Type', 'Rent') 
+    RETURNING resource_id
+), eigth_id as (
+    insert into resource_attribute(resource_id, resource_type_field_name, resource_type_field_value)
+    values((select resource_id from first_id), 'Duration Period Unit', 'Week(s)') 
+    RETURNING resource_id
+)
+-- resource id = 12
+insert into resource_attribute(resource_id, resource_type_field_name, resource_type_field_value)
+values((select resource_id from eigth_id), 'Duration Period', '3');
+
+
+with first_id as (
+    insert into resource (resource_quantity,resource_location_latitude,resource_location_longitude,resource_type_id,resource_status_id, senate_region_id)
+    values(
+        550,
+        18.19614793,
+        -67.14750767,
+        (select resource_type_id from resource_type where resource_type_name = 'Water'),
+        (select resource_status_id from resource_status where resource_status_name = 'Available'),
+        (select senate_region_id from senate_region where senate_region_name = 'IV - Mayaguez-Aguadilla')
+    ) RETURNING resource_id
+), second_id as (
+    insert into resource_attribute(resource_id, resource_type_field_name, resource_type_field_value)
+    values((select resource_id from first_id), 'Water Type', 'Purified') 
+    RETURNING resource_id
+), third_id as (
+    insert into resource_attribute(resource_id, resource_type_field_name, resource_type_field_value)
+    values((select resource_id from SECOND_id), 'Expiration Date', '2025-01-30')
+    RETURNING resource_id
+), fourth_id as (
+    insert into resource_attribute(resource_id, resource_type_field_name, resource_type_field_value)
+    values((select resource_id from SECOND_id), 'Container Size', '16oz.')
+    RETURNING resource_id
+)
+-- resource id = 13
+insert into resource_attribute(resource_id, resource_type_field_name, resource_type_field_value)
+values((select resource_id from SECOND_id), 'Quantity Per Unit', '24');
+
+
+with first_id as (
+    insert into resource (resource_quantity,resource_location_latitude,resource_location_longitude,resource_type_id,resource_status_id, senate_region_id)
+    values(
+        10,
+        18.19614793,
+        -67.14750767,
+        (select resource_type_id from resource_type where resource_type_name = 'Ice'),
+        (select resource_status_id from resource_status where resource_status_name = 'Available'),
+        (select senate_region_id from senate_region where senate_region_name = 'IV - Mayaguez-Aguadilla')
+    ) RETURNING resource_id
+), second_id as (
+    insert into resource_attribute(resource_id, resource_type_field_name, resource_type_field_value)
+    values((select resource_id from first_id), 'Ice Type', 'Bag') 
+    RETURNING resource_id
+), third_id as (
+    insert into resource_attribute(resource_id, resource_type_field_name, resource_type_field_value)
+    values((select resource_id from SECOND_id), 'Lbs', '20')
+    RETURNING resource_id
+)
+-- resource id = 14
+insert into resource_attribute(resource_id, resource_type_field_name, resource_type_field_value)
+values((select resource_id from SECOND_id), 'Quantity Per Unit', '1');
+
+
+with first_id as (
+    insert into resource (resource_quantity,resource_location_latitude,resource_location_longitude,resource_type_id,resource_status_id, senate_region_id)
+    values(
+        25,
+        18.39367141,
+        -65.99685431,
+        (select resource_type_id from resource_type where resource_type_name = 'Clothing'),
+        (select resource_status_id from resource_status where resource_status_name = 'Available'),
+        (select senate_region_id from senate_region where senate_region_name = 'I - San Juan')
+    ) RETURNING resource_id
+), second_id as (
+    insert into resource_attribute(resource_id, resource_type_field_name, resource_type_field_value)
+    values((select resource_id from first_id), 'Piece of Clothing', 'T-Shirt') 
+    RETURNING resource_id
+), third_id as (
+    insert into resource_attribute(resource_id, resource_type_field_name, resource_type_field_value)
+    values((select resource_id from first_id), 'Color', 'White') 
+    RETURNING resource_id
+), fourth_id as (
+    insert into resource_attribute(resource_id, resource_type_field_name, resource_type_field_value)
+    values((select resource_id from first_id), 'Gender', 'Male') 
+    RETURNING resource_id
+), fifth_id as (
+    insert into resource_attribute(resource_id, resource_type_field_name, resource_type_field_value)
+    values((select resource_id from first_id), 'Size', 'XL') 
+    RETURNING resource_id
+)
+-- resource id = 15
+insert into resource_attribute(resource_id, resource_type_field_name, resource_type_field_value)
+values((select resource_id from first_id), 'Quantity Per Unit', '1');
+
+-- insert the resources in the requested table with the resource id
+-- adding requests and request transactions 
+
+-------------- everything with request id 1
+with request_info as (
+    -- request id 1
+    insert into request(
+        request_status_id,   
+        userid               
+    )
+    values(
+        (select request_status_id from request_status where request_status_id = 1),
+        (select userid from users_table where username = 'juliatorres')
+    ) RETURNING request_id
+)
+insert into requested_resources(
+    request_id,
+    resource_id,
+    resources_quantity
+)
+values(
+    (select request_id from request_info),
+    7,
+    3
+);
+
+insert into requested_resources(
+    request_id,
+    resource_id,
+    resources_quantity
+)
+values(
+    1,
+    8,
+    3
+);
+
+insert into requested_resources(
+    request_id,
+    resource_id,
+    resources_quantity
+)
+values(
+    1,
+    9,
+    10
+);
+
+insert into requested_resources(
+    request_id,
+    resource_id,
+    resources_quantity
+)
+values(
+    1,
+    10,
+    13
+);
+
+---------- end of request id 1
+---------------------------------------
+
+---- start request id 2
+with request_info as (
+    insert into request( 
+        request_status_id,   
+        userid           
+    )   
+    values(
+        (select request_status_id from request_status where request_status_id = 1),
+        (select userid from users_table where username = 'valeria')
+    ) RETURNING request_id
+)
+insert into requested_resources(
+    request_id,   
+    resource_id,     
+    resources_quantity    
+)
+values(
+    (select request_id from request_info),
+    11,
+    2
+);
+
+
+insert into requested_resources(
+    request_id,
+    resource_id,
+    resources_quantity
+)
+values(
+    2,
+    12,
+    39
+);
+
+
+insert into requested_resources(
+    request_id,
+    resource_id,
+    resources_quantity
+)
+values(
+    2,
+    13,
+    39
+);
+
+------- end request id 2
+
+
+--- start of request id 3
+with request_info as (
+    insert into request(
+                 
+        request_status_id,   
+        userid 
+    )             
+    values(
+    
+        (select request_status_id from request_status where request_status_id = 4),
+        (select userid from users_table where username = 'valeria')
+    ) RETURNING request_id
+)
+insert into requested_resources(
+    request_id,             
+    resource_id,   
+    resources_quantity    
+)
+values(
+    (select request_id from request_info),
+    14,
+    5
+);
+
+insert into requested_resources(
+    request_id,             
+    resource_id,   
+    resources_quantity    
+)
+values(
+    3,
+    15,
+    5
+); 
+
+----- end of requst id 3
+--- end of create resources as requested
+-------------------------------------------------
+---------------------------------------------------
+
+--orders
+-- order 1
+insert into orders(userid,payment_method_id)
+values(
+    (select userid from users_table where username = 'annaprentice'),
+    (select payment_method_id from payment_method where payment_method_name = 'Debit')
+    
+);
+
+-- order 2
+insert into orders(userid,payment_method_id)
+values(
+    (select userid from users_table where username = 'carlitos'),
+    (select payment_method_id from payment_method where payment_method_name = 'WIC')  
+);
+
+--ordered resource 
+insert into resource_ordered(order_id, resource_id, order_price,resources_quantity)
+values(
+    (select order_id from orders where order_id = 1),
+    (select resource_id from resource where resource_id = 5),
+    12,
+    1
+);
+insert into resource_ordered(order_id,resource_id,order_price,resources_quantity)
+values(
+    (select order_id from orders where  order_id  = 1),
+    (select resource_id from resource where resource_id = 3),
+    13,
+    3
+);
+insert into resource_ordered(order_id,resource_id, order_price,resources_quantity)
+values(
+    (select order_id from orders where  order_id  = 1),
+    (select resource_id from resource where resource_id = 6),
+    20,
+    1
+);
+
+insert into resource_ordered(order_id,resource_id, order_price,resources_quantity)
+values(
+    (select order_id from orders where  order_id  = 2),
+    (select resource_id from resource where resource_id = 1),
+    4,
+    8
+);
+insert into resource_ordered(order_id,resource_id, order_price,resources_quantity)
+values(
+    (select order_id from orders where  order_id  = 2),
+    (select resource_id from resource where resource_id = 4),
+    7,
+    20
+);
+insert into resource_ordered(order_id,resource_id, order_price,resources_quantity)
+values(
+    (select order_id from orders where  order_id  = 2),
+    (select resource_id from resource where resource_id = 5),
+    14,
+    4
+);
+
+---------------------------------------
+-- start of reserves
+
+-- reserves id 1
+insert into reserves(userid)
+values(
+    (select userid from users_table where username = 'annaprentice')
+);
+
+-- reserves id 2
+insert into reserves(userid)
+values(
+    (select userid from users_table where username = 'juliatorres')
+);
+
+-- reserves id 3
+insert into reserves(userid)
+values(
+   (select userid from users_table where username = 'carlitos')
+);
+
+-- reserves id 4
+insert into reserves(userid)
+values(
+    (select userid from users_table where username = 'annaprentice')
+);
+
+
+--reserved_resources 
+insert into reserved_resources(reserve_id,resource_id,resources_quantity)
+values(
+    (select reserve_id from reserves where reserve_id = 1),
+    (select resource_id from resource where resource_id = 2),
+    14
+);
+insert into reserved_resources(reserve_id,resource_id,resources_quantity)
+values(
+    (select reserve_id from reserves where reserve_id = 2),
+    (select resource_id from resource where resource_id = 2),
+    49
+);
+
+insert into reserved_resources(reserve_id,resource_id,resources_quantity)
+values(
+    (select reserve_id from reserves where reserve_id = 3),
+    (select resource_id from resource where resource_id = 2),
+    100
+);
+insert into reserved_resources(reserve_id,resource_id,resources_quantity)
+values(
+    (select reserve_id from reserves where reserve_id = 4),
+    (select resource_id from resource where resource_id = 2),
+    135
+);
+------------ end of reserves
+--------------------------------------------------------------
