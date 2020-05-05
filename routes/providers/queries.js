@@ -153,27 +153,56 @@ module.exports = {
             as organization_manager
         from organization
         natural join city
-        inner join country on country.country_id = organization.country_id
+        natural join country
+        where organization.organization_id = $1;`,
+
+    qOrganizationByIdDebug: `select 
+           *,
+            (select row_to_json((SELECT d FROM (SELECT 
+                userid, 
+                first_name, 
+                last_name, 
+                users_table.phone_number,
+                users_table.email,
+                city.city_name
+            ) d)) 
+            from users_table 
+            natural join city
+            WHERE users_table.userid = organization.organization_manager_id)
+            as organization_manager
+        from organization
+        natural join city
+        natural join country
         where organization.organization_id = $1;`,
 
     qOrganizationRepresentative: `
-    select 
-        userid as providerid,
-        first_name,
-        last_name,
-        role_name,
-        role_description,
-        users_table.email,
-        users_table.phone_number,
-        city.city_name as provider_city,
-        country.country_name
-    from users_table
-    natural join city
-    inner join country on country.country_id = users_table.country_id
-    natural join organization_representative
-    inner join organization on organization.organization_id = organization_representative.organization_id
-    inner join roles on users_table.role_id = roles.role_id 
-    where organization.organization_id = $1;`,
+        select 
+            userid as providerid,
+            first_name,
+            last_name,
+            role_name,
+            role_description,
+            users_table.email,
+            users_table.phone_number,
+            city.city_name as provider_city,
+            country.country_name
+        from users_table
+        natural join city
+        inner join country on country.country_id = users_table.country_id
+        natural join organization_representative
+        inner join organization on organization.organization_id = organization_representative.organization_id
+        inner join roles on users_table.role_id = roles.role_id 
+        where organization.organization_id = $1;`,
+    qOrganizationRepresentativeDebug: `
+        select 
+        *
+        from users_table
+        natural join city
+        natural join country
+        natural join roles 
+        natural join organization_representative
+        inner join organization on organization.organization_id = organization_representative.organization_id
+        where organization.organization_id = $1;`,
 
     qOrganizationRepresentativeRegister: `insert into organization_representative (
         organization_representative_id,

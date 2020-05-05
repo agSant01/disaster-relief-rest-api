@@ -18,8 +18,10 @@ exports.getProviders = (req, res, next) => {
     db.query(query, (err, result) => {
         console.log(err, result);
 
-        if (err) res.json(err).end();
-
+        if (err) {
+            res.json(err).end();
+            return;
+        }
         let msg = {
             providers: result.rows,
             count: result.rowCount,
@@ -61,8 +63,10 @@ exports.getProviderById = (req, res, next) => {
     db.query(query, (err, result) => {
         console.log(err, result);
 
-        if (err) res.json(err).end();
-
+        if (err) {
+            res.json(err).end();
+            return;
+        }
         let msg = {
             provider: result.rows,
         };
@@ -90,7 +94,10 @@ exports.getOrganizations = (req, res, next) => {
     db.query(query_text, (err, result) => {
         console.log(err, result);
 
-        if (err) res.json(err).end();
+        if (err) {
+            res.json(err).end();
+            return;
+        }
 
         let msg = {
             organizations: result.rows,
@@ -159,8 +166,22 @@ exports.getOrganization = (req, res, next) => {
         });
     }
 
+    const is_debug = req.query.debug == 'true';
+
+    let query_text;
+
+    console.log(is_debug);
+
+    if (is_debug) {
+        query_text = querylib.qOrganizationByIdDebug;
+    } else {
+        query_text = querylib.qOrganizationByID;
+    }
+
+    console.log(query_text);
+
     const query = {
-        text: querylib.qOrganizationByID,
+        text: query_text,
         values: [organization_id],
     };
 
@@ -170,9 +191,10 @@ exports.getOrganization = (req, res, next) => {
     db.query(query, (err, result) => {
         console.log(err, result);
 
-        if (err) res.json(err).end();
-
-        console.log(result);
+        if (err) {
+            res.json(err).end();
+            return;
+        }
 
         let msg = {
             organization: result.rows,
@@ -193,8 +215,22 @@ exports.getRepresentatives = (req, res, next) => {
         });
     }
 
+    const is_debug = req.query.debug == 'true';
+
+    let query_text;
+
+    console.log(is_debug);
+
+    if (is_debug) {
+        query_text = querylib.qOrganizationRepresentativeDebug;
+    } else {
+        query_text = querylib.qOrganizationRepresentative;
+    }
+
+    console.log(query_text);
+
     const query = {
-        text: querylib.qOrganizationRepresentative,
+        text: query_text,
         values: [orgid],
     };
 
@@ -204,8 +240,10 @@ exports.getRepresentatives = (req, res, next) => {
     db.query(query, (err, result) => {
         console.log(err, result);
 
-        if (err) res.json(err).end();
-
+        if (err) {
+            res.json(err).end();
+            return;
+        }
         console.log(result);
 
         const msg = {

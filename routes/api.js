@@ -24,10 +24,12 @@ router.get('/dbtest', (req, res, next) => {
     db.query('SELECT NOW() as current_time', (err, result) => {
         console.log(err, result);
 
-        if (err)
+        if (err) {
             res.status(504)
                 .json(err)
                 .end();
+            return;
+        }
 
         const msg = {
             db_connection_test: result.rows[0],
