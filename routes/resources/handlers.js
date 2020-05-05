@@ -23,43 +23,21 @@ exports.getTypes = (req, res, next) => {
 };
 
 exports.getAllResources = (req, res, next) => {
-    // callback
-    db.query(querylib.qGetResourceAllResources, (err, result) => {
-        console.log(err, result);
-
-        if (err) {
-            res.status(503)
-                .json(err)
-                .end();
-            return;
-        }
-
-        const msg = {
-            count: result.rowCount,
-            resources: result.rows,
+    let id = req.params.ID;
+    let query
+    if(id){
+        console.log(id);
+        query = {
+            text: querylib.qResourcesByID,
+            values: [id],
         };
-
-        res.json(msg).end();
-    });
-};
-
-exports.getResourceById = (req, res, next) => {
-    const resid = req.params.id;
-
-    if (isNaN(Number(resid))) {
-        res.status(401).json({
-            error: "Invalid param for 'resource id'. Must be 'Integer' type.",
-            invalid_param: req.params.id,
-        });
-        return;
+    }
+    else{
+        query = {
+            text: querylib.qAllResources
+        };
     }
 
-    const query = {
-        text: querylib.qGetResourceById,
-        values: [resid],
-    };
-
-    // callback
     db.query(query, (err, result) => {
         console.log(err, result);
 
@@ -86,6 +64,38 @@ exports.getResourceTypeAttributes = (req, res, next) => {
 
     let query = {
         text: querylib.qTypeAttribute,
+        values: [resourceType],
+    };
+
+    db.query(query, (err, result) => {
+        console.log(err, result);
+
+        if (err) {
+            res.status(503)
+                .json(err)
+                .end();
+            return;
+        }
+
+        let set = new Set();
+
+        result.rows.forEach((val, inx) => set.add(val.attribute_name));
+
+        console.log(set, set.size);
+
+        const msg = {
+            resource_attributes: result.rows,
+        };
+
+        res.json(msg).end();
+    });
+};
+
+exports.getResourceAttributesByType = (req, res, next) => {
+    let resourceType = req.params.types;
+
+    let query = {
+        text: querylib.qAttributByType,
         values: [resourceType],
     };
 
@@ -181,6 +191,43 @@ exports.getAllReservedResource = (req, res, next) => {
     });
 };
 
+exports.getResourceByIDAndKeyword = (req, res, next) => {
+    let id = req.params.ID;
+    let keyword = req.params.keyword;
+    var msg;
+
+    if(keyword){
+        msg = {
+            id:id,
+            purchase: [],
+        };
+        res.json(msg).end();
+    }
+    else{
+        let query = {
+            text: querylib.qResourcesByID,
+            values: [resourceType],
+        };
+    
+        db.query(query, (err, result) => {
+            console.log(err, result);
+    
+            if (err) {
+                res.status(503)
+                    .json(err)
+                    .end();
+                return;
+            }
+    
+            const msg = {
+                resource: result.rows,
+            };
+    
+            res.json(msg).end();
+        });
+    }
+    
+}; 
 exports.getReservedResourceById = (req, res, next) => {
     res.json('hi').end();
 };
@@ -245,6 +292,49 @@ exports.getRequests = (req, res, next) => {
         res.json(msg).end();
     });
 };
+
+exports.getPurchase = (req, res, next) => {
+    const id = req.params.ID;
+    var msg;
+
+    if(id){
+        msg = {
+            id:id,
+            purchase: [],
+        };
+        res.json(msg).end();
+    }
+    else{
+        msg = {
+            purchase: [],
+        };
+        res.json(msg).end();
+    }
+    
+    
+};
+
+exports.getReserves = (req, res, next) => {
+    const id = req.params.ID;
+    var msg;
+
+    if(id){
+        msg = {
+            id:id,
+            purchase: [],
+        };
+        res.json(msg).end();
+    }
+    else{
+        msg = {
+            purchase: [],
+        };
+        res.json(msg).end();
+    }
+};
+
+
+
 
 exports.putUpdate = (req, res, next) => {
     let msg = {
