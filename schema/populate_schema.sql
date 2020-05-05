@@ -1754,7 +1754,7 @@ with first_id as (
     RETURNING resource_id
 ), fifth_id as (
     insert into resource_attribute(resource_id, resource_type_field_name, resource_type_field_value)
-    values((select resource_id from first_id), 'Medication Name', 'Anti-Inflammatory') 
+    values((select resource_id from first_id), 'Medication Type', 'Anti-Inflammatory') 
     RETURNING resource_id
 )
 -- submitted id 3
@@ -1825,14 +1825,14 @@ values(
     (select resource_id from fifth_id),
     (select userid from users_table where username = 'gabrielsantiago'),
     0, -- per unit
-    true,
+    false,
     (select delivery_method_id from delivery_method where method_name = 'Delivery or Pick-up')
 );
 
 with first_id as (
     insert into resource (resource_quantity,resource_location_latitude,resource_location_longitude,resource_type_id,resource_status_id, senate_region_id)
     values(
-        5,
+        500,
         18.19614793,
         -67.14750767,
         (select resource_type_id from resource_type where resource_type_name = 'Fuel'),
@@ -2131,46 +2131,38 @@ with request_info as (
 )
 insert into requested_resources(
     request_id,
-    resource_id,
-    resources_quantity
+    resource_id
 )
 values(
     (select request_id from request_info),
-    7,
-    3
+    7
 );
 
 insert into requested_resources(
     request_id,
-    resource_id,
-    resources_quantity
+    resource_id
 )
 values(
     1,
-    8,
-    3
+    8
 );
 
 insert into requested_resources(
     request_id,
-    resource_id,
-    resources_quantity
+    resource_id
 )
 values(
     1,
-    9,
+    9
+);
+
+insert into requested_resources(
+    request_id,
+    resource_id
+)
+values(
+    1,
     10
-);
-
-insert into requested_resources(
-    request_id,
-    resource_id,
-    resources_quantity
-)
-values(
-    1,
-    10,
-    13
 );
 
 ---------- end of request id 1
@@ -2184,42 +2176,36 @@ with request_info as (
     )   
     values(
         (select request_status_id from request_status where request_status_id = 1),
-        (select userid from users_table where username = 'valeria')
+        (select userid from users_table where username = 'annaprentice')
     ) RETURNING request_id
 )
 insert into requested_resources(
     request_id,   
-    resource_id,     
-    resources_quantity    
+    resource_id   
 )
 values(
     (select request_id from request_info),
-    11,
-    2
+    11
 );
 
 
 insert into requested_resources(
     request_id,
-    resource_id,
-    resources_quantity
+    resource_id
 )
 values(
     2,
-    12,
-    39
+    12
 );
 
 
 insert into requested_resources(
     request_id,
-    resource_id,
-    resources_quantity
+    resource_id
 )
 values(
     2,
-    13,
-    39
+    13
 );
 
 ------- end request id 2
@@ -2227,37 +2213,32 @@ values(
 
 --- start of request id 3
 with request_info as (
-    insert into request(
-                 
+    insert into request(    
         request_status_id,   
         userid 
     )             
     values(
     
         (select request_status_id from request_status where request_status_id = 4),
-        (select userid from users_table where username = 'valeria')
+        (select userid from users_table where username = 'carlitos')
     ) RETURNING request_id
 )
 insert into requested_resources(
     request_id,             
-    resource_id,   
-    resources_quantity    
+    resource_id,       
 )
 values(
     (select request_id from request_info),
-    14,
-    5
+    14
 );
 
 insert into requested_resources(
     request_id,             
-    resource_id,   
-    resources_quantity    
+    resource_id    
 )
 values(
     3,
-    15,
-    5
+    15
 ); 
 
 ----- end of requst id 3
@@ -2352,7 +2333,7 @@ insert into reserved_resources(reserve_id,resource_id,resources_quantity)
 values(
     (select reserve_id from reserves where reserve_id = 1),
     (select resource_id from resource where resource_id = 5),
-    14
+    10
 );
 
 insert into reserved_resources(reserve_id,resource_id,resources_quantity)
@@ -2372,14 +2353,14 @@ insert into reserved_resources(reserve_id,resource_id,resources_quantity)
 values(
     (select reserve_id from reserves where reserve_id = 4),
     (select resource_id from resource where resource_id = 2),
-    135
+    293
 );
 
 insert into reserved_resources(reserve_id,resource_id,resources_quantity)
 values(
     (select reserve_id from reserves where reserve_id = 4),
     (select resource_id from resource where resource_id = 5),
-    135
+    34
 );
 ------------ end of reserves
 --------------------------------------------------------------
