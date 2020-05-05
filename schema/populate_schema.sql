@@ -722,7 +722,6 @@ values(
     'GG',
     (select userid from users_table where username='yaniraruiz'),
     'Calle Palmeras',
-    '',
     (select cityid from city where city_name = 'Quebradillas'),
     '00623',
     (select country_id from country where country_name = 'Puerto Rico'),
@@ -1654,7 +1653,7 @@ with first_id as (
     insert into resource_attribute(resource_id, resource_type_field_name, resource_type_field_value)
     values((select resource_id from first_id), 'Duration', 2) 
     RETURNING resource_id
-),
+)
 insert into submits_resource(resource_id, userid, resource_price, is_for_sale, delivery_method_id)
 values(
     (select resource_id from sixth_id),
@@ -1690,10 +1689,10 @@ with first_id as (
     insert into resource_attribute(resource_id, resource_type_field_name, resource_type_field_value)
     values((select resource_id from first_id), 'Expiration Date', '2025-05-09') 
     RETURNING resource_id
-),
+)
 insert into submits_resource(resource_id, userid, resource_price, is_for_sale, delivery_method_id)
 values(
-    (select resource_id from sixth_id),
+    (select resource_id from fifth_id),
     (select userid from users_table where username = 'valeria'),
     25, -- per unit
     true,
@@ -1702,8 +1701,7 @@ values(
 
 with first_id as (
     insert into resource (resource_quantity,resource_location_latitude,
-    resource_location_longitude,resource_type_id,resource_status_id, s
-    enate_region_id)
+    resource_location_longitude,resource_type_id,resource_status_id, senate_region_id)
     values(
         5000,
         18.19614793,
@@ -1728,7 +1726,7 @@ with first_id as (
     insert into resource_attribute(resource_id, resource_type_field_name, resource_type_field_value)
     values((select resource_id from first_id), 'Medication Name', 'Anti-Inflammatory') 
     RETURNING resource_id
-),
+)
 insert into submits_resource(resource_id, userid, resource_price, is_for_sale, delivery_method_id)
 values(
     (select resource_id from fifth_id),

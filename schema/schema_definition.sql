@@ -47,7 +47,7 @@ create table users_table (
     creation_timestamp timestamptz default transaction_timestamp() not null,
     primary key (userid),
     foreign key (country_id) references country(country_id),
-    foreign key (city) references city(cityid),
+    foreign key (cityid) references city(cityid),
     foreign key (role_id) references roles(role_id)
 );
 
@@ -66,7 +66,7 @@ create table organization (
     creation_timestamp timestamptz default transaction_timestamp() not null,
     primary key (organization_id),
     foreign key (country_id) references country(country_id),
-    foreign key (city) references city(cityid)
+    foreign key (cityid) references city(cityid)
 );
 
 create table organization_representative(
