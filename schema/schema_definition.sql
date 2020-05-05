@@ -175,7 +175,7 @@ create table request_transactions(
     transaction_date timestamptz default transaction_timestamp() not null
 );
 
-create table reservations(
+create table reserved_resources(
     reserve_id integer references reserves(reserve_id) not null,
     resource_id integer references resource(resource_id) not null,
     quantity integer not null,

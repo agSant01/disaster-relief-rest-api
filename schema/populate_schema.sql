@@ -1583,39 +1583,39 @@ values(
     4
 );
 
---reservations 
-insert into reservations(reserve_id,resource_id,quantity)
+--reserved_resources 
+insert into reserved_resources(reserve_id,resource_id,quantity)
 values(
     (select reserve_id from reserves where reserve_id = 1),
     (select resource_id from resource where resource_id = 1),
     1
 );
-insert into reservations(reserve_id,resource_id,quantity)
+insert into reserved_resources(reserve_id,resource_id,quantity)
 values(
     (select reserve_id from reserves where reserve_id = 1),
     (select resource_id from resource where resource_id = 3),
     10
 );
-insert into reservations(reserve_id,resource_id,quantity)
+insert into reserved_resources(reserve_id,resource_id,quantity)
 values(
     (select reserve_id from reserves where reserve_id = 2),
     (select resource_id from resource where resource_id = 2),
     5
 );
 
-insert into reservations(reserve_id,resource_id,quantity)
+insert into reserved_resources(reserve_id,resource_id,quantity)
 values(
     (select reserve_id from reserves where reserve_id = 3),
     (select resource_id from resource where resource_id = 1),
     6
 );
-insert into reservations(reserve_id,resource_id,quantity)
+insert into reserved_resources(reserve_id,resource_id,quantity)
 values(
     (select reserve_id from reserves where reserve_id = 3),
     (select resource_id from resource where resource_id = 4),
     2
 );
-insert into reservations(reserve_id,resource_id,quantity)
+insert into reserved_resources(reserve_id,resource_id,quantity)
 values(
     (select reserve_id from reserves where reserve_id = 3),
     (select resource_id from resource where resource_id = 5),
