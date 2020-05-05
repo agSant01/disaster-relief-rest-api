@@ -1539,21 +1539,21 @@ values(
 );
 
 --ordered resource 
-insert into resource_ordered(order_id, resource_id, order_price, quantity)
+insert into resource_ordered(order_id, resource_id, order_price,resources_quantity)
 values(
     (select order_id from orders where order_id = 1),
     (select resource_id from resource where resource_id = 5),
     12,
     1
 );
-insert into resource_ordered(order_id,resource_id,order_price, quantity)
+insert into resource_ordered(order_id,resource_id,order_price,resources_quantity)
 values(
     (select order_id from orders where  order_id  = 1),
     (select resource_id from resource where resource_id = 3),
     13,
     3
 );
-insert into resource_ordered(order_id,resource_id, order_price, quantity)
+insert into resource_ordered(order_id,resource_id, order_price,resources_quantity)
 values(
     (select order_id from orders where  order_id  = 1),
     (select resource_id from resource where resource_id = 2),
@@ -1561,21 +1561,21 @@ values(
     1
 );
 
-insert into resource_ordered(order_id,resource_id, order_price, quantity)
+insert into resource_ordered(order_id,resource_id, order_price,resources_quantity)
 values(
     (select order_id from orders where  order_id  = 2),
     (select resource_id from resource where resource_id = 1),
     4,
     8
 );
-insert into resource_ordered(order_id,resource_id, order_price, quantity)
+insert into resource_ordered(order_id,resource_id, order_price,resources_quantity)
 values(
     (select order_id from orders where  order_id  = 2),
     (select resource_id from resource where resource_id = 4),
     7,
     20
 );
-insert into resource_ordered(order_id,resource_id, order_price, quantity)
+insert into resource_ordered(order_id,resource_id, order_price,resources_quantity)
 values(
     (select order_id from orders where  order_id  = 2),
     (select resource_id from resource where resource_id = 5),

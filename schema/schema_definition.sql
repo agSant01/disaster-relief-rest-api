@@ -168,6 +168,10 @@ create table request (
     primary key (request_id)
 );
 
+create table requested_resources(
+
+);
+
 create table request_transactions(
     request_id integer references request(request_id) not null,
     resource_id integer references resource(resource_id) not null,
@@ -178,14 +182,14 @@ create table request_transactions(
 create table reserved_resources(
     reserve_id integer references reserves(reserve_id) not null,
     resource_id integer references resource(resource_id) not null,
-    quantity integer not null,
+   resources_quantity integer not null,
     primary key (resource_id,reserve_id)
 );
 
 create table resource_ordered(
     order_id integer references orders(order_id) not null,
     resource_id integer references resource(resource_id) not null,
-    quantity integer not null,
+   resources_quantity integer not null,
     order_price real not null,
     primary key (resource_id,order_id)
 );
