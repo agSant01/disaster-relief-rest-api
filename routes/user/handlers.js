@@ -184,17 +184,66 @@ exports.getReserves = (req, res, next) => {
 
 exports.getUserOrders = (req, res, next) => {
     const user_id = req.params.id;
-    const is_debug = req.query.debug == 'true';
 
-    let query_text;
-
-    console.log(is_debug);
-
-    if (is_debug) {
-        query_text = querylib.qAllUsersDebug;
-    } else {
-        query_text = querylib.qAllUsers;
+    if (isNaN(Number(user_id))) {
+        res.status(401).json({
+            error: "Invalid param for 'user id'. Must be 'Integer' type.",
+            invalid_param: req.params.id,
+        });
+        return;
     }
 
-    console.log(query_text);
+    const purchase_id = req.params.purchaseid;
+
+    let query;
+
+    if (purchase_id) {
+        if (isNaN(Number(purchase_id))) {
+            res.status(401).json({
+                error:
+                    "Invalid param for 'purchase id'. Must be 'Integer' type.",
+                invalid_param: req.params.id,
+            });
+            return;
+        }
+
+        query = {
+            text: querylib.qGetPurchasesByUserIdAndOrderId,
+            values: [user_id, purchase_id],
+        };
+    } else {
+        query = {
+            text: querylib.qGetPurchasesByUserId,
+            values: [user_id],
+        };
+    }
+
+    console.log(query);
+
+    // callback
+    db.query(query, (qerr, qres) => {
+        console.log(qerr, qres);
+
+        if (qerr) {
+            res.status(503)
+                .json(qerr.stack)
+                .end();
+        } else {
+            let msg;
+
+            if (purchase_id) {
+                msg = {
+                    purchase: qres.rows,
+                };
+            } else {
+                msg = {
+                    count: qres.rowCount,
+                    purchases: qres.rows,
+                };
+            }
+            msg.user_id = user_id;
+
+            res.json(msg).end();
+        }
+    });
 };

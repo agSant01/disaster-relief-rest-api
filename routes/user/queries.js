@@ -132,6 +132,67 @@ module.exports = {
         from reserves
         where reserves.userid = $1;`,
     qGetPurchasesByUserId: `
-    
+        select 
+            orders.order_id as purchase_id,
+            payment_method.payment_method_name as payment_method,
+            (
+            select json_agg(row_to_json((SELECT d FROM (SELECT 
+                resource.resource_id,
+                resource_ordered.resources_quantity as purchased_quantity,
+                resource.resource_location_latitude,
+                resource.resource_location_longitude,
+                resource_type.resource_type_name,
+                ('https://www.google.com/maps/dir/?api=1&destination='||resource_location_latitude||','||resource_location_longitude) as google_maps_location,    
+                (
+                    select json_agg(row_to_json((SELECT d FROM (SELECT 
+                        resource_type_field_name as attribute_name,
+                        resource_type_field_value as attribute_value
+                    ) d)))
+                    from  resource_attribute 
+                    where resource_attribute.resource_id = resource_ordered.resource_id
+                ) as attributes
+                ) d)))
+                from resource_ordered
+                natural join resource
+                natural join resource_type
+                where resource_ordered.order_id = orders.order_id
+            ) as resources_purchased,
+            orders.order_timestamp as date_purchased
+        from orders
+        natural join payment_method
+        where orders.userid = $1
+        order by orders.order_id;
     `,
+    qGetPurchasesByUserIdAndOrderId: `
+        select 
+            orders.order_id as purchase_id,
+            payment_method.payment_method_name as payment_method,
+            (
+            select json_agg(row_to_json((SELECT d FROM (SELECT 
+                resource.resource_id,
+                resource_ordered.resources_quantity as purchased_quantity,
+                resource.resource_location_latitude,
+                resource.resource_location_longitude,
+                resource_type.resource_type_name,
+                ('https://www.google.com/maps/dir/?api=1&destination='||resource_location_latitude||','||resource_location_longitude) as google_maps_location,    
+                (
+                    select json_agg(row_to_json((SELECT d FROM (SELECT 
+                        resource_type_field_name as attribute_name,
+                        resource_type_field_value as attribute_value
+                    ) d)))
+                    from  resource_attribute 
+                    where resource_attribute.resource_id = resource_ordered.resource_id
+                ) as attributes
+                ) d)))
+                from resource_ordered
+                natural join resource
+                natural join resource_type
+                where resource_ordered.order_id = orders.order_id
+            ) as resources_purchased,
+            orders.order_timestamp as date_purchased
+        from orders
+        natural join payment_method
+        where orders.userid = $1 and 
+        orders.order_id = $2
+        order by orders.order_id;`,
 };
