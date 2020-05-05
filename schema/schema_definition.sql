@@ -169,13 +169,16 @@ create table request (
 
 create table requested_resources(
     request_id integer references request(request_id) not null,
-    resource_id integer references resource(resource_id) not null
+    resource_id integer references resource(resource_id) not null.
+    resources_quantity integer not null,
+    primary key (resource_id,request_id)
 );
 
 create table request_transactions(
     request_id integer references request(request_id) not null,
     transaction_quantity integer not null,
     transaction_date timestamptz default transaction_timestamp() not null
+    primary key (request_id)
 );
 
 create table reserved_resources(
