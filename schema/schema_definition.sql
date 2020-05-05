@@ -161,7 +161,6 @@ create table request_status (
 
 create table request (
     request_id serial not null,
-    resource_id integer references resource(resource_id) not null,
     request_status_id integer references request_status(request_status_id) not null,
     userid integer references users_table(userid) not null,
     date_requested timestamptz default transaction_timestamp() not null,
@@ -169,12 +168,12 @@ create table request (
 );
 
 create table requested_resources(
-
+    request_id integer references request(request_id) not null,
+    resource_id integer references resource(resource_id) not null
 );
 
 create table request_transactions(
     request_id integer references request(request_id) not null,
-    resource_id integer references resource(resource_id) not null,
     transaction_quantity integer not null,
     transaction_date timestamptz default transaction_timestamp() not null
 );
