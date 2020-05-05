@@ -22,4 +22,20 @@ GET {{url}}/api/resources/available
 
 ###
 
-GET {{url}}/api/resources/available
+GET {{url}}/api/resources/available/2
+
+###
+
+GET {{url}}/api/resources/requests
+
+###
+
+GET {{url}}/api/resources/requests/3
+
+###
+
+GET {{url}}/api/resources/requests?keyword=wA
+
+###
+
+GET {{url}}/api/resources/requests/1?keyword=wA
