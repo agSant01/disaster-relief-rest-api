@@ -1466,12 +1466,12 @@ with first_id as (
     values((select resource_id from first_id), 'Quantity Per Unit', 20) 
     RETURNING resource_id
 )
--- submitted id 5
+-- submitted id 5 free
 insert into submits_resource(resource_id, userid, resource_price, is_for_sale, delivery_method_id)
 values(
     (select resource_id from fifth_id),
     (select userid from users_table where username = 'gabrielsantiago'),
-    30, -- per unit
+    0, -- per unit
     true,
     (select delivery_method_id from delivery_method where method_name = 'Delivery or Pick-up')
 );
@@ -1928,14 +1928,7 @@ values(
     (select payment_method_id from payment_method where payment_method_name = 'WIC')  
 );
 
---ordered resource 
-insert into resource_ordered(order_id, resource_id, order_price,resources_quantity)
-values(
-    (select order_id from orders where order_id = 1),
-    (select resource_id from resource where resource_id = 5),
-    12,
-    1
-);
+--ordered resource
 insert into resource_ordered(order_id,resource_id,order_price,resources_quantity)
 values(
     (select order_id from orders where  order_id  = 1),
@@ -1964,13 +1957,6 @@ values(
     (select resource_id from resource where resource_id = 4),
     7,
     20
-);
-insert into resource_ordered(order_id,resource_id, order_price,resources_quantity)
-values(
-    (select order_id from orders where  order_id  = 2),
-    (select resource_id from resource where resource_id = 5),
-    14,
-    4
 );
 
 ---------------------------------------
@@ -2008,6 +1994,14 @@ values(
     (select resource_id from resource where resource_id = 2),
     14
 );
+
+insert into reserved_resources(reserve_id,resource_id,resources_quantity)
+values(
+    (select reserve_id from reserves where reserve_id = 1),
+    (select resource_id from resource where resource_id = 5),
+    14
+);
+
 insert into reserved_resources(reserve_id,resource_id,resources_quantity)
 values(
     (select reserve_id from reserves where reserve_id = 2),
@@ -2025,6 +2019,13 @@ insert into reserved_resources(reserve_id,resource_id,resources_quantity)
 values(
     (select reserve_id from reserves where reserve_id = 4),
     (select resource_id from resource where resource_id = 2),
+    135
+);
+
+insert into reserved_resources(reserve_id,resource_id,resources_quantity)
+values(
+    (select reserve_id from reserves where reserve_id = 4),
+    (select resource_id from resource where resource_id = 5),
     135
 );
 ------------ end of reserves

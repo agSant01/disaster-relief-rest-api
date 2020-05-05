@@ -23,10 +23,51 @@ exports.getTypes = (req, res, next) => {
 };
 
 exports.getAllResources = (req, res, next) => {
-    let msg = {
-        resources: [],
+    // callback
+    db.query(querylib.qGetResourceAllResources, (err, result) => {
+        console.log(err, result);
+
+        if (err) {
+            res.status(503)
+                .json(err)
+                .end();
+            return;
+        }
+
+        const msg = {
+            resource_types: result.rows,
+            count: result.rowCount,
+        };
+
+        res.json(msg).end();
+    });
+};
+
+exports.getResourceById = (req, res, next) => {
+    const resid = req.params.id;
+
+    const query = {
+        text: querylib.qGetResourceById,
+        values: [resid],
     };
-    res.json(msg).end();
+
+    // callback
+    db.query(query, (err, result) => {
+        console.log(err, result);
+
+        if (err) {
+            res.status(503)
+                .json(err)
+                .end();
+            return;
+        }
+
+        let msg = {
+            resource: result.rows,
+        };
+
+        res.json(msg).end();
+    });
 };
 
 /*
@@ -90,11 +131,68 @@ exports.getResourcesAvailable = (req, res, next) => {
     });
 };
 
+exports.getAllReservedResource = (req, res, next) => {
+    db.query(querylib.getAllReservedResources, (err, result) => {
+        console.log(err, result);
+
+        if (err) {
+            res.status(503)
+                .json(err)
+                .end();
+            return;
+        }
+
+        let msg = {
+            reserved_resources: result.rows,
+            count: result.rowCount,
+        };
+
+        res.json(msg).end();
+    });
+};
+
+exports.getReservedResourceById = (req, res, next) => {
+    res.json('hi').end();
+};
+
 exports.getRequests = (req, res, next) => {
-    let msg = {
-        resourcesRequested: [],
-    };
-    res.json(msg).end();
+    db.query(querylib.qGetAllRequests, (err, result) => {
+        console.log(err, result);
+
+        if (err) {
+            res.status(503)
+                .json(err)
+                .end();
+            return;
+        }
+
+        let msg = {
+            requests: result.rows,
+            count: result.rowCount,
+        };
+
+        res.json(msg).end();
+    });
+};
+
+exports.getRequestsByKeyword = (req, res, next) => {
+    db.query(querylib.qAllTypes, (err, result) => {
+        console.log(err, result);
+
+        if (err) {
+            res.status(503)
+                .json(err)
+                .end();
+            return;
+        }
+
+        let msg = {
+            requests: result.rows,
+            count: result.rowCount,
+        };
+
+        res.json(msg).end();
+    });
 };
 
 exports.putUpdate = (req, res, next) => {
