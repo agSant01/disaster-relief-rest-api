@@ -621,7 +621,7 @@ VALUES (
     (select role_id from roles where role_name = 'Supplier Organization Administrator')
 );
 
-    --#13 Supplier Organization Administrator   
+    --#14 Supplier Organization Administrator   
 INSERT INTO users_table 
 (
     username,
@@ -657,6 +657,228 @@ VALUES (
     true,
     (select role_id from roles where role_name = 'Supplier Organization Administrator')
 );
+
+    --#15 Supplier Organization Administrator  
+INSERT INTO users_table 
+(
+    username,
+    user_password,
+    first_name,
+    last_name, 
+    date_of_birth,
+    street1,
+    street2,
+    cityid,
+    zip_code,
+    country_id, 
+    gender,
+    email,
+    phone_number,
+    is_enabled,
+    role_id
+) 
+VALUES (
+    'juanperez',
+    crypt('chocolate', gen_salt('bf')),
+    'Juan',
+    'Perez',
+    '1993-09-30',
+    'Calle Chano',
+    'Calle 4444',
+    (select cityid from city where city_name = 'Aguada'),
+    '00654',
+    (select country_id from country where country_name = 'Puerto Rico'),
+    'Male',
+    'juanperez@gmail.com',
+    78754208213,
+    true,
+    (select role_id from roles where role_name = 'Supplier Organization Administrator')
+);
+
+ --#16 Supplier Organization Administrator  
+INSERT INTO users_table 
+(
+    username,
+    user_password,
+    first_name,
+    last_name, 
+    date_of_birth,
+    street1,
+    street2,
+    cityid,
+    zip_code,
+    country_id, 
+    gender,
+    email,
+    phone_number,
+    is_enabled,
+    role_id
+) 
+VALUES (
+    'lilliancruz',
+    crypt('einstein', gen_salt('bf')),
+    'Lillian',
+    'Cruz',
+    '1975-08-17',
+    'Calle Flores',
+    'Calle 1567',
+    (select cityid from city where city_name = 'Fajardo'),
+    '00654',
+    (select country_id from country where country_name = 'Puerto Rico'),
+    'Female',
+    'lcruz@yahoo.com',
+    7870963346,
+    true,
+    (select role_id from roles where role_name = 'Supplier Organization Administrator')
+);
+
+ --#17 Supplier Organization Administrator  
+INSERT INTO users_table 
+(
+    username,
+    user_password,
+    first_name,
+    last_name, 
+    date_of_birth,
+    street1,
+    street2,
+    cityid,
+    zip_code,
+    country_id, 
+    gender,
+    email,
+    phone_number,
+    is_enabled,
+    role_id
+) 
+VALUES (
+    'vsoto',
+    crypt('alaska', gen_salt('bf')),
+    'Victor',
+    'Soto',
+    '1984-02-28',
+    'Calle Whitney',
+    'Calle 2',
+    (select cityid from city where city_name = 'Lares'),
+    '00098',
+    (select country_id from country where country_name = 'Puerto Rico'),
+    'Male',
+    'victorsoto@gmail.com',
+    9390963346,
+    true,
+    (select role_id from roles where role_name = 'Supplier Organization Administrator')
+);
+
+ --#17 Supplier Organization Administrator  
+INSERT INTO users_table 
+(
+    username,
+    user_password,
+    first_name,
+    last_name, 
+    date_of_birth,
+    street1,
+    street2,
+    cityid,
+    zip_code,
+    country_id, 
+    gender,
+    email,
+    phone_number,
+    is_enabled,
+    role_id
+) 
+VALUES (
+    'vsoto',
+    crypt('alaska', gen_salt('bf')),
+    'Victor',
+    'Soto',
+    '1984-02-28',
+    'Calle Whitney',
+    'Calle 2',
+    (select cityid from city where city_name = 'Lares'),
+    '00098',
+    (select country_id from country where country_name = 'Puerto Rico'),
+    'Male',
+    'victorsoto@gmail.com',
+    9390963346,
+    true,
+    (select role_id from roles where role_name = 'Supplier Organization Administrator')
+);
+ --#18 Supplier Organization Administrator  
+INSERT INTO users_table 
+(
+    username,
+    user_password,
+    first_name,
+    last_name, 
+    date_of_birth,
+    street1,
+    street2,
+    cityid,
+    zip_code,
+    country_id, 
+    gender,
+    email,
+    phone_number,
+    is_enabled,
+    role_id
+) 
+VALUES (
+    'tress',
+    crypt('oven123', gen_salt('bf')),
+    'Matt',
+    'Tress',
+    '1973-12-12',
+    'Calle Lord',
+    'Calle 24',
+    (select cityid from city where city_name = 'Camuy'),
+    '442344',
+    (select country_id from country where country_name = 'Puerto Rico'),
+    'Male',
+    'matttress@gmail.com',
+    2165023467,
+    true,
+    (select role_id from roles where role_name = 'Supplier Organization Administrator')
+);
+
+ --#19 Supplier Organization Administrator  
+INSERT INTO users_table 
+(
+    username,
+    user_password,
+    first_name,
+    last_name, 
+    date_of_birth,
+    street1,
+    street2,
+    cityid,
+    zip_code,
+    country_id, 
+    gender,
+    email,
+    phone_number,
+    is_enabled,
+    role_id
+) 
+VALUES (
+    'paulacordero',
+    crypt('arroz123', gen_salt('bf')),
+    'Paula',
+    'Cordero',
+    '1980-01-15',
+    'Calle Paseo',
+    'Calle 435',
+    (select cityid from city where city_name = 'Hatillo'),
+    '00345',
+    (select country_id from country where country_name = 'Puerto Rico'),
+    'Female',
+    'paulacordero@live.com',
+    7872344421,
+    true,
+    (select role_id from roles where role_name = 'Supplier Organization Administrator')
+);
+
 
 --organization
 insert into organization (
@@ -780,6 +1002,137 @@ values(
     'goal4us@bing.com',
     true
 );
+
+ --#6
+insert into organization (
+    organization_name, 
+    organization_manager_id,
+    street1,
+    street2,
+    cityid,
+    zip_code,
+    country_id,
+    phone_number,
+    email,
+    is_enabled
+)
+values(
+    'JCI',
+    (select userid from users_table where username='juanperez'),
+    'Calle Trastalleres',
+    'Calle 24',
+    (select cityid from city where city_name = 'Mayaguez'),
+    '00682',
+    (select country_id from country where country_name = 'Puerto Rico'),
+    '9393059831',
+    'juniorchamberinternational@hotmail.com',
+    true
+);
+
+    --#7
+insert into organization (
+    organization_name, 
+    organization_manager_id,
+    street1,
+    street2,
+    cityid,
+    zip_code,
+    country_id,
+    phone_number,
+    email,
+    is_enabled
+)
+values(
+    'The Salvation Army',
+    (select userid from users_table where username='lilliancruz'),
+    'Calle Colores',
+    'Calle 109',
+    (select cityid from city where city_name = 'Hormigueros'),
+    '00687',
+    (select country_id from country where country_name = 'Puerto Rico'),
+    '9390983887',
+    'salvationarmy@live.com',
+    true
+); 
+
+    --#8
+insert into organization (
+    organization_name, 
+    organization_manager_id,
+    street1,
+    street2,
+    cityid,
+    zip_code,
+    country_id,
+    phone_number,
+    email,
+    is_enabled
+)
+values(
+    'Soles4Souls',
+    (select userid from users_table where username='vsoto'),
+    'Calle Jobos',
+    'Calle 107',
+    (select cityid from city where city_name = 'Isabela'),
+    '00603',
+    (select country_id from country where country_name = 'Puerto Rico'),
+    '7879013344',
+    'soles4souls@live.com',
+    true
+); 
+
+    --#9
+insert into organization (
+    organization_name, 
+    organization_manager_id,
+    street1,
+    street2,
+    cityid,
+    zip_code,
+    country_id,
+    phone_number,
+    email,
+    is_enabled
+)
+values(
+    'Casa Linda',
+    (select userid from users_table where username='tress'),
+    'Calle Hulk',
+    'Calle 48',
+    (select cityid from city where city_name = 'Dorado'),
+    '00631',
+    (select country_id from country where country_name = 'Puerto Rico'),
+    '7870004444',
+    'casalinda@hotmail.com',
+    true
+); 
+
+--#10
+insert into organization (
+    organization_name, 
+    organization_manager_id,
+    street1,
+    street2,
+    cityid,
+    zip_code,
+    country_id,
+    phone_number,
+    email,
+    is_enabled
+)
+values(
+    'SiembraVida',
+    (select userid from users_table where username='paulacordero'),
+    'Calle Lirios del Valle',
+    'Calle 48',
+    (select cityid from city where city_name = 'Carolina'),
+    '00123',
+    (select country_id from country where country_name = 'Puerto Rico'),
+    '9395670009',
+    'siembravida@gmail.com',
+    true
+);
+
 
 --organization representative
 insert into organization_representative (
