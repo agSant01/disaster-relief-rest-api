@@ -904,137 +904,141 @@ values(
     
 );
 
---request 
-
-insert into request(
-    resource_id,         
-    request_status_id,   
-    userid               
+-- adding requests and request transactions 
+with request_info as (
+    insert into request(
+        resource_id,         
+        request_status_id,   
+        userid               
+    )
+    values(
+        (select resource_id from resource where resource_id = 2), 
+        (select request_status_id from request_status where request_status_id = 1),
+        (select userid from users_table where username = 'valeria')
+    ) RETURNING request_id
 )
-values(
-    (select resource_id from resource where resource_id = 2), 
-    (select request_status_id from request_status where request_status_id = 1),
-    (select userid from users_table where username = 'valeria')
-);
-
-insert into request(
-    resource_id,         
-    request_status_id,   
-    userid           
-)   
-values(
-    (select resource_id from resource where resource_id = 3),
-    (select request_status_id from request_status where request_status_id = 1),
-    (select userid from users_table where username = 'valeria')
-);
-
-insert into request(
-    resource_id,         
-    request_status_id,   
-    userid 
-)             
-values(
-    (select resource_id from resource where resource_id = 4),
-    (select request_status_id from request_status where request_status_id = 4),
-    (select userid from users_table where username = 'valeria')
-);
-
-insert into request(
-    resource_id,         
-    request_status_id,   
-    userid   
-)           
-values(
-    (select resource_id from resource where resource_id = 5),
-    (select request_status_id from request_status where request_status_id = 1),
-    (select userid from users_table where username = 'gabrielsantiago')
-);
-
-insert into request(
-    resource_id,         
-    request_status_id,   
-    userid 
-)             
-values(
-    (select resource_id from resource where resource_id = 8),
-    (select request_status_id from request_status where request_status_id = 1),
-    (select userid from users_table where username = 'gabrielsantiago')
-);
-
-insert into request(
-    resource_id,         
-    request_status_id,   
-    userid 
-)             
-values(
-    (select resource_id from resource where resource_id = 6),
-    (select request_status_id from request_status where request_status_id = 2),
-    (select userid from users_table where username = 'gabrielsantiago')
-);
-  
-
--- request transaction 
-
 insert into request_transactions(
     request_id,              
     resource_id,            
     transaction_quantity    
 )
 values(
-    (select request_id from request where request_id =  2),
+    (select request_id from request_info),
     (select resource_id from resource where resource_id = 2),
     3
 );
 
+with request_info as (
+    insert into request(
+        resource_id,         
+        request_status_id,   
+        userid           
+    )   
+    values(
+        (select resource_id from resource where resource_id = 3),
+        (select request_status_id from request_status where request_status_id = 1),
+        (select userid from users_table where username = 'valeria')
+    ) RETURNING request_id
+)
 insert into request_transactions(
     request_id,              
     resource_id,             
     transaction_quantity    
 )
 values(
-    (select request_id from request where request_id =  3),
+    (select request_id from request_info),
     (select resource_id from resource where resource_id =  3),
     2
 );
 
+with request_info as (
+    insert into request(
+        resource_id,         
+        request_status_id,   
+        userid 
+    )             
+    values(
+        (select resource_id from resource where resource_id = 4),
+        (select request_status_id from request_status where request_status_id = 4),
+        (select userid from users_table where username = 'valeria')
+    ) RETURNING request_id
+)
 insert into request_transactions(
     request_id,             
     resource_id,            
     transaction_quantity    
 )
 values(
-    (select request_id from request where request_id =  4),
+    (select request_id from request_info),
     (select resource_id from resource where resource_id =  4),
     5
 );
 
+with request_info as (
+        insert into request(
+        resource_id,         
+        request_status_id,   
+        userid   
+    )           
+    values(
+        (select resource_id from resource where resource_id = 5),
+        (select request_status_id from request_status where request_status_id = 1),
+        (select userid from users_table where username = 'gabrielsantiago')
+    ) RETURNING request_id
+)
 insert into request_transactions(
     request_id,             
     resource_id,             
     transaction_quantity    
 )
 values(
-    (select request_id from request where request_id =  5),
+    (select request_id from request_info),
     (select resource_id from resource where resource_id =  5),
     1
 );
+
+with request_info as  (
+    insert into request(
+        resource_id,         
+        request_status_id,   
+        userid 
+    )             
+    values(
+        (select resource_id from resource where resource_id = 7),
+        (select request_status_id from request_status where request_status_id = 1),
+        (select userid from users_table where username = 'gabrielsantiago')
+    )   RETURNING request_id, resource_id
+)
 insert into request_transactions(
     request_id,     
     resource_id,             
     transaction_quantity    
 )
 values(
-    (select request_id from request where request_id =  6),
-    (select resource_id from resource where resource_id =  8),
+    (select request_id from request_info),
+    (select resource_id from request_info),
     7
 );
+
+with request_info as (
+    insert into request(
+        resource_id,         
+        request_status_id,   
+        userid 
+    )             
+    values(
+        (select resource_id from resource where resource_id = 6),
+        (select request_status_id from request_status where request_status_id = 2),
+        (select userid from users_table where username = 'gabrielsantiago')
+    ) RETURNING request_id
+)
 insert into request_transactions(
     request_id,            
     resource_id,            
     transaction_quantity    
 )
 values(
-    (select request_id from request where request_id =  7),
+    (select request_id from request_info),
     (select resource_id from resource where resource_id =  6),
     3
 );
