@@ -169,7 +169,7 @@ create table request (
 
 create table requested_resources(
     request_id integer references request(request_id) not null,
-    resource_id integer references resource(resource_id) not null.
+    resource_id integer references resource(resource_id) not null,
     resources_quantity integer not null,
     primary key (resource_id,request_id)
 );
