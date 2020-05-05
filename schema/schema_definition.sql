@@ -182,10 +182,10 @@ create table reservations(
     reserve_id integer references reserves(reserve_id) not null,
     resource_id integer references resource(resource_id) not null,
     primary key (resource_id,reserve_id)
-)
+);
 
 create table resource_ordered(
     order_id integer references orders(order_id) not null,
     resource_id integer references resource(resource_id) not null,
     primary key (resource_id,order_id)
-)
+);
