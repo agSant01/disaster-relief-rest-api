@@ -14,8 +14,8 @@ exports.getTypes = (req, res, next) => {
         }
 
         const msg = {
-            resource_types: result.rows,
             count: result.rowCount,
+            resource_types: result.rows,
         };
 
         res.json(msg).end();
@@ -49,8 +49,7 @@ exports.getAllResources = (req, res, next) => {
         }
 
         let msg = {
-            resources: result.rows,
-            count: result.rowCount,
+            resource: result.rows,
         };
 
         res.json(msg).end();
@@ -125,10 +124,28 @@ exports.getResourceAttributesByType = (req, res, next) => {
 };
 
 exports.getResourcesAvailable = (req, res, next) => {
-    const provider_id = req.query.providerID;
+    const provider_id = req.params.provider;
     const keyword = req.query.keyword;
 
     let query = querylib.qGetAllResourcesAvailable;
+
+    if (provider_id) {
+        if (isNaN(Number(provider_id))) {
+            res.status(401).json({
+                error:
+                    "Invalid param for 'supplier id'. Must be 'Integer' type.",
+                invalid_param: req.params.id,
+            });
+            return;
+        }
+
+        query = {
+            text: querylib.qGetAllResourcesAvailableByProvider,
+            values: [provider_id],
+        };
+    }
+
+    console.log(query);
 
     // callback
     db.query(query, (err, result) => {
@@ -142,8 +159,32 @@ exports.getResourcesAvailable = (req, res, next) => {
         }
 
         let msg = {
-            resources_available: result.rows,
             count: result.rowCount,
+            resources_available: result.rows,
+        };
+
+        if (provider_id) {
+            msg.supplier_id = Number(provider_id);
+        }
+
+        res.json(msg).end();
+    });
+};
+
+exports.getAllReservedResource = (req, res, next) => {
+    db.query(querylib.getAllReservedResources, (err, result) => {
+        console.log(err, result);
+
+        if (err) {
+            res.status(503)
+                .json(err)
+                .end();
+            return;
+        }
+
+        let msg = {
+            count: result.rowCount,
+            reserves: result.rows,
         };
 
         res.json(msg).end();
@@ -186,14 +227,70 @@ exports.getResourceByIDAndKeyword = (req, res, next) => {
         });
     }
     
-    
+}; 
+exports.getReservedResourceById = (req, res, next) => {
+    res.json('hi').end();
 };
 
 exports.getRequests = (req, res, next) => {
-    let msg = {
-        resourcesRequested: [],
-    };
-    res.json(msg).end();
+    const reqid = req.params.id;
+
+    let query = querylib.qGetAllRequests;
+
+    if (reqid) {
+        if (isNaN(Number(reqid))) {
+            res.status(401).json({
+                error:
+                    "Invalid param for 'request id'. Must be 'Integer' type.",
+                invalid_param: req.params.id,
+            });
+            return;
+        }
+
+        query = {
+            text: querylib.qGetAllRequestsById,
+            values: [reqid],
+        };
+    } else {
+        const keyword = req.query.keyword;
+
+        if (keyword) {
+            console.log(keyword);
+
+            query = {
+                text: querylib.qGetAllRequestsByKeyword,
+                values: [`%${keyword.toLowerCase().replace(/\s/g, '')}%`],
+            };
+        }
+    }
+
+    console.log(query);
+
+    db.query(query, (err, result) => {
+        console.log(err, result);
+
+        if (err) {
+            res.status(503)
+                .json(err)
+                .end();
+            return;
+        }
+
+        let msg;
+
+        if (reqid) {
+            msg = {
+                request: result.rows,
+            };
+        } else {
+            msg = {
+                count: result.rowCount,
+                requests: result.rows,
+            };
+        }
+
+        res.json(msg).end();
+    });
 };
 
 exports.getPurchase = (req, res, next) => {
