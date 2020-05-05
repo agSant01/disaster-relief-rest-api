@@ -1,9 +1,19 @@
+let config;
+
+try {
+    config = require('./config');
+} catch (error) {
+    // Do nothing. Config does not exists
+}
+
 const debug = require('debug')('e-template:server');
 const http = require('http');
 const cors = require('cors');
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+const db = require('./database');
+var bodyParser = require('body-parser');
 
 const api = require('./routes/api');
 
@@ -13,7 +23,12 @@ app.use(cors());
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
 app.use(cookieParser());
+app.use(bodyParser.urlencoded({ extended: false }));
+
+// parse application/json
+app.use(bodyParser.json());
 
 app.use('/api', api);
 
@@ -31,7 +46,11 @@ const server = http.createServer(app);
 /**
  * Listen on provided port, on all network interfaces.
  */
-server.listen(port);
+// start server
+server.listen(port, function() {
+    console.log(`Database: ${process.env.DATABASE_URL || config.DATABASE_URL}`);
+    console.log(`Listening at PORT: ${port}`);
+});
 server.on('error', onError);
 server.on('listening', onListening);
 

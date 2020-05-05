@@ -1,46 +1,347 @@
+const db = require('../../database');
+const querylib = require('./queries');
+
 exports.getTypes = (req, res, next) => {
-    let msg = {
-        resources: []
-    };
-    res.json(msg).end();
+    // callback
+    db.query(querylib.qAllTypes, (err, result) => {
+        console.log(err, result);
+
+        if (err) {
+            res.status(503)
+                .json(err)
+                .end();
+            return;
+        }
+
+        const msg = {
+            count: result.rowCount,
+            resource_types: result.rows,
+        };
+
+        res.json(msg).end();
+    });
+};
+
+exports.getAllResources = (req, res, next) => {
+    let id = req.params.ID;
+    let query
+    if(id){
+        console.log(id);
+        query = {
+            text: querylib.qResourcesByID,
+            values: [id],
+        };
+    }
+    else{
+        query = {
+            text: querylib.qAllResources
+        };
+    }
+
+    db.query(query, (err, result) => {
+        console.log(err, result);
+
+        if (err) {
+            res.status(503)
+                .json(err)
+                .end();
+            return;
+        }
+
+        let msg = {
+            resource: result.rows,
+        };
+
+        res.json(msg).end();
+    });
 };
 
 /*
 Returns the attributes associated with a particular resource type.
 */
 exports.getResourceTypeAttributes = (req, res, next) => {
-    let resourceType = req.params.type;
+    let resourceType = req.params.id;
 
-    let response = {
-        resource_type: 'Medications',
-        attributes: {
-            'Medication Type': ['Pills', 'Liquid']
-        }
+    let query = {
+        text: querylib.qTypeAttribute,
+        values: [resourceType],
     };
 
-    res.json(response).end();
+    db.query(query, (err, result) => {
+        console.log(err, result);
+
+        if (err) {
+            res.status(503)
+                .json(err)
+                .end();
+            return;
+        }
+
+        let set = new Set();
+
+        result.rows.forEach((val, inx) => set.add(val.attribute_name));
+
+        console.log(set, set.size);
+
+        const msg = {
+            resource_attributes: result.rows,
+        };
+
+        res.json(msg).end();
+    });
 };
 
-exports.getAvailable = (req, res, next) => {
-    let msg = {
-        resourcesAvailable: []
+exports.getResourceAttributesByType = (req, res, next) => {
+    let resourceType = req.params.types;
+
+    let query = {
+        text: querylib.qAttributByType,
+        values: [resourceType],
     };
-    res.json(msg).end();
+
+    db.query(query, (err, result) => {
+        console.log(err, result);
+
+        if (err) {
+            res.status(503)
+                .json(err)
+                .end();
+            return;
+        }
+
+        let set = new Set();
+
+        result.rows.forEach((val, inx) => set.add(val.attribute_name));
+
+        console.log(set, set.size);
+
+        const msg = {
+            resource_attributes: result.rows,
+        };
+
+        res.json(msg).end();
+    });
+};
+
+exports.getResourcesAvailable = (req, res, next) => {
+    const provider_id = req.params.provider;
+    const keyword = req.query.keyword;
+
+    let query = querylib.qGetAllResourcesAvailable;
+
+    if (provider_id) {
+        if (isNaN(Number(provider_id))) {
+            res.status(401).json({
+                error:
+                    "Invalid param for 'supplier id'. Must be 'Integer' type.",
+                invalid_param: req.params.id,
+            });
+            return;
+        }
+
+        query = {
+            text: querylib.qGetAllResourcesAvailableByProvider,
+            values: [provider_id],
+        };
+    }
+
+    console.log(query);
+
+    // callback
+    db.query(query, (err, result) => {
+        console.log(err, result);
+
+        if (err) {
+            res.status(503)
+                .json(err)
+                .end();
+            return;
+        }
+
+        let msg = {
+            count: result.rowCount,
+            resources_available: result.rows,
+        };
+
+        if (provider_id && result.rowCount > 0) {
+            msg.supplier_id = Number(provider_id);
+        }
+
+        res.json(msg).end();
+    });
+};
+
+exports.getAllReservedResource = (req, res, next) => {
+    db.query(querylib.getAllReservedResources, (err, result) => {
+        console.log(err, result);
+
+        if (err) {
+            res.status(503)
+                .json(err)
+                .end();
+            return;
+        }
+
+        let msg = {
+            count: result.rowCount,
+            reserves: result.rows,
+        };
+
+        res.json(msg).end();
+    });
+};
+
+exports.getResourceByIDAndKeyword = (req, res, next) => {
+    let id = req.params.ID;
+    let keyword = req.params.keyword;
+    var msg;
+
+    if(keyword){
+        msg = {
+            id:id,
+            purchase: [],
+        };
+        res.json(msg).end();
+    }
+    else{
+        let query = {
+            text: querylib.qResourcesByID,
+            values: [resourceType],
+        };
+    
+        db.query(query, (err, result) => {
+            console.log(err, result);
+    
+            if (err) {
+                res.status(503)
+                    .json(err)
+                    .end();
+                return;
+            }
+    
+            const msg = {
+                resource: result.rows,
+            };
+    
+            res.json(msg).end();
+        });
+    }
+    
+}; 
+exports.getReservedResourceById = (req, res, next) => {
+    res.json('hi').end();
 };
 
 exports.getRequests = (req, res, next) => {
-    let msg = {
-        resourcesRequested: []
-    };
-    res.json(msg).end();
+    const reqid = req.params.id;
+
+    let query = querylib.qGetAllRequests;
+
+    if (reqid) {
+        if (isNaN(Number(reqid))) {
+            res.status(401).json({
+                error:
+                    "Invalid param for 'request id'. Must be 'Integer' type.",
+                invalid_param: req.params.id,
+            });
+            return;
+        }
+
+        query = {
+            text: querylib.qGetAllRequestsById,
+            values: [reqid],
+        };
+    } else {
+        const keyword = req.query.keyword;
+
+        if (keyword) {
+            console.log(keyword);
+
+            query = {
+                text: querylib.qGetAllRequestsByKeyword,
+                values: [`%${keyword.toLowerCase().replace(/\s/g, '')}%`],
+            };
+        }
+    }
+
+    console.log(query);
+
+    db.query(query, (err, result) => {
+        console.log(err, result);
+
+        if (err) {
+            res.status(503)
+                .json(err)
+                .end();
+            return;
+        }
+
+        let msg;
+
+        if (reqid) {
+            msg = {
+                request: result.rows,
+            };
+        } else {
+            msg = {
+                count: result.rowCount,
+                requests: result.rows,
+            };
+        }
+
+        res.json(msg).end();
+    });
 };
+
+exports.getPurchase = (req, res, next) => {
+    const id = req.params.ID;
+    var msg;
+
+    if(id){
+        msg = {
+            id:id,
+            purchase: [],
+        };
+        res.json(msg).end();
+    }
+    else{
+        msg = {
+            purchase: [],
+        };
+        res.json(msg).end();
+    }
+    
+    
+};
+
+exports.getReserves = (req, res, next) => {
+    const id = req.params.ID;
+    var msg;
+
+    if(id){
+        msg = {
+            id:id,
+            purchase: [],
+        };
+        res.json(msg).end();
+    }
+    else{
+        msg = {
+            purchase: [],
+        };
+        res.json(msg).end();
+    }
+};
+
+
+
 
 exports.putUpdate = (req, res, next) => {
     let msg = {
         request: {
             info: {},
-            status: ''
-        }
+            status: '',
+        },
     };
     res.json(msg).end();
 };
@@ -63,7 +364,7 @@ exports.postResource = (req, res, next) => {
      */
 
     let response = {
-        status: 200
+        status: 200,
     };
 
     res.status(200)
@@ -86,7 +387,7 @@ exports.postResourceRequest = (req, res, next) => {
      */
 
     let response = {
-        status: 200
+        status: 200,
     };
 
     res.status(200)
@@ -108,7 +409,7 @@ exports.postReserveResource = (req, res, next) => {
      */
 
     let response = {
-        status: 200
+        status: 200,
     };
 
     res.status(200)
@@ -132,8 +433,8 @@ exports.postBuyResource = (req, res, next) => {
     let response = {
         msg: 'Order successfully processed.',
         order: {
-            order_id: Math.ceil(100000 * Math.random())
-        }
+            order_id: Math.ceil(100000 * Math.random()),
+        },
     };
 
     res.status(200)

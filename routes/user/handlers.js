@@ -1,113 +1,249 @@
+const db = require('../../database');
+const querylib = require('./queries');
+
 exports.getRoles = (req, res, next) => {
-    let msg = {
-        roles: [
-            'System Administrator',
-            'System Manager',
-            'Supplier',
-            'Requestor',
-            'Organization Admin',
-            'Organization Representative'
-        ]
+    const query = {
+        text: querylib.qRoles,
     };
-    res.json(msg).end();
-};
-
-exports.getRequests = (req, res, next) => {
-    let msg = {
-        requests: {
-            userID: req.params.id,
-            requests: []
+    // callback
+    db.query(query, (qerr, qres) => {
+        if (qerr) {
+            res.json(qerr.stack).end();
+        } else {
+            const msg = {
+                roles: qres.rows,
+                count: qres.rowCount,
+            };
+            res.json(msg).end();
         }
-    };
-    res.json(msg).end();
+    });
 };
 
-exports.getUsers = (req, res, next) => {
-    let response = {
-        users: [
-            {
-                user_id: 123,
-                first_name: 'Juan',
-                last_name: 'Del Pueblo',
-                dob: '15/05/1985',
-                address: {
-                    street_1: 'Bo. Flores, Calle Rosas 46',
-                    street_2: null,
-                    city: 'Yabucoa',
-                    country: {
-                        name: 'Puerto Rico',
-                        abbreviation: 'PR'
-                    },
-                    zip_code: '00045'
-                },
-                phone: {
-                    area_code: '787',
-                    line_number: '5555555'
-                },
-                username: 'juandelpueblo',
-                email: 'juan@pueblo.com',
-                gender: 'male',
-                user_type: 'Administrator'
-            },
-            {
-                user_id: 190,
-                first_name: 'Marcelo',
-                last_name: 'Rios',
-                dob: '15/05/1985',
-                address: {
-                    street_1: 'Bo. Caraizo, Calle Ramirez 5',
-                    street_2: null,
-                    city: 'Coamo',
-                    country: {
-                        name: 'Puerto Rico',
-                        abbreviation: 'PR'
-                    },
-                    zip_code: '00395'
-                },
-                phone: {
-                    area_code: '787',
-                    line_number: '5555555'
-                },
-                username: 'marcelo78',
-                email: 'marcelo@gmail.com',
-                gender: 'Male',
-                user_type: 'Organization Representative'
-            }
-        ]
-    };
+exports.getAllUsers = (req, res, next) => {
+    const is_debug = req.query.debug == 'true';
 
-    res.json(response).end();
+    let query;
+
+    console.log(is_debug);
+
+    if (is_debug) {
+        query = querylib.qAllUsersDebug;
+    } else {
+        query = querylib.qAllUsers;
+    }
+
+    console.log(query);
+
+    // callback
+    db.query(query, (qerr, qres) => {
+        if (qerr) {
+            res.json(qerr.stack).end();
+        } else {
+            const msg = {
+                users: qres.rows,
+                count: qres.rowCount,
+            };
+            res.json(msg).end();
+        }
+    });
+};
+
+exports.getAdministrators = (req, res, next) => {
+    const is_debug = req.query.debug == 'true';
+
+    let query;
+
+    console.log(is_debug);
+
+    if (is_debug) {
+        query = querylib.qGetAdministratorsDebug;
+    } else {
+        query = querylib.qGetAdministrators;
+    }
+
+    console.log(query);
+
+    // callback
+    db.query(query, (qerr, qres) => {
+        if (qerr) {
+            res.json(qerr.stack).end();
+        } else {
+            const msg = {
+                count: qres.rowCount,
+                administrators: qres.rows,
+            };
+            res.json(msg).end();
+        }
+    });
 };
 
 exports.getUser = (req, res, next) => {
     let user_id = req.params.id;
+    let is_not_enabled = req.query.enabled == 'false';
+    let is_debug = req.query.debug == 'true';
 
-    let response = {
-        user: {
-            user_id: user_id,
-            first_name: 'Juan',
-            last_name: 'Del Pueblo',
-            dob: '15/05/1985',
-            address: {
-                street_1: 'Bo. Flores, Calle Rosas 46',
-                street_2: null,
-                city: 'Yabucoa',
-                country: {
-                    name: 'Puerto Rico',
-                    abbreviation: 'PR'
-                },
-                zip_code: '00045'
-            },
-            phone: {
-                area_code: '787',
-                line_number: '5555555'
-            },
-            username: 'juandelpueblo',
-            email: 'juan@pueblo.com',
-            gender: 'male',
-            user_type: 'admin'
-        }
+    if (isNaN(Number(user_id))) {
+        res.status(401).json({
+            error: "Invalid param for 'user id'. Must be 'Integer' type.",
+            invalid_param: req.params.id,
+        });
+        return;
+    }
+
+    let query_text;
+
+    // get debug query or prod
+    if (is_debug) {
+        query_text = querylib.qUserDebug;
+    } else {
+        query_text = querylib.qUser;
+    }
+
+    // build prepared statement
+    const query = {
+        text: query_text,
+        values: [user_id, !is_not_enabled],
     };
 
-    res.json(response).end();
+    // callback
+    db.query(query, (qerr, qres) => {
+        if (qerr) {
+            res.json(qerr.stack).end();
+        } else {
+            // build return mesage
+            const msg = {
+                user: qres.rows,
+            };
+            res.json(msg).end();
+        }
+    });
+};
+
+exports.getRequests = (req, res, next) => {
+    let user_id = req.params.id;
+
+    if (isNaN(Number(user_id))) {
+        res.status(401).json({
+            error: "Invalid param for 'user id'. Must be 'Integer' type.",
+            invalid_param: req.params.id,
+        });
+        return;
+    }
+
+    const query = {
+        text: querylib.qGetRequestsByUserId,
+        values: [user_id],
+    };
+
+    // callback
+    db.query(query, (qerr, qres) => {
+        if (qerr) {
+            res.json(qerr.stack).end();
+        } else {
+            const msg = {
+                requestor_id: user_id,
+                count: qres.rowCount,
+                requests: qres.rows,
+            };
+
+            res.json(msg).end();
+        }
+    });
+};
+
+exports.getReserves = (req, res, next) => {
+    let user_id = req.params.id;
+
+    if (isNaN(Number(user_id))) {
+        res.status(401).json({
+            error: "Invalid param for 'user id'. Must be 'Integer' type.",
+            invalid_param: req.params.id,
+        });
+        return;
+    }
+
+    const query = {
+        text: querylib.qGetReservesByUserId,
+        values: [user_id],
+    };
+
+    // callback
+    db.query(query, (qerr, qres) => {
+        if (qerr) {
+            res.json(qerr.stack).end();
+        } else {
+            const msg = {
+                reservations: qres.rows,
+                count: qres.rowCount,
+            };
+
+            res.json(msg).end();
+        }
+    });
+};
+
+exports.getUserOrders = (req, res, next) => {
+    const user_id = req.params.id;
+
+    if (isNaN(Number(user_id))) {
+        res.status(401).json({
+            error: "Invalid param for 'user id'. Must be 'Integer' type.",
+            invalid_param: req.params.id,
+        });
+        return;
+    }
+
+    const purchase_id = req.params.purchaseid;
+
+    let query;
+
+    if (purchase_id) {
+        if (isNaN(Number(purchase_id))) {
+            res.status(401).json({
+                error:
+                    "Invalid param for 'purchase id'. Must be 'Integer' type.",
+                invalid_param: req.params.id,
+            });
+            return;
+        }
+
+        query = {
+            text: querylib.qGetPurchasesByUserIdAndOrderId,
+            values: [user_id, purchase_id],
+        };
+    } else {
+        query = {
+            text: querylib.qGetPurchasesByUserId,
+            values: [user_id],
+        };
+    }
+
+    console.log(query);
+
+    // callback
+    db.query(query, (qerr, qres) => {
+        console.log(qerr, qres);
+
+        if (qerr) {
+            res.status(503)
+                .json(qerr.stack)
+                .end();
+        } else {
+            let msg;
+
+            if (purchase_id) {
+                msg = {
+                    purchase: qres.rows,
+                };
+            } else {
+                msg = {
+                    count: qres.rowCount,
+                    purchases: qres.rows,
+                };
+            }
+            msg.user_id = user_id;
+
+            res.json(msg).end();
+        }
+    });
 };
