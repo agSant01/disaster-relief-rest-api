@@ -1284,7 +1284,35 @@ values((select resource_type_id from resource_type where resource_type_name = 'B
 insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
 values((select resource_type_id from resource_type where resource_type_name = 'Battery'), 'Battery Type', 'E (9-Volt)');
 
--- add into resource
+-- resource
+insert into resource (resource_quantity,resource_location_latitude,resource_location_longitude,resource_type_id,resource_status_id, senate_region_id)
+values(
+    10,
+    18.19614793,
+    67.14750767,
+    (select resource_type_id from resource_type where resource_type_name = 'Battery'),
+    (select resource_status_id from resource_status where resource_status_name = 'Available'),
+    (select senate_region_id from senate_region where senate_region_name = 'IV - Mayaguez-Aguadilla')
+);
+
+insert into resource (resource_quantity,resource_location_latitude,resource_location_longitude,resource_type_id,resource_status_id, senate_region_id)
+values(
+    10,
+    18.19614793,
+    67.14750767,
+    (select resource_type_id from resource_type where resource_type_name = 'Water'),
+    (select resource_status_id from resource_status where resource_status_name = 'Available'),
+    (select senate_region_id from senate_region where senate_region_name = 'IV - Mayaguez-Aguadilla')
+);
+insert into resource (resource_quantity,resource_location_latitude,resource_location_longitude,resource_type_id,resource_status_id, senate_region_id)
+values(
+    10,
+    18.19614793,
+    67.14750767,
+    (select resource_type_id from resource_type where resource_type_name = 'Water'),
+    (select resource_status_id from resource_status where resource_status_name = 'Available'),
+    (select senate_region_id from senate_region where senate_region_name = 'IV - Mayaguez-Aguadilla')
+);
 insert into resource (resource_quantity,resource_location_latitude,resource_location_longitude,resource_type_id,resource_status_id, senate_region_id)
 values(
     10,
@@ -1334,18 +1362,14 @@ values(
 
 
 --orders
-insert into orders(resource_quantity,order_price,userid,resource_id,payment_method_id)
+insert into orders(userid,payment_method_id)
 values(
-    1,
-    20,
     (select userid from users_table where username = 'valeria'),
     (select payment_method_id from payment_method where payment_method_name = 'Debit')
     
 );
-insert into orders(resource_quantity,order_price,userid,resource_id,payment_method_id)
+insert into orders(userid,payment_method_id)
 values(
-    1,
-    10,
     (select userid from users_table where username = 'valeria'),
     (select payment_method_id from payment_method where payment_method_name = 'WIC')
     
@@ -1353,35 +1377,27 @@ values(
 
 
 -- reserves
-insert into reserves(userid,resource_id,quantity)
+insert into reserves(userid)
 values(
-    (select resource_id from resource where resource_type_id = 7),
-    2
+    (select userid from users_table where username = 'valeria')
 );
 
-insert into reserves(userid,resource_id,quantity)
+insert into reserves(userid)
 values(
-    (select resource_id from resource where resource_id = 5),
-    2
+    (select userid from users_table where username = 'valeria')
 );
 
-insert into reserves(userid,resource_id,quantity)
+insert into reserves(userid)
 values(
-    (select resource_id from resource where resource_id = 2),
-    1
-    
+   (select userid from users_table where username = 'valeria')
 );
-insert into reserves(userid,resource_id,quantity)
+insert into reserves(userid)
 values(
-    (select resource_id from resource where resource_id = 5),
-    14
-    
+    (select userid from users_table where username = 'valeria')
 );
-insert into reserves(userid,resource_id,quantity)
+insert into reserves(userid)
 values(
-    (select resource_id from resource where resource_id = 4),
-    10
-    
+   (select userid from users_table where username = 'valeria')    
 );
 
 -- adding requests and request transactions 
@@ -1484,7 +1500,7 @@ with request_info as  (
         userid 
     )             
     values(
-        (select resource_id from resource where resource_id = 7),
+        (select resource_id from resource where resource_id = 6),
         (select request_status_id from request_status where request_status_id = 1),
         (select userid from users_table where username = 'gabrielsantiago')
     )   RETURNING request_id, resource_id
@@ -1524,69 +1540,87 @@ values(
 );
 
 --ordered resource 
-insert into resource_ordered(order_id,resource_id)
+insert into resource_ordered(order_id, resource_id, order_price, quantity)
 values(
     (select order_id from orders where order_id = 1),
-    (select resource_id from resource where resource_id = 6)
+    (select resource_id from resource where resource_id = 5),
+    12,
+    1
 );
-insert into resource_ordered(order_id,resource_id)
+insert into resource_ordered(order_id,resource_id,order_price, quantity)
 values(
     (select order_id from orders where  order_id  = 1),
-    (select resource_id from resource where resource_id = 3)
+    (select resource_id from resource where resource_id = 3),
+    13,
+    3
 );
-insert into resource_ordered(order_id,resource_id)
+insert into resource_ordered(order_id,resource_id, order_price, quantity)
 values(
     (select order_id from orders where  order_id  = 1),
-    (select resource_id from resource where resource_id = 2)
+    (select resource_id from resource where resource_id = 2),
+    20,
+    1
 );
 
-insert into resource_ordered(order_id,resource_id)
+insert into resource_ordered(order_id,resource_id, order_price, quantity)
 values(
     (select order_id from orders where  order_id  = 2),
-    (select resource_id from resource where resource_id = 1)
+    (select resource_id from resource where resource_id = 1),
+    4,
+    8
 );
-insert into resource_ordered(order_id,resource_id)
+insert into resource_ordered(order_id,resource_id, order_price, quantity)
 values(
     (select order_id from orders where  order_id  = 2),
-    (select resource_id from resource where resource_id = 4)
+    (select resource_id from resource where resource_id = 4),
+    7,
+    20
 );
-insert into resource_ordered(order_id,resource_id)
+insert into resource_ordered(order_id,resource_id, order_price, quantity)
 values(
     (select order_id from orders where  order_id  = 2),
-    (select resource_id from resource where resource_id = 5)
+    (select resource_id from resource where resource_id = 5),
+    14,
+    4
 );
 
 --reservations 
-insert into reservations(reserve_id,resource_id)
+insert into reservations(reserve_id,resource_id,quantity)
 values(
     (select reserve_id from reserves where reserve_id = 1),
-    (select resource_id from resource where resource_id = 6)
+    (select resource_id from resource where resource_id = 1),
+    1
 );
-insert into reservations(reserve_id,resource_id)
+insert into reservations(reserve_id,resource_id,quantity)
 values(
     (select reserve_id from reserves where reserve_id = 1),
-    (select resource_id from resource where resource_id = 3)
+    (select resource_id from resource where resource_id = 3),
+    10
 );
-insert into reservations(reserve_id,resource_id)
+insert into reservations(reserve_id,resource_id,quantity)
 values(
     (select reserve_id from reserves where reserve_id = 2),
-    (select resource_id from resource where resource_id = 2)
+    (select resource_id from resource where resource_id = 2),
+    5
 );
 
-insert into reservations(reserve_id,resource_id)
+insert into reservations(reserve_id,resource_id,quantity)
 values(
     (select reserve_id from reserves where reserve_id = 3),
-    (select resource_id from resource where resource_id = 1)
+    (select resource_id from resource where resource_id = 1),
+    6
 );
-insert into reservations(reserve_id,resource_id)
+insert into reservations(reserve_id,resource_id,quantity)
 values(
     (select reserve_id from reserves where reserve_id = 3),
-    (select resource_id from resource where resource_id = 4)
+    (select resource_id from resource where resource_id = 4),
+    2
 );
-insert into reservations(reserve_id,resource_id)
+insert into reservations(reserve_id,resource_id,quantity)
 values(
     (select reserve_id from reserves where reserve_id = 3),
-    (select resource_id from resource where resource_id = 5)
+    (select resource_id from resource where resource_id = 5),
+    7
 );
 
 -- create resources as submitted by supplier
