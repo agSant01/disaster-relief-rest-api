@@ -23,10 +23,38 @@ exports.getTypes = (req, res, next) => {
 };
 
 exports.getAllResources = (req, res, next) => {
-    let msg = {
-        resources: [],
-    };
-    res.json(msg).end();
+    let id = req.params.ID;
+    let query
+    if(id){
+        console.log(id);
+        query = {
+            text: querylib.qResourcesByID,
+            values: [id],
+        };
+    }
+    else{
+        query = {
+            text: querylib.qAllResources
+        };
+    }
+
+    db.query(query, (err, result) => {
+        console.log(err, result);
+
+        if (err) {
+            res.status(503)
+                .json(err)
+                .end();
+            return;
+        }
+
+        let msg = {
+            resources: result.rows,
+            count: result.rowCount,
+        };
+
+        res.json(msg).end();
+    });
 };
 
 /*
@@ -37,6 +65,38 @@ exports.getResourceTypeAttributes = (req, res, next) => {
 
     let query = {
         text: querylib.qTypeAttribute,
+        values: [resourceType],
+    };
+
+    db.query(query, (err, result) => {
+        console.log(err, result);
+
+        if (err) {
+            res.status(503)
+                .json(err)
+                .end();
+            return;
+        }
+
+        let set = new Set();
+
+        result.rows.forEach((val, inx) => set.add(val.attribute_name));
+
+        console.log(set, set.size);
+
+        const msg = {
+            resource_attributes: result.rows,
+        };
+
+        res.json(msg).end();
+    });
+};
+
+exports.getResourceAttributesByType = (req, res, next) => {
+    let resourceType = req.params.types;
+
+    let query = {
+        text: querylib.qAttributByType,
         values: [resourceType],
     };
 
@@ -88,6 +148,45 @@ exports.getResourcesAvailable = (req, res, next) => {
 
         res.json(msg).end();
     });
+};
+
+exports.getResourceByIDAndKeyword = (req, res, next) => {
+    let id = req.params.ID;
+    let keyword = req.params.keyword;
+    var msg;
+
+    if(keyword){
+        msg = {
+            id:id,
+            purchase: [],
+        };
+        res.json(msg).end();
+    }
+    else{
+        let query = {
+            text: querylib.qResourcesByID,
+            values: [resourceType],
+        };
+    
+        db.query(query, (err, result) => {
+            console.log(err, result);
+    
+            if (err) {
+                res.status(503)
+                    .json(err)
+                    .end();
+                return;
+            }
+    
+            const msg = {
+                resource: result.rows,
+            };
+    
+            res.json(msg).end();
+        });
+    }
+    
+    
 };
 
 exports.getRequests = (req, res, next) => {

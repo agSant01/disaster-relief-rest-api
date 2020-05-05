@@ -5,25 +5,28 @@
 
 
 ### Get all resources
-GET http://localhost:3000/api/resources HTTP/1.1
+GET {{url}}/api/resources HTTP/1.1
 
 ### Get Types
-GET http://localhost:3000/api/resources/types HTTP/1.1
+GET {{url}}/api/resources/types HTTP/1.1
+
+### Get Types by ID
+GET {{url}}/api/resources/types/1 HTTP/1.1
 
 ### Get Attributes by type
-GET http://localhost:3000/api/resources/Water/attributes HTTP/1.1
+GET {{url}}/api/resources/Water/attributes HTTP/1.1
 
 ### Get Available resources optional 
-GET http://localhost:3000/api/resources/available HTTP/1.1
+GET {{url}}/api/resources/available HTTP/1.1
 
 ### Get requests by id and keyword
-GET http://localhost:3000/api/resources HTTP/1.1
+GET {{url}}/api/resources/2 HTTP/1.1
 
 ### Get all purchases
-GET http://localhost:3000/api/resources/purchase HTTP/1.1
+GET {{url}}/api/resources/purchase HTTP/1.1
 
 ### Get purchases by id
-GET http://localhost:3000/api/resources/purchase/3 HTTP/1.1
+GET {{url}}/api/resources/purchase/3 HTTP/1.1
 
 ### Get suppliers
-GET http://localhost:3000/api/resources HTTP/1.1
+GET {{url}}/api/resources HTTP/1.1
