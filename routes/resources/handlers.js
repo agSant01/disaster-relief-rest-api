@@ -33,7 +33,7 @@ exports.getAllResources = (req, res, next) => {
 Returns the attributes associated with a particular resource type.
 */
 exports.getResourceTypeAttributes = (req, res, next) => {
-    let resourceType = req.params.type;
+    let resourceType = req.params.id;
 
     let query = {
         text: querylib.qTypeAttribute,
@@ -58,8 +58,6 @@ exports.getResourceTypeAttributes = (req, res, next) => {
 
         const msg = {
             resource_attributes: result.rows,
-            attribute_count: set.size,
-            count: result.rowCount,
         };
 
         res.json(msg).end();
@@ -84,7 +82,7 @@ exports.getResourcesAvailable = (req, res, next) => {
         }
 
         let msg = {
-            resourcesAvailable: result.rows,
+            resources_available: result.rows,
             count: result.rowCount,
         };
 
