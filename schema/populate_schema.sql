@@ -2533,6 +2533,78 @@ values(
     20
 );
 
+--#5
+insert into resource_ordered(order_id,resource_id, resources_quantity, order_price)
+values(
+    (select order_id from orders where  order_id =3),
+    (select resource_id from resource where resource_id = 1),
+    1,
+    12340.75    
+);
+
+--#6
+insert into resource_ordered(order_id,resource_id, resources_quantity, order_price)
+values(
+    (select order_id from orders where  order_id =4),
+    (select resource_id from resource where resource_id = 3),
+    1,
+    1000.00    
+);
+
+--#7
+insert into resource_ordered(order_id,resource_id, resources_quantity, order_price)
+values(
+    (select order_id from orders where  order_id =5),
+    (select resource_id from resource where resource_id = 4),
+    2,
+    40    
+);
+
+--#8
+insert into resource_ordered(order_id,resource_id, resources_quantity, order_price)
+values(
+    (select order_id from orders where  order_id =6),
+    (select resource_id from resource where resource_id = 6),
+    2,
+    2.46    
+);
+
+--#9
+insert into resource_ordered(order_id,resource_id, resources_quantity, order_price)
+values(
+    (select order_id from orders where  order_id =7),
+    (select resource_id from resource where resource_id = 1),
+    2,
+    24681.50    
+);
+
+--#10
+insert into resource_ordered(order_id,resource_id, resources_quantity, order_price)
+values(
+    (select order_id from orders where  order_id =8),
+    (select resource_id from resource where resource_id = 6),
+    4,
+    4.92   
+);
+
+--#11
+insert into resource_ordered(order_id,resource_id, resources_quantity, order_price)
+values(
+    (select order_id from orders where  order_id =9),
+    (select resource_id from resource where resource_id = 3),
+    2,
+    2000   
+);
+
+--#12
+insert into resource_ordered(order_id,resource_id, resources_quantity, order_price)
+values(
+    (select order_id from orders where  order_id =10),
+    (select resource_id from resource where resource_id = 4),
+    6,
+    120  
+);
+
 ---------------------------------------
 -- start of reserves
 
