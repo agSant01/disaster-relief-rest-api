@@ -1,47 +1,52 @@
-###
+@localhost = http://localhost:3000
+@heroku = https://evening-tor-08768.herokuapp.com
 
-GET http://localhost:3000/api/users/roles
-
-###
-
-GET http://localhost:3000/api/users
+@url = {{localhost}}
 
 ###
 
-GET http://localhost:3000/api/users?debug=true
+GET {{url}}/api/users/roles
 
 ###
 
-GET http://localhost:3000/api/users/2
+GET {{url}}/api/users
 
 ###
 
-GET http://localhost:3000/api/users/2?debug=true
+GET {{url}}/api/users?debug=true
 
 ###
 
-GET http://localhost:3000/api/users/2?enabled=false&debug=true
+GET {{url}}/api/users/2
 
 ###
 
-GET http://localhost:3000/api/users/2?enabled=true&debug=false
+GET {{url}}/api/users/2?debug=true
 
 ###
 
-GET http://localhost:3000/api/users/administrators
+GET {{url}}/api/users/2?enabled=false&debug=true
 
 ###
 
-GET http://localhost:3000/api/users/administrators?debug=true
+GET {{url}}/api/users/2?enabled=true&debug=false
 
 ###
 
-GET http://localhost:3000/api/users/2/requests
+GET {{url}}/api/users/administrators
 
 ###
 
-GET http://localhost:3000/api/users/3/reserves
+GET {{url}}/api/users/administrators?debug=true
 
 ###
 
-GET http://localhost:3000/api/users/2/purchases
+GET {{url}}/api/users/2/requests
+
+###
+
+GET {{url}}/api/users/3/reserves
+
+###
+
+GET {{url}}/api/users/2/purchases

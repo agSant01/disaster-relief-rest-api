@@ -9,7 +9,7 @@ router.get('/', handler.getAllResources);
 router.get('/types', handler.getTypes);
 
 // Get the attribute of a certain resource type
-router.get('/:type/attributes', handler.getResourceTypeAttributes);
+router.get('/types/:id', handler.getResourceTypeAttributes);
 
 // Get available resources
 router.get('/available/:provider?/:keyword?', handler.getResourcesAvailable);

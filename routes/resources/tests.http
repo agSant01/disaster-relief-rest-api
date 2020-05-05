@@ -1,0 +1,25 @@
+@localhost = http://localhost:3000
+@heroku = https://evening-tor-08768.herokuapp.com
+
+@url = {{localhost}}
+
+###
+
+GET {{url}}/api/resources
+
+###
+
+GET {{url}}/api/resources/types
+
+###
+
+GET {{url}}/api/resources/types/1
+
+
+###
+
+GET {{url}}/api/resources/available
+
+###
+
+GET {{url}}/api/resources/available

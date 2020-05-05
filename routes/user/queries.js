@@ -50,6 +50,7 @@ module.exports = {
                 resource.resource_location_longitude,
                 resource_status.resource_status_name,
                 resource_type.resource_type_name,
+                ('https://www.google.com/maps/dir/?api=1&destination='||resource_location_latitude||','||resource_location_longitude) as google_maps_location,
                 (
                     select json_agg(row_to_json((SELECT d FROM (SELECT 
                         resource_type_field_name as attribute_name,
@@ -114,6 +115,8 @@ module.exports = {
                 resource_status.resource_status_name,
                 resource_type.resource_type_name,
                 resource.resource_quantity,
+                ('https://www.google.com/maps/dir/?api=1&destination='||resource_location_latitude||','||resource_location_longitude) as google_maps_location,
+            
                 (
                     select json_agg(row_to_json((SELECT d FROM (SELECT 
                         resource_type_field_name as attribute_name,
