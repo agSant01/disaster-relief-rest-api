@@ -41,7 +41,7 @@ GET {{url}}/api/users/administrators?debug=true
 
 ###
 
-GET {{url}}/api/users/2/requests
+GET {{url}}/api/users/10/requests
 
 ###
 

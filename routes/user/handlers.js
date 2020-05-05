@@ -69,8 +69,8 @@ exports.getAdministrators = (req, res, next) => {
             res.json(qerr.stack).end();
         } else {
             const msg = {
-                administrators: qres.rows,
                 count: qres.rowCount,
+                administrators: qres.rows,
             };
             res.json(msg).end();
         }
@@ -81,6 +81,14 @@ exports.getUser = (req, res, next) => {
     let user_id = req.params.id;
     let is_not_enabled = req.query.enabled == 'false';
     let is_debug = req.query.debug == 'true';
+
+    if (isNaN(Number(user_id))) {
+        res.status(401).json({
+            error: "Invalid param for 'user id'. Must be 'Integer' type.",
+            invalid_param: req.params.id,
+        });
+        return;
+    }
 
     let query_text;
 
@@ -105,7 +113,6 @@ exports.getUser = (req, res, next) => {
             // build return mesage
             const msg = {
                 user: qres.rows,
-                count: qres.rowCount,
             };
             res.json(msg).end();
         }
@@ -114,6 +121,14 @@ exports.getUser = (req, res, next) => {
 
 exports.getRequests = (req, res, next) => {
     let user_id = req.params.id;
+
+    if (isNaN(Number(user_id))) {
+        res.status(401).json({
+            error: "Invalid param for 'user id'. Must be 'Integer' type.",
+            invalid_param: req.params.id,
+        });
+        return;
+    }
 
     const query = {
         text: querylib.qGetRequestsByUserId,
@@ -126,8 +141,9 @@ exports.getRequests = (req, res, next) => {
             res.json(qerr.stack).end();
         } else {
             const msg = {
-                requests: qres.rows,
+                requestor_id: user_id,
                 count: qres.rowCount,
+                requests: qres.rows,
             };
 
             res.json(msg).end();
@@ -137,6 +153,14 @@ exports.getRequests = (req, res, next) => {
 
 exports.getReserves = (req, res, next) => {
     let user_id = req.params.id;
+
+    if (isNaN(Number(user_id))) {
+        res.status(401).json({
+            error: "Invalid param for 'user id'. Must be 'Integer' type.",
+            invalid_param: req.params.id,
+        });
+        return;
+    }
 
     const query = {
         text: querylib.qGetReservesByUserId,
