@@ -942,6 +942,16 @@ values(
     'Antipsychotics'
 );
 insert into resource_attribute_definition (    
+    resource_type_id,
+    resource_type_field_name,
+    resource_type_field_value
+    )
+values(
+    (SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Medication'),
+    'Medication Type',
+    'Anti-Inflammatory'
+);
+insert into resource_attribute_definition (    
 resource_type_id,
 resource_type_field_name,
 resource_type_field_value
@@ -1132,6 +1142,8 @@ values((select resource_type_id from resource_type where resource_type_name = 'F
 -- fuel octane
 insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
 values((select resource_type_id from resource_type where resource_type_name = 'Fuel'),'Octane', null);
+insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
+values((select resource_type_id from resource_type where resource_type_name = 'Fuel'),'Measurement Unit', 'Liter');
 
 -- medical device
 insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
@@ -1272,75 +1284,7 @@ values((select resource_type_id from resource_type where resource_type_name = 'B
 insert into resource_attribute_definition(resource_type_id, resource_type_field_name,resource_type_field_value)
 values((select resource_type_id from resource_type where resource_type_name = 'Battery'), 'Battery Type', 'E (9-Volt)');
 
--- resource as  submitted by supplier
-with first_id as (
-    insert into resource (resource_quantity,resource_location_latitude,resource_location_longitude,resource_type_id,resource_status_id, senate_region_id)
-    values(
-        5,
-        18.19614793,
-        67.14750767,
-        (select resource_type_id from resource_type where resource_type_name = 'Fuel'),
-        (select resource_status_id from resource_status where resource_status_name = 'Available'),
-        (select senate_region_id from senate_region where senate_region_name = 'IV - Mayaguez-Aguadilla')
-    ) RETURNING resource_id
-), second_id as (
-    insert into resource_attribute(resource_id, resource_type_field_name, resource_type_field_value)
-    values((select resource_id from first_id), 'Fuel Type', 'Gasoline') 
-    RETURNING resource_id
-), third_id as (
-    insert into resource_attribute(resource_id, resource_type_field_name, resource_type_field_value)
-    values((select resource_id from SECOND_id), 'Octane', '83')
-    RETURNING resource_id
-)
-insert into reserves(userid,resource_id,quantity)
-values(
-    (select userid from users_table where username = 'valeria'),
-    (select resource_id from third_id),
-    3
-);
-
-with first_id as (
-    insert into resource (resource_quantity,resource_location_latitude,resource_location_longitude,resource_type_id,resource_status_id, senate_region_id)
-    values(
-        100,
-        18.19614793,
-        67.14750767,
-        (select resource_type_id from resource_type where resource_type_name = 'Heavy Equipment'),
-        (select resource_status_id from resource_status where resource_status_name = 'Available'),
-        (select senate_region_id from senate_region where senate_region_name = 'IV - Mayaguez-Aguadilla')
-    ) RETURNING resource_id
-), second_id as (
-    insert into resource_attribute(resource_id, resource_type_field_name, resource_type_field_value)
-    values((select resource_id from first_id), 'Equipment Type', 'Bulldozers') 
-    RETURNING resource_id
-), third_id as (
-    insert into resource_attribute(resource_id, resource_type_field_name, resource_type_field_value)
-    values((select resource_id from first_id), 'Fuel Type', 'Diesel') 
-    RETURNING resource_id
-), fourth_id as (
-    insert into resource_attribute(resource_id, resource_type_field_name, resource_type_field_value)
-    values((select resource_id from first_id), 'Transaction Type', 'Rent') 
-    RETURNING resource_id
-), fifth_id as (
-    insert into resource_attribute(resource_id, resource_type_field_name, resource_type_field_value)
-    values((select resource_id from first_id), 'Duration Period Unit', 'Week(s)') 
-    RETURNING resource_id
-), sixth_id as (
-    insert into resource_attribute(resource_id, resource_type_field_name, resource_type_field_value)
-    values((select resource_id from first_id), 'Duration', 2) 
-    RETURNING resource_id
-),
-insert into submits_resource(resource_id, userid, resource_price, is_for_sale, delivery_method_id)
-values(
-    (select resource_id from sixth_id),
-    (select userid from users_table where username = 'gabrielsantiago'),
-    12340.75, -- per unit
-    true,
-    (select delivery_method_id from delivery_method where method_name = 'Pick-up')
-);
-
--- add into 
-
+-- add into resource
 insert into resource (resource_quantity,resource_location_latitude,resource_location_longitude,resource_type_id,resource_status_id, senate_region_id)
 values(
     10,
@@ -1643,4 +1587,211 @@ insert into reservations(reserve_id,resource_id)
 values(
     (select reserve_id from reserves where reserve_id = 3),
     (select resource_id from resource where resource_id = 5)
+);
+
+-- create resources as submitted by supplier
+with first_id as (
+    insert into resource (resource_quantity,resource_location_latitude,resource_location_longitude,resource_type_id,resource_status_id, senate_region_id)
+    values(
+        100,
+        18.19614793,
+        67.14750767,
+        (select resource_type_id from resource_type where resource_type_name = 'Heavy Equipment'),
+        (select resource_status_id from resource_status where resource_status_name = 'Available'),
+        (select senate_region_id from senate_region where senate_region_name = 'IV - Mayaguez-Aguadilla')
+    ) RETURNING resource_id
+), second_id as (
+    insert into resource_attribute(resource_id, resource_type_field_name, resource_type_field_value)
+    values((select resource_id from first_id), 'Equipment Type', 'Bulldozers') 
+    RETURNING resource_id
+), third_id as (
+    insert into resource_attribute(resource_id, resource_type_field_name, resource_type_field_value)
+    values((select resource_id from first_id), 'Fuel Type', 'Diesel') 
+    RETURNING resource_id
+), fourth_id as (
+    insert into resource_attribute(resource_id, resource_type_field_name, resource_type_field_value)
+    values((select resource_id from first_id), 'Transaction Type', 'Rent') 
+    RETURNING resource_id
+), fifth_id as (
+    insert into resource_attribute(resource_id, resource_type_field_name, resource_type_field_value)
+    values((select resource_id from first_id), 'Duration Period Unit', 'Week(s)') 
+    RETURNING resource_id
+), sixth_id as (
+    insert into resource_attribute(resource_id, resource_type_field_name, resource_type_field_value)
+    values((select resource_id from first_id), 'Duration', 2) 
+    RETURNING resource_id
+),
+insert into submits_resource(resource_id, userid, resource_price, is_for_sale, delivery_method_id)
+values(
+    (select resource_id from sixth_id),
+    (select userid from users_table where username = 'gabrielsantiago'),
+    12340.75, -- per unit
+    true,
+    (select delivery_method_id from delivery_method where method_name = 'Pick-up')
+);
+
+with first_id as (
+    insert into resource (resource_quantity,resource_location_latitude,resource_location_longitude,resource_type_id,resource_status_id, senate_region_id)
+    values(
+        500,
+        18.19614793,
+        67.14750767,
+        (select resource_type_id from resource_type where resource_type_name = 'Water'),
+        (select resource_status_id from resource_status where resource_status_name = 'Available'),
+        (select senate_region_id from senate_region where senate_region_name = 'II - Bayamon')
+    ) RETURNING resource_id
+), second_id as (
+    insert into resource_attribute(resource_id, resource_type_field_name, resource_type_field_value)
+    values((select resource_id from first_id), 'Water Type', 'Distilled') 
+    RETURNING resource_id
+), third_id as (
+    insert into resource_attribute(resource_id, resource_type_field_name, resource_type_field_value)
+    values((select resource_id from first_id), 'Container Size', '64oz. (1 Gal.)') 
+    RETURNING resource_id
+), fourth_id as (
+    insert into resource_attribute(resource_id, resource_type_field_name, resource_type_field_value)
+    values((select resource_id from first_id), 'Quantity Per Unit', '20') 
+    RETURNING resource_id
+), fifth_id as (
+    insert into resource_attribute(resource_id, resource_type_field_name, resource_type_field_value)
+    values((select resource_id from first_id), 'Expiration Date', '2025-05-09') 
+    RETURNING resource_id
+),
+insert into submits_resource(resource_id, userid, resource_price, is_for_sale, delivery_method_id)
+values(
+    (select resource_id from sixth_id),
+    (select userid from users_table where username = 'valeria'),
+    25, -- per unit
+    true,
+    (select delivery_method_id from delivery_method where method_name = 'Pick-up')
+);
+
+with first_id as (
+    insert into resource (resource_quantity,resource_location_latitude,
+    resource_location_longitude,resource_type_id,resource_status_id, s
+    enate_region_id)
+    values(
+        5000,
+        18.19614793,
+        67.14750767,
+        (select resource_type_id from resource_type where resource_type_name = 'Medication'),
+        (select resource_status_id from resource_status where resource_status_name = 'Available'),
+        3
+    ) RETURNING resource_id
+), second_id as (
+    insert into resource_attribute(resource_id, resource_type_field_name, resource_type_field_value)
+    values((select resource_id from first_id), 'Medication Name', 'Motrin') 
+    RETURNING resource_id
+), third_id as (
+    insert into resource_attribute(resource_id, resource_type_field_name, resource_type_field_value)
+    values((select resource_id from first_id), 'Expiration Date', '2021-05-03') 
+    RETURNING resource_id
+), fourth_id as (
+    insert into resource_attribute(resource_id, resource_type_field_name, resource_type_field_value)
+    values((select resource_id from first_id), 'Quantity Per Unit', '25') 
+    RETURNING resource_id
+), fifth_id as (
+    insert into resource_attribute(resource_id, resource_type_field_name, resource_type_field_value)
+    values((select resource_id from first_id), 'Medication Name', 'Anti-Inflammatory') 
+    RETURNING resource_id
+),
+insert into submits_resource(resource_id, userid, resource_price, is_for_sale, delivery_method_id)
+values(
+    (select resource_id from fifth_id),
+    (select userid from users_table where username = 'gabrielsantiago'),
+    1000, -- per unit
+    true,
+    (select delivery_method_id from delivery_method where method_name = 'Pick-up')
+);
+
+with first_id as (
+    insert into resource (resource_quantity,resource_location_latitude,resource_location_longitude,resource_type_id,resource_status_id, senate_region_id)
+    values(
+        1000,
+        18.19614793,
+        67.14750767,
+        (select resource_type_id from resource_type where resource_type_name = 'Battery'),
+        (select resource_status_id from resource_status where resource_status_name = 'Available'),
+        (select senate_region_id from senate_region where senate_region_name = 'I - San Juan')
+    ) RETURNING resource_id
+), second_id as (
+    insert into resource_attribute(resource_id, resource_type_field_name, resource_type_field_value)
+    values((select resource_id from first_id), 'Battery Type', 'AA') 
+    RETURNING resource_id
+)
+insert into submits_resource(resource_id, userid, resource_price, is_for_sale, delivery_method_id)
+values(
+    (select resource_id from second_id),
+    (select userid from users_table where username = 'valeria'),
+    20, -- per unit
+    true,
+    (select delivery_method_id from delivery_method where method_name = 'Delivery')
+);
+
+with first_id as (
+    insert into resource (resource_quantity,resource_location_latitude,resource_location_longitude,resource_type_id,resource_status_id, senate_region_id)
+    values(
+        120,
+        18.19614793,
+        67.14750767,
+        (select resource_type_id from resource_type where resource_type_name = 'Baby Food'),
+        (select resource_status_id from resource_status where resource_status_name = 'Available'),
+        5
+    ) RETURNING resource_id
+), second_id as (
+    insert into resource_attribute(resource_id, resource_type_field_name, resource_type_field_value)
+    values((select resource_id from first_id), 'Baby Food Type', 'Stage 2') 
+    RETURNING resource_id
+), third_id as (
+    insert into resource_attribute(resource_id, resource_type_field_name, resource_type_field_value)
+    values((select resource_id from first_id), 'Baby Food Name', 'Banana and Strawberry blend') 
+    RETURNING resource_id
+), fourth_id as (
+    insert into resource_attribute(resource_id, resource_type_field_name, resource_type_field_value)
+    values((select resource_id from first_id), 'Expiration Date', '2022-12-29') 
+    RETURNING resource_id
+), fifth_id as (
+    insert into resource_attribute(resource_id, resource_type_field_name, resource_type_field_value)
+    values((select resource_id from first_id), 'Quantity Per Unit', 20) 
+    RETURNING resource_id
+)
+insert into submits_resource(resource_id, userid, resource_price, is_for_sale, delivery_method_id)
+values(
+    (select resource_id from fifth_id),
+    (select userid from users_table where username = 'gabrielsantiago'),
+    30, -- per unit
+    true,
+    (select delivery_method_id from delivery_method where method_name = 'Delivery or Pick-up')
+);
+
+with first_id as (
+    insert into resource (resource_quantity,resource_location_latitude,resource_location_longitude,resource_type_id,resource_status_id, senate_region_id)
+    values(
+        5,
+        18.19614793,
+        67.14750767,
+        (select resource_type_id from resource_type where resource_type_name = 'Fuel'),
+        (select resource_status_id from resource_status where resource_status_name = 'Available'),
+        (select senate_region_id from senate_region where senate_region_name = 'IV - Mayaguez-Aguadilla')
+    ) RETURNING resource_id
+), second_id as (
+    insert into resource_attribute(resource_id, resource_type_field_name, resource_type_field_value)
+    values((select resource_id from first_id), 'Fuel Type', 'Gasoline') 
+    RETURNING resource_id
+), third_id as (
+    insert into resource_attribute(resource_id, resource_type_field_name, resource_type_field_value)
+    values((select resource_id from SECOND_id), 'Octane', '83')
+    RETURNING resource_id
+), fourth_id as (
+    insert into resource_attribute(resource_id, resource_type_field_name, resource_type_field_value)
+    values((select resource_id from SECOND_id), 'Measurement Unit', 'Liter')
+    RETURNING resource_id
+)
+insert into submits_resource(resource_id, userid, resource_price, is_for_sale, delivery_method_id)
+values(
+    (select resource_id from fourth_id),
+    (select userid from users_table where username = 'valeria'),
+    1.23, -- per unit
+    true,
+    (select delivery_method_id from delivery_method where method_name = 'Delivery')
 );
