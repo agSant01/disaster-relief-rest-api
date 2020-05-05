@@ -2443,6 +2443,65 @@ values(
     (select payment_method_id from payment_method where payment_method_name = 'WIC')  
 );
 
+-- order 3
+insert into orders(userid,payment_method_id)
+values(
+    (select userid from users_table where username = 'juliatorres'),
+    (select payment_method_id from payment_method where payment_method_name = 'Credit Card')  
+);
+
+-- order 4
+insert into orders(userid,payment_method_id)
+values(
+    (select userid from users_table where username = 'annaprentice'),
+    (select payment_method_id from payment_method where payment_method_name = 'ATH-Movil')
+    
+);
+
+-- order 5
+insert into orders(userid,payment_method_id)
+values(
+    (select userid from users_table where username = 'carlitos'),
+    (select payment_method_id from payment_method where payment_method_name = 'PayPal')  
+);
+
+-- order 6
+insert into orders(userid,payment_method_id)
+values(
+    (select userid from users_table where username = 'juliatorres'),
+    (select payment_method_id from payment_method where payment_method_name = 'ATH-Movil')  
+);
+
+-- order 7
+insert into orders(userid,payment_method_id)
+values(
+    (select userid from users_table where username = 'annaprentice'),
+    (select payment_method_id from payment_method where payment_method_name = 'Venmo')
+    
+);
+
+-- order 8
+insert into orders(userid,payment_method_id)
+values(
+    (select userid from users_table where username = 'carlitos'),
+    (select payment_method_id from payment_method where payment_method_name = 'Cash')  
+);
+
+-- order 9
+insert into orders(userid,payment_method_id)
+values(
+    (select userid from users_table where username = 'juliatorres'),
+    (select payment_method_id from payment_method where payment_method_name = 'ApplePay')  
+);
+
+-- order 10
+insert into orders(userid,payment_method_id)
+values(
+    (select userid from users_table where username = 'annaprentice'),
+    (select payment_method_id from payment_method where payment_method_name = 'Zelle')
+ );   
+
+
 --ordered resource
 insert into resource_ordered(order_id,resource_id,order_price,resources_quantity)
 values(
