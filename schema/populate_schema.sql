@@ -1288,7 +1288,7 @@ insert into resource (resource_quantity,resource_location_latitude,resource_loca
 values(
     10,
     18.19614793,
-    67.14750767,
+    -67.14750767,
     (select resource_type_id from resource_type where resource_type_name = 'Battery'),
     (select resource_status_id from resource_status where resource_status_name = 'Available'),
     (select senate_region_id from senate_region where senate_region_name = 'IV - Mayaguez-Aguadilla')
@@ -1298,7 +1298,7 @@ insert into resource (resource_quantity,resource_location_latitude,resource_loca
 values(
     10,
     18.19614793,
-    67.14750767,
+    -67.14750767,
     (select resource_type_id from resource_type where resource_type_name = 'Water'),
     (select resource_status_id from resource_status where resource_status_name = 'Available'),
     (select senate_region_id from senate_region where senate_region_name = 'IV - Mayaguez-Aguadilla')
@@ -1307,7 +1307,7 @@ insert into resource (resource_quantity,resource_location_latitude,resource_loca
 values(
     10,
     18.19614793,
-    67.14750767,
+    -67.14750767,
     (select resource_type_id from resource_type where resource_type_name = 'Water'),
     (select resource_status_id from resource_status where resource_status_name = 'Available'),
     (select senate_region_id from senate_region where senate_region_name = 'IV - Mayaguez-Aguadilla')
@@ -1316,7 +1316,7 @@ insert into resource (resource_quantity,resource_location_latitude,resource_loca
 values(
     10,
     18.19614793,
-    67.14750767,
+    -67.14750767,
     (select resource_type_id from resource_type where resource_type_name = 'Water'),
     (select resource_status_id from resource_status where resource_status_name = 'Available'),
     (select senate_region_id from senate_region where senate_region_name = 'IV - Mayaguez-Aguadilla')
@@ -1628,7 +1628,7 @@ with first_id as (
     values(
         100,
         18.19614793,
-        67.14750767,
+        -67.14750767,
         (select resource_type_id from resource_type where resource_type_name = 'Heavy Equipment'),
         (select resource_status_id from resource_status where resource_status_name = 'Available'),
         (select senate_region_id from senate_region where senate_region_name = 'IV - Mayaguez-Aguadilla')
@@ -1668,7 +1668,7 @@ with first_id as (
     values(
         500,
         18.19614793,
-        67.14750767,
+        -67.14750767,
         (select resource_type_id from resource_type where resource_type_name = 'Water'),
         (select resource_status_id from resource_status where resource_status_name = 'Available'),
         (select senate_region_id from senate_region where senate_region_name = 'II - Bayamon')
@@ -1705,7 +1705,7 @@ with first_id as (
     values(
         5000,
         18.19614793,
-        67.14750767,
+        -67.14750767,
         (select resource_type_id from resource_type where resource_type_name = 'Medication'),
         (select resource_status_id from resource_status where resource_status_name = 'Available'),
         3
@@ -1741,7 +1741,7 @@ with first_id as (
     values(
         1000,
         18.19614793,
-        67.14750767,
+        -67.14750767,
         (select resource_type_id from resource_type where resource_type_name = 'Battery'),
         (select resource_status_id from resource_status where resource_status_name = 'Available'),
         (select senate_region_id from senate_region where senate_region_name = 'I - San Juan')
@@ -1765,7 +1765,7 @@ with first_id as (
     values(
         120,
         18.19614793,
-        67.14750767,
+        -67.14750767,
         (select resource_type_id from resource_type where resource_type_name = 'Baby Food'),
         (select resource_status_id from resource_status where resource_status_name = 'Available'),
         5
@@ -1801,7 +1801,7 @@ with first_id as (
     values(
         5,
         18.19614793,
-        67.14750767,
+        -67.14750767,
         (select resource_type_id from resource_type where resource_type_name = 'Fuel'),
         (select resource_status_id from resource_status where resource_status_name = 'Available'),
         (select senate_region_id from senate_region where senate_region_name = 'IV - Mayaguez-Aguadilla')
