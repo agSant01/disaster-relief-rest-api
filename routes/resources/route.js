@@ -12,7 +12,7 @@ router.get('/types', handler.getTypes);
 router.get('/:type/attributes', handler.getResourceTypeAttributes);
 
 // Get available resources
-router.get('/available/:provider/:keyword', handler.getAvailable);
+router.get('/available/:provider?/:keyword?', handler.getResourcesAvailable);
 
 // Get all open resource requests
 router.get('/requests/:userID/:keyword', handler.getRequests);

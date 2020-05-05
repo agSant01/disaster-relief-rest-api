@@ -1,19 +1,38 @@
-### Get providers
-GET http://localhost:3000/api/providers HTTP/1.1
+### Get suppliers
+GET http://localhost:3000/api/suppliers HTTP/1.1
+
+### Get suppliers
+
+GET http://localhost:3000/api/suppliers?debug=true HTTP/1.1
 
 ### Get provider by Id
 
-GET http://localhost:3000/api/providers/2 HTTP/1.1
-
-
-###
-
-GET http://localhost:3000/api/providers/organizations HTTP/1.1
+GET http://localhost:3000/api/suppliers/2 HTTP/1.1
 
 ###
 
-GET http://localhost:3000/api/providers/organizations/1 HTTP/1.1
+GET http://localhost:3000/api/suppliers/2?debug=true HTTP/1.1
 
 ###
 
-GET http://localhost:3000/api/providers/organizations/1/representatives HTTP/1.1
+GET http://localhost:3000/api/suppliers/organizations HTTP/1.1
+
+###
+
+GET http://localhost:3000/api/suppliers/organizations?debug=true HTTP/1.1
+
+###
+
+GET http://localhost:3000/api/suppliers/organizations/1 HTTP/1.1
+
+###
+
+GET http://localhost:3000/api/suppliers/organizations/1?debug=true HTTP/1.1
+
+###
+
+GET http://localhost:3000/api/suppliers/organizations/1/representatives HTTP/1.1
+
+###
+
+GET http://localhost:3000/api/suppliers/organizations/1/representatives?debug=true HTTP/1.1

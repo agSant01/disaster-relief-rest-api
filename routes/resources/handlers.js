@@ -1,12 +1,30 @@
+const db = require('../../database');
+const querylib = require('./queries');
+
 exports.getTypes = (req, res, next) => {
-    let msg = {
-        resources: []
-    };
-    res.json(msg).end();
+    // callback
+    db.query(querylib.qAllTypes, (err, result) => {
+        console.log(err, result);
+
+        if (err) {
+            res.status(503)
+                .json(err)
+                .end();
+            return;
+        }
+
+        const msg = {
+            resource_types: result.rows,
+            count: result.rowCount,
+        };
+
+        res.json(msg).end();
+    });
 };
+
 exports.getAllResources = (req, res, next) => {
     let msg = {
-        resources: []
+        resources: [],
     };
     res.json(msg).end();
 };
@@ -17,26 +35,66 @@ Returns the attributes associated with a particular resource type.
 exports.getResourceTypeAttributes = (req, res, next) => {
     let resourceType = req.params.type;
 
-    let response = {
-        resource_type: 'Medications',
-        attributes: {
-            'Medication Type': ['Pills', 'Liquid']
-        }
+    let query = {
+        text: querylib.qTypeAttribute,
+        values: [resourceType],
     };
 
-    res.json(response).end();
+    db.query(query, (err, result) => {
+        console.log(err, result);
+
+        if (err) {
+            res.status(503)
+                .json(err)
+                .end();
+            return;
+        }
+
+        let set = new Set();
+
+        result.rows.forEach((val, inx) => set.add(val.attribute_name));
+
+        console.log(set, set.size);
+
+        const msg = {
+            resource_attributes: result.rows,
+            attribute_count: set.size,
+            count: result.rowCount,
+        };
+
+        res.json(msg).end();
+    });
 };
 
-exports.getAvailable = (req, res, next) => {
-    let msg = {
-        resourcesAvailable: []
-    };
-    res.json(msg).end();
+exports.getResourcesAvailable = (req, res, next) => {
+    const provider_id = req.query.provider;
+    const keyword = req.query.keyword;
+
+    let query = querylib.qGetAllResourcesAvailable;
+
+    // callback
+    db.query(query, (err, result) => {
+        console.log(err, result);
+
+        if (err) {
+            res.status(503)
+                .json(err)
+                .end();
+            return;
+        }
+
+        let msg = {
+            resourcesAvailable: result.rows,
+            count: result.rowCount,
+        };
+
+        res.json(msg).end();
+    });
 };
 
 exports.getRequests = (req, res, next) => {
     let msg = {
-        resourcesRequested: []
+        resourcesRequested: [],
     };
     res.json(msg).end();
 };
@@ -45,8 +103,8 @@ exports.putUpdate = (req, res, next) => {
     let msg = {
         request: {
             info: {},
-            status: ''
-        }
+            status: '',
+        },
     };
     res.json(msg).end();
 };
@@ -69,7 +127,7 @@ exports.postResource = (req, res, next) => {
      */
 
     let response = {
-        status: 200
+        status: 200,
     };
 
     res.status(200)
@@ -92,7 +150,7 @@ exports.postResourceRequest = (req, res, next) => {
      */
 
     let response = {
-        status: 200
+        status: 200,
     };
 
     res.status(200)
@@ -114,7 +172,7 @@ exports.postReserveResource = (req, res, next) => {
      */
 
     let response = {
-        status: 200
+        status: 200,
     };
 
     res.status(200)
@@ -138,8 +196,8 @@ exports.postBuyResource = (req, res, next) => {
     let response = {
         msg: 'Order successfully processed.',
         order: {
-            order_id: Math.ceil(100000 * Math.random())
-        }
+            order_id: Math.ceil(100000 * Math.random()),
+        },
     };
 
     res.status(200)
