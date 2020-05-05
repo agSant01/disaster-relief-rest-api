@@ -2,8 +2,20 @@ const querylib = require('./queries');
 const db = require('../../database');
 
 exports.getProviders = (req, res, next) => {
+    const is_debug = req.query.debug == 'true';
+
+    let query;
+
+    console.log(is_debug);
+
+    if (is_debug) {
+        query = querylib.qGetAllProvidersDebug;
+    } else {
+        query = querylib.qGetAllProviders;
+    }
+
     // callback
-    db.query(querylib.qGetAllProviders, (err, result) => {
+    db.query(query, (err, result) => {
         console.log(err, result);
 
         if (err) res.json(err).end();
@@ -26,9 +38,20 @@ exports.getProviderById = (req, res, next) => {
             invalid_param: req.params.id,
         });
     }
+    const is_debug = req.query.debug == 'true';
+
+    let query_text;
+
+    console.log(is_debug);
+
+    if (is_debug) {
+        query_text = querylib.qGetProviderByIdDebug;
+    } else {
+        query_text = querylib.qGetProviderById;
+    }
 
     const query = {
-        text: querylib.qGetProviderById,
+        text: query_text,
         values: [provid],
     };
 
@@ -44,15 +67,27 @@ exports.getProviderById = (req, res, next) => {
             provider: result.rows,
         };
 
-        res.json(result ? msg : err).end();
+        res.json(msg).end();
     });
 };
 
 exports.getOrganizations = (req, res, next) => {
-    console.log(querylib.qAllOrganizations);
+    const is_debug = req.query.debug == 'true';
+
+    let query_text;
+
+    console.log(is_debug);
+
+    if (is_debug) {
+        query_text = querylib.qAllOrganizationsDebug;
+    } else {
+        query_text = querylib.qAllOrganizations;
+    }
+
+    console.log(query_text);
 
     // callback
-    db.query(querylib.qAllOrganizations, (err, result) => {
+    db.query(query_text, (err, result) => {
         console.log(err, result);
 
         if (err) res.json(err).end();

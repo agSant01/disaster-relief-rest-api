@@ -11,7 +11,7 @@ var router = express.Router();
 
 router.use('/users', userRoute);
 router.use('/register', registerRoute);
-router.use('/providers', providersRoute);
+router.use('/suppliers', providersRoute);
 router.use('/resources', resourcesRoute);
 router.use('/statistics', statisticsRoute);
 router.use('/login', loginRoute);
@@ -20,29 +20,20 @@ router.get('/', (req, res, next) => {
     res.json({ msg: 'Disaster relief API.' }).end();
 });
 
-router.get('/dbtest1', (req, res, next) => {
-    db.query('SELECT NOW()', (err, result) => {
+router.get('/dbtest', (req, res, next) => {
+    db.query('SELECT NOW() as current_time', (err, result) => {
         console.log(err, result);
-        res.json(result ? result : err).end();
-    });
-});
 
-router.get('/dbtest2', (req, res, next) => {
-    db.query('SELECT * FROM mytest1;', (err, result) => {
-        console.log(err);
-        console.log(result);
+        if (err)
+            res.status(504)
+                .json(err)
+                .end();
 
-        res.json(result ? result : err).end();
-    });
-});
+        const msg = {
+            db_connection_test: result.rows[0],
+        };
 
-router.get('/dbtest3', (req, res, next) => {
-    db.query('SELECT * FROM mytest1;', (err, result) => {
-        console.log(err);
-        console.log(result);
-        console.log(process.env.DATABASE_URL);
-
-        res.json({ results: result, err: err }).end();
+        res.json(msg).end();
     });
 });
 

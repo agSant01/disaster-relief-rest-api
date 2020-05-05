@@ -14,9 +14,9 @@ module.exports = {
             users_table.street2,
             roles.role_name
         from users_table
-        inner join city on city.cityid = users_table.city
-        inner join country on country.country_id = users_table.country_id
-        inner join roles on roles.role_id = users_table.role_id
+        natural join city
+        natural join country
+        natural join roles
         where is_enabled = true;`,
     qAllUsersDebug: `select * from users_table;`,
     qUser: `
@@ -32,9 +32,9 @@ module.exports = {
             users_table.street2,
             roles.role_name
         from users_table
-        inner join city on city.cityid = users_table.city
-        inner join country on country.country_id = users_table.country_id
-        inner join roles on roles.role_id = users_table.role_id
+        natural join city
+        natural join country
+        natural join roles
         where userid=$1 and is_enabled = $2;`,
     qUserDebug: `select * from users_table where userid=$1 and is_enabled = $2;`,
     qRoles: `select * from roles;`,
@@ -58,18 +58,18 @@ module.exports = {
             users_table.street2,
             roles.role_name
         from users_table
-        inner join city on city.cityid = users_table.city
-        inner join country on country.country_id = users_table.country_id
-        inner join roles on roles.role_id = users_table.role_id
+        natural join city 
+        natural join country
+        natural join roles
         where (roles.role_id = 1 or roles.role_id = 2) and
         is_enabled = true;`,
     qGetAdministratorsDebug: `
         select 
             *
         from users_table
-        inner join city on city.cityid = users_table.city
-        inner join country on country.country_id = users_table.country_id
-        inner join roles on roles.role_id = users_table.role_id
+        natural join city
+        natural join country
+        natural join roles
         where roles.role_id = 1 or roles.role_id = 2;`,
 
     qGetReservesByUserId: `
@@ -87,8 +87,8 @@ module.exports = {
                 resource.resource_quantity,
                 (
                     select json_agg(row_to_json((SELECT d FROM (SELECT 
-                        resource_type_field_name,
-                        resource_type_field_value
+                        resource_type_field_name as attribute_name,
+                        resource_type_field_value as attribute_value
                     ) d)))
                     from  resource_attribute 
                     where resource_attribute.resource_id = resource.resource_id
