@@ -769,42 +769,6 @@ VALUES (
     (select role_id from roles where role_name = 'Supplier Organization Administrator')
 );
 
- --#17 Supplier Organization Administrator  
-INSERT INTO users_table 
-(
-    username,
-    user_password,
-    first_name,
-    last_name, 
-    date_of_birth,
-    street1,
-    street2,
-    cityid,
-    zip_code,
-    country_id, 
-    gender,
-    email,
-    phone_number,
-    is_enabled,
-    role_id
-) 
-VALUES (
-    'vsoto',
-    crypt('alaska', gen_salt('bf')),
-    'Victor',
-    'Soto',
-    '1984-02-28',
-    'Calle Whitney',
-    'Calle 2',
-    (select cityid from city where city_name = 'Lares'),
-    '00098',
-    (select country_id from country where country_name = 'Puerto Rico'),
-    'Male',
-    'victorsoto@gmail.com',
-    9390963346,
-    true,
-    (select role_id from roles where role_name = 'Supplier Organization Administrator')
-);
  --#18 Supplier Organization Administrator  
 INSERT INTO users_table 
 (
@@ -2225,7 +2189,7 @@ with request_info as (
 )
 insert into requested_resources(
     request_id,             
-    resource_id,       
+    resource_id 
 )
 values(
     (select request_id from request_info),
@@ -2269,8 +2233,10 @@ values(
     (select resource_id from resource where resource_id = 3),
     13,
     3
+
 );
-insert into resource_ordered(order_id,resource_id, order_price,resources_quantity)
+
+insert into resource_ordered(order_id,resource_id, order_price, resources_quantity)
 values(
     (select order_id from orders where  order_id  = 1),
     (select resource_id from resource where resource_id = 6),
