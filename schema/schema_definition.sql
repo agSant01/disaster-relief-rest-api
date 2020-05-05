@@ -142,7 +142,6 @@ create table orders(
     resource_quantity integer not null,
     order_price real not null,
     userid integer references users_table(userid) not null,
-    resource_id integer references resource(resource_id) not null,
     order_timestamp timestamptz default transaction_timestamp() not null,
     payment_method_id integer references payment_method(payment_method_id) not null,
     primary key (order_id)
@@ -151,7 +150,6 @@ create table orders(
 create table reserves(
     reserve_id serial not null,
     userid integer references users_table(userid) not null,
-    resource_id integer references resource(resource_id) not null,
     quantity integer not null,
     date_reserved timestamptz default transaction_timestamp() not null,
     primary key (reserve_id)
@@ -179,3 +177,15 @@ create table request_transactions(
     transaction_quantity integer not null,
     transaction_date timestamptz default transaction_timestamp() not null
 );
+
+create table reservations(
+    reserve_id integer references reserves(reserve_id) not null,
+    resource_id integer references resource(resource_id) not null,
+    primary key (resource_id,reserve_id)
+)
+
+create table resource_ordered(
+    order_id integer references orders(order_id) not null,
+    resource_id integer references resource(resource_id) not null,
+    primary key (resource_id,order_id)
+)
