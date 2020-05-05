@@ -852,7 +852,6 @@ values(
     1,
     20,
     (select userid from users_table where username = 'valeria'),
-    (select resource_id from resource where resource_id = 5),
     (select payment_method_id from payment_method where payment_method_name = 'Debit')
     
 );
@@ -861,7 +860,6 @@ values(
     1,
     10,
     (select userid from users_table where username = 'valeria'),
-    (select resource_id from resource where resource_id = 5),
     (select payment_method_id from payment_method where payment_method_name = 'WIC')
     
 );
@@ -870,35 +868,30 @@ values(
 -- reserves
 insert into reserves(userid,resource_id,quantity)
 values(
-    (select userid from users_table where username = 'valeria'),
     (select resource_id from resource where resource_type_id = 7),
     2
 );
 
 insert into reserves(userid,resource_id,quantity)
 values(
-    (select userid from users_table where username = 'valeria'),
     (select resource_id from resource where resource_id = 5),
     2
 );
 
 insert into reserves(userid,resource_id,quantity)
 values(
-    (select userid from users_table where username = 'valeria'),
     (select resource_id from resource where resource_id = 2),
     1
     
 );
 insert into reserves(userid,resource_id,quantity)
 values(
-    (select userid from users_table where username = 'valeria'),
     (select resource_id from resource where resource_id = 5),
     14
     
 );
 insert into reserves(userid,resource_id,quantity)
 values(
-    (select userid from users_table where username = 'valeria'),
     (select resource_id from resource where resource_id = 4),
     10
     
@@ -1041,4 +1034,70 @@ values(
     (select request_id from request_info),
     (select resource_id from resource where resource_id =  6),
     3
+);
+
+--ordered resource 
+insert into resource_ordered(order_id,resource_id)
+values(
+    (select order_id from orders where order_id = 1),
+    (select resource_id from resource where resource_id = 6)
+);
+insert into resource_ordered(order_id,resource_id)
+values(
+    (select order_id from orders where  order_id  = 1),
+    (select resource_id from resource where resource_id = 3)
+);
+insert into resource_ordered(order_id,resource_id)
+values(
+    (select order_id from orders where  order_id  = 1),
+    (select resource_id from resource where resource_id = 2)
+);
+
+insert into resource_ordered(order_id,resource_id)
+values(
+    (select order_id from orders where  order_id  = 2),
+    (select resource_id from resource where resource_id = 1)
+);
+insert into resource_ordered(order_id,resource_id)
+values(
+    (select order_id from orders where  order_id  = 2),
+    (select resource_id from resource where resource_id = 4)
+);
+insert into resource_ordered(order_id,resource_id)
+values(
+    (select order_id from orders where  order_id  = 2),
+    (select resource_id from resource where resource_id = 5)
+);
+
+--reservations 
+insert into reservations(reserve_id,resource_id)
+values(
+    (select reserve_id from reserves where reserve_id = 1),
+    (select resource_id from resource where resource_id = 6)
+);
+insert into reservations(reserve_id,resource_id)
+values(
+    (select reserve_id from reserves where reserve_id = 1),
+    (select resource_id from resource where resource_id = 3)
+);
+insert into reservations(reserve_id,resource_id)
+values(
+    (select reserve_id from reserves where reserve_id = 2),
+    (select resource_id from resource where resource_id = 2)
+);
+
+insert into reservations(reserve_id,resource_id)
+values(
+    (select reserve_id from reserves where reserve_id = 3),
+    (select resource_id from resource where resource_id = 1)
+);
+insert into reservations(reserve_id,resource_id)
+values(
+    (select reserve_id from reserves where reserve_id = 3),
+    (select resource_id from resource where resource_id = 4)
+);
+insert into reservations(reserve_id,resource_id)
+values(
+    (select reserve_id from reserves where reserve_id = 3),
+    (select resource_id from resource where resource_id = 5)
 );
