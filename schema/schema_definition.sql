@@ -177,7 +177,7 @@ create table requested_resources(
 create table request_transactions(
     request_id integer references request(request_id) not null,
     transaction_quantity integer not null,
-    transaction_date timestamptz default transaction_timestamp() not null
+    transaction_date timestamptz default transaction_timestamp() not null,
     primary key (request_id)
 );
 
