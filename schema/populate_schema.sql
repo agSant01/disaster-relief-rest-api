@@ -1825,6 +1825,156 @@ values(
     true,
     (select delivery_method_id from delivery_method where method_name = 'Delivery')
 );
+
+-- for #7 free
+with first_id as (
+    insert into resource (resource_quantity,resource_location_latitude,resource_location_longitude,resource_type_id,resource_status_id, senate_region_id)
+    values(
+        50,
+        18.19614793,
+        -67.14750767,
+        (select resource_type_id from resource_type where resource_type_name = 'Canned Food'),
+        (select resource_status_id from resource_status where resource_status_name = 'Available'),
+        (select senate_region_id from senate_region where senate_region_name = 'IV - Mayaguez-Aguadilla')
+    ) RETURNING resource_id
+), second_id as (
+    insert into resource_attribute(resource_id, resource_type_field_name, resource_type_field_value)
+    values((select resource_id from first_id), 'Quantity Per Unit', 5) 
+    RETURNING resource_id
+), third_id as (
+    insert into resource_attribute(resource_id, resource_type_field_name, resource_type_field_value)
+    values((select resource_id from SECOND_id), 'Canned Food Name', 'Tuna in Water')
+    RETURNING resource_id
+), fourth_id as (
+    insert into resource_attribute(resource_id, resource_type_field_name, resource_type_field_value)
+    values((select resource_id from SECOND_id), 'Canned Food', 'Starkist')
+    RETURNING resource_id
+), fifth_id as (
+    insert into resource_attribute(resource_id, resource_type_field_name, resource_type_field_value)
+    values((select resource_id from first_id), 'Expiration Date', '2025-01-11') 
+    RETURNING resource_id
+)
+
+-- submitted id 7
+insert into submits_resource(resource_id, userid, resource_price, is_for_sale, delivery_method_id)
+values(
+    (select resource_id from fifth_id),
+    (select userid from users_table where username = 'yaniraruiz'),
+    0, -- per unit
+    false,
+    (select delivery_method_id from delivery_method where method_name = 'Pick-up')
+);
+
+-- for #8 free
+with first_id as (
+    insert into resource (resource_quantity,resource_location_latitude,resource_location_longitude,resource_type_id,resource_status_id, senate_region_id)
+    values(
+        15,
+        18.19614793,
+        -67.14750767,
+        (select resource_type_id from resource_type where resource_type_name = 'Dry Food'),
+        (select resource_status_id from resource_status where resource_status_name = 'Available'),
+        (select senate_region_id from senate_region where senate_region_name = 'IV - Mayaguez-Aguadilla')
+    ) RETURNING resource_id
+),  second_id as (
+    insert into resource_attribute(resource_id, resource_type_field_name, resource_type_field_value)
+    values((select resource_id from first_id), 'Dry Food Name', 'Evaporated Milk')
+    RETURNING resource_id
+), third_id as (
+    insert into resource_attribute(resource_id, resource_type_field_name, resource_type_field_value)
+    values((select resource_id from first_id), 'Dry Food Type', 'Evaporated Milk')
+    RETURNING resource_id
+), fourth_id as (
+    insert into resource_attribute(resource_id, resource_type_field_name, resource_type_field_value)
+    values((select resource_id from first_id), 'Expiration Date', '2020-12-01') 
+    RETURNING resource_id
+)
+
+-- submitted id 8
+insert into submits_resource(resource_id, userid, resource_price, is_for_sale, delivery_method_id)
+values(
+    (select resource_id from fourth_id),
+    (select userid from users_table where username = 'pacheco'),
+    0, -- per unit
+    false,
+    (select delivery_method_id from delivery_method where method_name = 'Pick-up')
+);
+
+-- for #9 free
+with first_id as (
+    insert into resource (resource_quantity,resource_location_latitude,resource_location_longitude,resource_type_id,resource_status_id, senate_region_id)
+    values(
+        5,
+        18.19614793,
+        -67.14750767,
+        (select resource_type_id from resource_type where resource_type_name = 'Medical Device'),
+        (select resource_status_id from resource_status where resource_status_name = 'Available'),
+        (select senate_region_id from senate_region where senate_region_name = 'VII - Humacao')
+    ) RETURNING resource_id
+),  second_id as (
+    insert into resource_attribute(resource_id, resource_type_field_name, resource_type_field_value)
+    values((select resource_id from first_id), 'Medical Device Type', 'Ventilator')
+    RETURNING resource_id
+), third_id as (
+    insert into resource_attribute(resource_id, resource_type_field_name, resource_type_field_value)
+    values((select resource_id from first_id), 'Device Name', 'Ventilator')
+    RETURNING resource_id
+), fourth_id as (
+    insert into resource_attribute(resource_id, resource_type_field_name, resource_type_field_value)
+    values((select resource_id from first_id), 'Expiration Date', '2030-01-01') 
+    RETURNING resource_id
+)
+
+--submitted id 9
+insert into submits_resource(resource_id, userid, resource_price, is_for_sale, delivery_method_id)
+values(
+    (select resource_id from fourth_id),
+    (select userid from users_table where username = 'axperez'),
+    0, -- per unit
+    false,
+    (select delivery_method_id from delivery_method where method_name = 'Pick-up')
+);
+
+--for #10 free
+with first_id as (
+    insert into resource (resource_quantity,resource_location_latitude,resource_location_longitude,resource_type_id,resource_status_id, senate_region_id)
+    values(
+        30,
+        18.19614793,
+        -67.14750767,
+        (select resource_type_id from resource_type where resource_type_name = 'Canned Food'),
+        (select resource_status_id from resource_status where resource_status_name = 'Available'),
+        (select senate_region_id from senate_region where senate_region_name = 'III - Arecibo')
+    ) RETURNING resource_id
+), second_id as (
+    insert into resource_attribute(resource_id, resource_type_field_name, resource_type_field_value)
+    values((select resource_id from first_id), 'Quantity Per Unit', 8) 
+    RETURNING resource_id
+), third_id as (
+    insert into resource_attribute(resource_id, resource_type_field_name, resource_type_field_value)
+    values((select resource_id from SECOND_id), 'Canned Food Name', 'Cut Green Beans')
+    RETURNING resource_id
+), fourth_id as (
+    insert into resource_attribute(resource_id, resource_type_field_name, resource_type_field_value)
+    values((select resource_id from SECOND_id), 'Canned Food', 'Green Giant')
+    RETURNING resource_id
+), fifth_id as (
+    insert into resource_attribute(resource_id, resource_type_field_name, resource_type_field_value)
+    values((select resource_id from first_id), 'Expiration Date', '2024-08-28') 
+    RETURNING resource_id
+)
+
+-- submitted id 10
+insert into submits_resource(resource_id, userid, resource_price, is_for_sale, delivery_method_id)
+values(
+    (select resource_id from fifth_id),
+    (select userid from users_table where username = 'dhernandez'),
+    0, -- per unit
+    false,
+    (select delivery_method_id from delivery_method where method_name = 'Delivery or Pick-up')
+);
+
+
 --------------------------------------------------------------
 --------------------------------------------------------------
 -- create resources as requested
