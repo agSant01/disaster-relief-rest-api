@@ -1,4 +1,11 @@
-const config = require('./config');
+let config;
+
+try {
+    config = require('./config');
+} catch (error) {
+    // Do nothing. Config does not exists
+}
+
 const debug = require('debug')('e-template:server');
 const http = require('http');
 const cors = require('cors');

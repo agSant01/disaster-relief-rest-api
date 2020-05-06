@@ -163,7 +163,7 @@ exports.getResourcesAvailable = (req, res, next) => {
             resources_available: result.rows,
         };
 
-        if (provider_id) {
+        if (provider_id && result.rowCount > 0) {
             msg.supplier_id = Number(provider_id);
         }
 

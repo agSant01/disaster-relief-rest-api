@@ -2206,6 +2206,168 @@ values(
 ); 
 
 ----- end of requst id 3
+
+--- start of request id 4
+with request_info as (
+    insert into request(                 
+        request_status_id,   
+        userid 
+    )             
+    values(    
+        (select request_status_id from request_status where request_status_id = 1),
+        (select userid from users_table where username = 'annaprentice')
+    ) RETURNING request_id
+)
+insert into requested_resources(
+    request_id,             
+    resource_id,   
+    resources_quantity    
+)
+values(
+    (select request_id from request_info),
+    1,
+    3
+);
+----- end of requst id 4
+
+--- start of request id 5
+with request_info as (
+    insert into request(                 
+        request_status_id,   
+        userid 
+    )             
+    values(    
+        (select request_status_id from request_status where request_status_id = 1),
+        (select userid from users_table where username = 'carlitos')
+    ) RETURNING request_id
+)
+insert into requested_resources(
+    request_id,             
+    resource_id,   
+    resources_quantity    
+)
+values(
+    (select request_id from request_info),
+    3,
+    1
+);
+----- end of requst id 5
+
+--- start of request id 6
+with request_info as (
+    insert into request(                 
+        request_status_id,   
+        userid 
+    )             
+    values(    
+        (select request_status_id from request_status where request_status_id = 2),
+        (select userid from users_table where username = 'juliatorres')
+    ) RETURNING request_id
+)
+insert into requested_resources(
+    request_id,             
+    resource_id,   
+    resources_quantity    
+)
+values(
+    (select request_id from request_info),
+    3,
+    1
+); 
+----- end of requst id 6
+ 
+--- start of request id 7 
+with request_info as (
+    insert into request(                 
+        request_status_id,   
+        userid 
+    )             
+    values(    
+        (select request_status_id from request_status where request_status_id = 4),
+        (select userid from users_table where username = 'annaprentice')
+    ) RETURNING request_id
+)
+insert into requested_resources(
+    request_id,             
+    resource_id,   
+    resources_quantity    
+)
+values(
+    (select request_id from request_info),
+    5,
+    13
+); 
+----- end of requst id 7
+
+--- start of request id 8 
+with request_info as (
+    insert into request(                 
+        request_status_id,   
+        userid 
+    )             
+    values(    
+        (select request_status_id from request_status where request_status_id = 3),
+        (select userid from users_table where username = 'carlitos')
+    ) RETURNING request_id
+)
+insert into requested_resources(
+    request_id,             
+    resource_id,   
+    resources_quantity    
+)
+values(
+    (select request_id from request_info),
+    3,
+    50
+); 
+----- end of requst id 8
+
+--- start of request id 9
+with request_info as (
+    insert into request(                 
+        request_status_id,   
+        userid 
+    )             
+    values(    
+        (select request_status_id from request_status where request_status_id = 4),
+        (select userid from users_table where username = 'juliatorres')
+    ) RETURNING request_id
+)
+insert into requested_resources(
+    request_id,             
+    resource_id,   
+    resources_quantity    
+)
+values(
+    (select request_id from request_info),
+    7,
+    2
+); 
+----- end of requst id 9
+
+--- start of request id 10
+with request_info as (
+    insert into request(                 
+        request_status_id,   
+        userid 
+    )             
+    values(    
+        (select request_status_id from request_status where request_status_id = 1),
+        (select userid from users_table where username = 'carlitos')
+    ) RETURNING request_id
+)
+insert into requested_resources(
+    request_id,             
+    resource_id,   
+    resources_quantity    
+)
+values(
+    (select request_id from request_info),
+    4,
+    5
+);
+----- end of requst id 10
+
 --- end of create resources as requested
 -------------------------------------------------
 ---------------------------------------------------
@@ -2225,6 +2387,65 @@ values(
     (select userid from users_table where username = 'carlitos'),
     (select payment_method_id from payment_method where payment_method_name = 'WIC')  
 );
+
+-- order 3
+insert into orders(userid,payment_method_id)
+values(
+    (select userid from users_table where username = 'juliatorres'),
+    (select payment_method_id from payment_method where payment_method_name = 'Credit Card')  
+);
+
+-- order 4
+insert into orders(userid,payment_method_id)
+values(
+    (select userid from users_table where username = 'annaprentice'),
+    (select payment_method_id from payment_method where payment_method_name = 'ATH-Movil')
+    
+);
+
+-- order 5
+insert into orders(userid,payment_method_id)
+values(
+    (select userid from users_table where username = 'carlitos'),
+    (select payment_method_id from payment_method where payment_method_name = 'PayPal')  
+);
+
+-- order 6
+insert into orders(userid,payment_method_id)
+values(
+    (select userid from users_table where username = 'juliatorres'),
+    (select payment_method_id from payment_method where payment_method_name = 'ATH-Movil')  
+);
+
+-- order 7
+insert into orders(userid,payment_method_id)
+values(
+    (select userid from users_table where username = 'annaprentice'),
+    (select payment_method_id from payment_method where payment_method_name = 'Venmo')
+    
+);
+
+-- order 8
+insert into orders(userid,payment_method_id)
+values(
+    (select userid from users_table where username = 'carlitos'),
+    (select payment_method_id from payment_method where payment_method_name = 'Cash')  
+);
+
+-- order 9
+insert into orders(userid,payment_method_id)
+values(
+    (select userid from users_table where username = 'juliatorres'),
+    (select payment_method_id from payment_method where payment_method_name = 'ApplePay')  
+);
+
+-- order 10
+insert into orders(userid,payment_method_id)
+values(
+    (select userid from users_table where username = 'annaprentice'),
+    (select payment_method_id from payment_method where payment_method_name = 'Zelle')
+ );   
+
 
 --ordered resource
 insert into resource_ordered(order_id,resource_id,order_price,resources_quantity)
@@ -2257,6 +2478,78 @@ values(
     (select resource_id from resource where resource_id = 4),
     7,
     20
+);
+
+--#5
+insert into resource_ordered(order_id,resource_id, resources_quantity, order_price)
+values(
+    (select order_id from orders where  order_id =3),
+    (select resource_id from resource where resource_id = 1),
+    1,
+    12340.75    
+);
+
+--#6
+insert into resource_ordered(order_id,resource_id, resources_quantity, order_price)
+values(
+    (select order_id from orders where  order_id =4),
+    (select resource_id from resource where resource_id = 3),
+    1,
+    1000.00    
+);
+
+--#7
+insert into resource_ordered(order_id,resource_id, resources_quantity, order_price)
+values(
+    (select order_id from orders where  order_id =5),
+    (select resource_id from resource where resource_id = 4),
+    2,
+    40    
+);
+
+--#8
+insert into resource_ordered(order_id,resource_id, resources_quantity, order_price)
+values(
+    (select order_id from orders where  order_id =6),
+    (select resource_id from resource where resource_id = 6),
+    2,
+    2.46    
+);
+
+--#9
+insert into resource_ordered(order_id,resource_id, resources_quantity, order_price)
+values(
+    (select order_id from orders where  order_id =7),
+    (select resource_id from resource where resource_id = 1),
+    2,
+    24681.50    
+);
+
+--#10
+insert into resource_ordered(order_id,resource_id, resources_quantity, order_price)
+values(
+    (select order_id from orders where  order_id =8),
+    (select resource_id from resource where resource_id = 6),
+    4,
+    4.92   
+);
+
+--#11
+insert into resource_ordered(order_id,resource_id, resources_quantity, order_price)
+values(
+    (select order_id from orders where  order_id =9),
+    (select resource_id from resource where resource_id = 3),
+    2,
+    2000   
+);
+
+--#12
+insert into resource_ordered(order_id,resource_id, resources_quantity, order_price)
+values(
+    (select order_id from orders where  order_id =10),
+    (select resource_id from resource where resource_id = 4),
+    6,
+    120  
 );
 
 ---------------------------------------

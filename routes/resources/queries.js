@@ -18,7 +18,7 @@ module.exports = {
     where resource_attribute_definition.resource_type_id = resource_type.resource_type_id)
     as attributes
     from resource_type`,
-    qAttributByType:`select 
+    qAttributByType: `select 
     resource.resource_id,
     resource.resource_quantity as resources_available,
     resource.resource_location_latitude,
@@ -116,45 +116,11 @@ where resource_type_name = $1;`,
     natural join resource_status`,
     qGetAllResourcesAvailable: `
         with ordered as (
-            select resource_id, coalesce(sum(resources_quantity),0) as ordered_qty
-            from resource_ordered group by resource_id
-        )
-        select 
-            resource.resource_id,
-            (resource.resource_quantity - COALESCE((SELECT ordered_qty
-            from ordered where ordered.resource_id=resource.resource_id), 0))::INTEGER as resources_available,
-            resource.resource_location_latitude,
-            resource.resource_location_longitude,
-            resource_status.resource_status_name,
-            submits_resource.userid as supplier_id,
-            submits_resource.resource_price as price_per_unit,
-            date_submitted,
-            resource_type_name
-            method_name,
-            senate_region_name,
-            ('https://www.google.com/maps/dir/?api=1&destination='||resource_location_latitude||','||resource_location_longitude) as google_maps_location,
-            (select json_agg(row_to_json((SELECT d FROM (SELECT
-                resource_type_field_name as attribute_name,
-                resource_type_field_value as attribute_value
-            ) d)))
-            from resource_attribute
-            where resource_attribute.resource_id = resource.resource_id)
-            as attributes
-        from resource
-        natural join submits_resource
-        natural join resource_type
-        natural join delivery_method
-        natural join senate_region
-        natural join resource_status
-        where resource_status_id = 1
-        and (resource.resource_quantity - 
-            coalesce((SELECT ordered_qty
-            from ordered 
-            where ordered.resource_id=resource.resource_id), 0)) > 0;`,
-    qGetAllResourcesAvailableByProvider: `
-        with ordered as (
-            select resource_id, coalesce(sum(resources_quantity),0) as ordered_qty
-            from resource_ordered group by resource_id
+            select resource_id, coalesce(sum(resource_ordered.resources_quantity),0) as ordered_qty
+            from resource_ordered group by resource_ordered.resource_id
+            UNION
+            select resource_id, coalesce(sum(reserved_resources.resources_quantity),0) as reserved_qty
+            from reserved_resources group by reserved_resources.resource_id
         )
         select 
             resource.resource_id,
@@ -188,9 +154,50 @@ where resource_type_name = $1;`,
             coalesce((SELECT ordered_qty
             from ordered 
             where ordered.resource_id=resource.resource_id), 0)) > 0
-        and userid = $1;
-    `,
-    qAllResources:` select 
+        order by resource_type.resource_type_name;`,
+    qGetAllResourcesAvailableByProvider: `
+        with ordered as (
+            select resource_id, coalesce(sum(resource_ordered.resources_quantity),0) as ordered_qty
+            from resource_ordered group by resource_ordered.resource_id
+            UNION
+            select resource_id, coalesce(sum(reserved_resources.resources_quantity),0) as reserved_qty
+            from reserved_resources group by reserved_resources.resource_id
+        )
+        select 
+            resource.resource_id,
+            (resource.resource_quantity - COALESCE((SELECT ordered_qty
+            from ordered where ordered.resource_id=resource.resource_id), 0))::INTEGER as resources_available,
+            resource.resource_location_latitude,
+            resource.resource_location_longitude,
+            resource_status.resource_status_name,
+            submits_resource.userid as supplier_id,
+            submits_resource.resource_price as price_per_unit,
+            date_submitted,
+            resource_type_name
+            method_name,
+            senate_region_name,
+            ('https://www.google.com/maps/dir/?api=1&destination='||resource_location_latitude||','||resource_location_longitude) as google_maps_location,
+            (select json_agg(row_to_json((SELECT d FROM (SELECT
+                resource_type_field_name as attribute_name,
+                resource_type_field_value as attribute_value
+            ) d)))
+            from resource_attribute
+            where resource_attribute.resource_id = resource.resource_id)
+            as attributes
+        from resource
+        natural join submits_resource
+        natural join resource_type
+        natural join delivery_method
+        natural join senate_region
+        natural join resource_status
+        where resource_status_id = 1
+        and (resource.resource_quantity - 
+            coalesce((SELECT ordered_qty
+            from ordered 
+            where ordered.resource_id=resource.resource_id), 0)) > 0
+        and userid = $1
+        order by resource_type.resource_type_name;`,
+    qAllResources: ` select 
     resource.resource_id,
     resource.resource_quantity as available,
     resource.resource_location_latitude,
@@ -217,7 +224,7 @@ natural join delivery_method
 natural join senate_region
 natural join resource_status`,
 
-    qResourcesByID:` select 
+    qResourcesByID: ` select 
             resource.resource_id,
             resource.resource_quantity as available,
             resource.resource_location_latitude,
