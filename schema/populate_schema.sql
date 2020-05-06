@@ -2579,6 +2579,42 @@ values(
     (select userid from users_table where username = 'annaprentice')
 );
 
+-- reserves id 5
+insert into reserves(userid)
+values(
+    (select userid from users_table where username = 'juliatorres')
+);
+
+-- reserves id 6
+insert into reserves(userid)
+values(
+   (select userid from users_table where username = 'carlitos')
+);
+
+-- reserves id 7
+insert into reserves(userid)
+values(
+    (select userid from users_table where username = 'annaprentice')
+);
+
+-- reserves id 8
+insert into reserves(userid)
+values(
+    (select userid from users_table where username = 'juliatorres')
+);
+
+-- reserves id 9
+insert into reserves(userid)
+values(
+   (select userid from users_table where username = 'carlitos')
+);
+
+-- reserves id 10
+insert into reserves(userid)
+values(
+    (select userid from users_table where username = 'annaprentice')
+);
+
 
 --reserved_resources 
 insert into reserved_resources(reserve_id,resource_id,resources_quantity)
@@ -2620,6 +2656,54 @@ values(
     (select reserve_id from reserves where reserve_id = 4),
     (select resource_id from resource where resource_id = 5),
     34
+);
+
+-- for id #5
+insert into reserved_resources(reserve_id,resource_id,resources_quantity)
+values(
+    (select reserve_id from reserves where reserve_id = 5),
+    (select resource_id from resource where resource_id = 2),
+    12
+);
+
+-- for id #6
+insert into reserved_resources(reserve_id,resource_id,resources_quantity)
+values(
+    (select reserve_id from reserves where reserve_id = 6),
+    (select resource_id from resource where resource_id = 2),
+    1
+);
+
+-- for id #7
+insert into reserved_resources(reserve_id,resource_id,resources_quantity)
+values(
+    (select reserve_id from reserves where reserve_id = 7),
+    (select resource_id from resource where resource_id = 2),
+    5
+);
+
+-- for id #8
+insert into reserved_resources(reserve_id,resource_id,resources_quantity)
+values(
+    (select reserve_id from reserves where reserve_id = 8),
+    (select resource_id from resource where resource_id = 2),
+    6
+);
+
+-- for id #9
+insert into reserved_resources(reserve_id,resource_id,resources_quantity)
+values(
+    (select reserve_id from reserves where reserve_id = 9),
+    (select resource_id from resource where resource_id = 2),
+    4
+);
+
+-- for id #10
+insert into reserved_resources(reserve_id,resource_id,resources_quantity)
+values(
+    (select reserve_id from reserves where reserve_id = 10),
+    (select resource_id from resource where resource_id = 2),
+    11
 );
 ------------ end of reserves
 --------------------------------------------------------------
