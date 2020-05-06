@@ -39,7 +39,9 @@ exports.getProviderById = (req, res, next) => {
             error: "Invalid param for 'provider id'. Must be 'Integer' type.",
             invalid_param: req.params.id,
         });
+        return;
     }
+
     const is_debug = req.query.debug == 'true';
 
     let query_text;
@@ -164,6 +166,7 @@ exports.getOrganization = (req, res, next) => {
                 "Invalid param for 'organization id'. Must be 'Integer' type.",
             invalid_param: req.params.orgID,
         });
+        return;
     }
 
     const is_debug = req.query.debug == 'true';
@@ -213,6 +216,7 @@ exports.getRepresentatives = (req, res, next) => {
                 "Invalid param for 'organization id'. Must be 'Integer' type.",
             invalid_param: req.params.orgID,
         });
+        return;
     }
 
     const is_debug = req.query.debug == 'true';
