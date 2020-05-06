@@ -25,7 +25,7 @@ exports.getTypes = (req, res, next) => {
 exports.getAllResources = (req, res, next) => {
     let id = req.params.ID;
 
-    if (isNaN(Number(provider_id))) {
+    if (isNaN(Number(id))) {
         res.status(401).json({
             error: "Invalid param for 'resource id'. Must be 'Integer' type.",
             invalid_param: req.params.id,
