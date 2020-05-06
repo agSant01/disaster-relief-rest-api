@@ -24,17 +24,16 @@ exports.getTypes = (req, res, next) => {
 
 exports.getAllResources = (req, res, next) => {
     let id = req.params.ID;
-    let query
-    if(id){
+    let query;
+    if (id) {
         console.log(id);
         query = {
             text: querylib.qResourcesByID,
             values: [id],
         };
-    }
-    else{
+    } else {
         query = {
-            text: querylib.qAllResources
+            text: querylib.qAllResources,
         };
     }
 
@@ -125,7 +124,6 @@ exports.getResourceAttributesByType = (req, res, next) => {
 
 exports.getResourcesAvailable = (req, res, next) => {
     const provider_id = req.params.provider;
-    const keyword = req.query.keyword;
 
     let query = querylib.qGetAllResourcesAvailable;
 
@@ -143,6 +141,17 @@ exports.getResourcesAvailable = (req, res, next) => {
             text: querylib.qGetAllResourcesAvailableByProvider,
             values: [provider_id],
         };
+    } else {
+        const keyword = req.query.keyword;
+
+        if (keyword) {
+            console.log(keyword);
+
+            query = {
+                text: querylib.qGetAllResourcesAvailableByKeyword,
+                values: [`%${keyword.toLowerCase().replace(/\s/g, '')}%`],
+            };
+        }
     }
 
     console.log(query);
@@ -172,7 +181,27 @@ exports.getResourcesAvailable = (req, res, next) => {
 };
 
 exports.getAllReservedResource = (req, res, next) => {
-    db.query(querylib.getAllReservedResources, (err, result) => {
+    const resid = req.params.reserveid;
+
+    let query = querylib.getAllReservedResources;
+
+    if (resid) {
+        if (isNaN(Number(resid))) {
+            res.status(401).json({
+                error:
+                    "Invalid param for 'reserve id'. Must be 'Integer' type.",
+                invalid_param: req.params.id,
+            });
+            return;
+        }
+
+        query = {
+            text: querylib.getAllReservedResourcesById,
+            values: [resid],
+        };
+    }
+
+    db.query(query, (err, result) => {
         console.log(err, result);
 
         if (err) {
@@ -182,54 +211,21 @@ exports.getAllReservedResource = (req, res, next) => {
             return;
         }
 
-        let msg = {
-            count: result.rowCount,
-            reserves: result.rows,
-        };
+        let msg;
+
+        if (resid) {
+            msg = {
+                reserve: result.rows,
+            };
+        } else {
+            msg = {
+                count: result.rowCount,
+                reserves: result.rows,
+            };
+        }
 
         res.json(msg).end();
     });
-};
-
-exports.getResourceByIDAndKeyword = (req, res, next) => {
-    let id = req.params.ID;
-    let keyword = req.params.keyword;
-    var msg;
-
-    if(keyword){
-        msg = {
-            id:id,
-            purchase: [],
-        };
-        res.json(msg).end();
-    }
-    else{
-        let query = {
-            text: querylib.qResourcesByID,
-            values: [resourceType],
-        };
-    
-        db.query(query, (err, result) => {
-            console.log(err, result);
-    
-            if (err) {
-                res.status(503)
-                    .json(err)
-                    .end();
-                return;
-            }
-    
-            const msg = {
-                resource: result.rows,
-            };
-    
-            res.json(msg).end();
-        });
-    }
-    
-}; 
-exports.getReservedResourceById = (req, res, next) => {
-    res.json('hi').end();
 };
 
 exports.getRequests = (req, res, next) => {
@@ -297,16 +293,15 @@ exports.getPurchase = (req, res, next) => {
     const id = req.params.ID;
     var query;
 
-    if(id){
+    if (id) {
         query = {
             text: querylib.qPurchasesByID,
             values: [id],
-        }; 
-    }
-    else{
+        };
+    } else {
         query = {
             text: querylib.qPurchases,
-        };  
+        };
     }
     db.query(query, (err, result) => {
         console.log(err, result);
@@ -324,30 +319,25 @@ exports.getPurchase = (req, res, next) => {
 
         res.json(msg).end();
     });
-    
 };
 
 exports.getReserves = (req, res, next) => {
     const id = req.params.ID;
     var msg;
 
-    if(id){
+    if (id) {
         msg = {
-            id:id,
+            id: id,
             purchase: [],
         };
         res.json(msg).end();
-    }
-    else{
+    } else {
         msg = {
             purchase: [],
         };
         res.json(msg).end();
     }
 };
-
-
-
 
 exports.putUpdate = (req, res, next) => {
     let msg = {
