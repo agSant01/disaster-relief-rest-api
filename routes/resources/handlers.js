@@ -25,16 +25,17 @@ exports.getTypes = (req, res, next) => {
 exports.getAllResources = (req, res, next) => {
     let id = req.params.ID;
 
-    if (isNaN(Number(id))) {
-        res.status(401).json({
-            error: "Invalid param for 'resource id'. Must be 'Integer' type.",
-            invalid_param: req.params.id,
-        });
-        return;
-    }
-
     let query;
+
     if (id) {
+        if (isNaN(Number(id))) {
+            res.status(401).json({
+                error:
+                    "Invalid param for 'resource id'. Must be 'Integer' type.",
+                invalid_param: req.params.id,
+            });
+            return;
+        }
         console.log(id);
         query = {
             text: querylib.qGetResourceById,
@@ -311,17 +312,17 @@ exports.getRequests = (req, res, next) => {
 exports.getPurchase = (req, res, next) => {
     const id = req.params.ID;
 
-    if (isNaN(Number(id))) {
-        res.status(401).json({
-            error: "Invalid param for 'purchase id'. Must be 'Integer' type.",
-            invalid_param: req.params.id,
-        });
-        return;
-    }
-
     var query;
 
     if (id) {
+        if (isNaN(Number(id))) {
+            res.status(401).json({
+                error:
+                    "Invalid param for 'purchase id'. Must be 'Integer' type.",
+                invalid_param: req.params.id,
+            });
+            return;
+        }
         query = {
             text: querylib.qPurchasesByID,
             values: [id],
