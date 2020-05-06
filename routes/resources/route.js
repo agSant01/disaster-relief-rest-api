@@ -9,7 +9,7 @@ router.get('/types', handler.getTypes);
 router.get('/types/:id', handler.getResourceTypeAttributes);
 
 // Get all purchases
-router.get('/purchase/:ID?', handler.getPurchase);
+router.get('/purchases/:ID?', handler.getPurchase);
 
 // Get available resources
 router.get('/available/:provider?', handler.getResourcesAvailable);
