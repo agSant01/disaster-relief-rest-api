@@ -28,12 +28,12 @@ exports.getAllResources = (req, res, next) => {
     if (id) {
         console.log(id);
         query = {
-            text: querylib.qResourcesByID,
+            text: querylib.qGetResourceById,
             values: [id],
         };
     } else {
         query = {
-            text: querylib.qAllResources,
+            text: querylib.qGetResourceAllResources,
         };
     }
 

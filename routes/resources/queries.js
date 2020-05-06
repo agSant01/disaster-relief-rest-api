@@ -66,54 +66,33 @@ where resource_type_name = $1;`,
     from resource_type
     where resource_type.resource_type_id=$1`,
     qGetResourceById: `select 
-        resource.resource_id,
-        resource.resource_quantity as resources_available,
-        resource.resource_location_latitude,
-        resource.resource_location_longitude,
-        resource_status.resource_status_name,
-        submits_resource.userid as supplier_id,
-        submits_resource.resource_price as price_per_unit,
-        date_submitted,
-        resource_type_name
-        method_name,
-        senate_region_name,
-        ('https://www.google.com/maps/dir/?api=1&destination='||resource_location_latitude||','||resource_location_longitude) as google_maps_location,
-        (select json_agg(row_to_json((SELECT d FROM (SELECT
-            resource_type_field_name as attribute_name,
-            resource_type_field_value as attribute_value
-        ) d)))
-        from resource_attribute
-        where resource_attribute.resource_id = resource.resource_id)
-        as attributes
-    from resource
-    natural join submits_resource
-    natural join resource_type
-    natural join delivery_method
-    natural join senate_region
-    natural join resource_status
-    where resource_id = $1;`,
+    R.resource_id,
+    R.resource_quantity as resources_available,
+    R.resource_location_latitude,
+    R.resource_location_longitude,
+    U.resource_status_name,
+    T.resource_type_name,
+    S.senate_region_name,
+            ('https://www.google.com/maps/dir/?api=1&destination='||resource_location_latitude||','||resource_location_longitude) as google_maps_location
+    from resource as R
+    natural join senate_region as S
+    natural join resource_type as T
+    natural join resource_status as U
+    where R.resource_id = $1;`,
     qGetResourceAllResources: `
     select 
-        resource.resource_id,
-        resource.resource_quantity as resources_available,
-        resource.resource_location_latitude,
-        resource.resource_location_longitude,
-        resource_status.resource_status_name,
-        resource_type_name
-        method_name,
-        senate_region_name,
-        ('https://www.google.com/maps/dir/?api=1&destination='||resource_location_latitude||','||resource_location_longitude) as google_maps_location,
-        (select json_agg(row_to_json((SELECT d FROM (SELECT
-            resource_type_field_name as attribute_name,
-            resource_type_field_value as attribute_value
-        ) d)))
-        from resource_attribute
-        where resource_attribute.resource_id = resource.resource_id)
-        as attributes
-    from resource
-    natural left join resource_type
-    natural join senate_region
-    natural join resource_status`,
+R.resource_id,
+R.resource_quantity as resources_available,
+R.resource_location_latitude,
+R.resource_location_longitude,
+U.resource_status_name,
+T.resource_type_name,
+S.senate_region_name,
+        ('https://www.google.com/maps/dir/?api=1&destination='||resource_location_latitude||','||resource_location_longitude) as google_maps_location
+from resource as R
+natural join senate_region as S
+natural join resource_type as T
+natural join resource_status as U`,
     qGetAllResourcesAvailable: `
         with ordered as (
             select resource_id, coalesce(sum(resource_ordered.resources_quantity),0) as ordered_qty
