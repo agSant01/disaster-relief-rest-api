@@ -48,6 +48,7 @@ exports.getAllResources = (req, res, next) => {
         }
 
         let msg = {
+            count: result.rowCount,
             resource: result.rows,
         };
 
@@ -313,9 +314,18 @@ exports.getPurchase = (req, res, next) => {
             return;
         }
 
-        const msg = {
-            resource: result.rows,
-        };
+        let msg;
+
+        if (id) {
+            msg = {
+                resource: result.rows,
+            };
+        } else {
+            msg = {
+                count: result.rowCount,
+                resource: result.rows,
+            };
+        }
 
         res.json(msg).end();
     });
