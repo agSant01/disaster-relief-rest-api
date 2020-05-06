@@ -295,22 +295,35 @@ exports.getRequests = (req, res, next) => {
 
 exports.getPurchase = (req, res, next) => {
     const id = req.params.ID;
-    var msg;
+    var query;
 
     if(id){
-        msg = {
-            id:id,
-            purchase: [],
-        };
-        res.json(msg).end();
+        query = {
+            text: querylib.qPurchasesByID,
+            values: [id],
+        }; 
     }
     else{
-        msg = {
-            purchase: [],
-        };
-        res.json(msg).end();
+        query = {
+            text: querylib.qPurchases,
+        };  
     }
-    
+    db.query(query, (err, result) => {
+        console.log(err, result);
+
+        if (err) {
+            res.status(503)
+                .json(err)
+                .end();
+            return;
+        }
+
+        const msg = {
+            resource: result.rows,
+        };
+
+        res.json(msg).end();
+    });
     
 };
 
