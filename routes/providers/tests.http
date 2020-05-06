@@ -1,0 +1,44 @@
+@localhost = http://localhost:3000
+@heroku = https://evening-tor-08768.herokuapp.com
+
+@url = {{localhost}}
+
+
+### Get suppliers
+GET http://localhost:3000/api/suppliers HTTP/1.1
+
+### Get suppliers
+
+GET http://localhost:3000/api/suppliers?debug=true HTTP/1.1
+
+### Get provider by Id
+
+GET http://localhost:3000/api/suppliers/2 HTTP/1.1
+
+###
+
+GET http://localhost:3000/api/suppliers/2?debug=true HTTP/1.1
+
+###
+
+GET http://localhost:3000/api/suppliers/organizations HTTP/1.1
+
+###
+
+GET http://localhost:3000/api/suppliers/organizations?debug=true HTTP/1.1
+
+###
+
+GET http://localhost:3000/api/suppliers/organizations/1 HTTP/1.1
+
+###
+
+GET http://localhost:3000/api/suppliers/organizations/1?debug=true HTTP/1.1
+
+###
+
+GET http://localhost:3000/api/suppliers/organizations/1/representatives HTTP/1.1
+
+###
+
+GET http://localhost:3000/api/suppliers/organizations/1/representatives?debug=true HTTP/1.1
