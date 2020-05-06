@@ -19,32 +19,32 @@ module.exports = {
     as attributes
     from resource_type`,
     qAttributByType: `select 
-    resource.resource_id,
-    resource.resource_quantity as resources_available,
-    resource.resource_location_latitude,
-    resource.resource_location_longitude,
-    resource_status.resource_status_name,
-    submits_resource.userid as supplier_id,
-    submits_resource.resource_price as price_per_unit,
-    date_submitted,
-    resource_type_name
-    method_name,
-    senate_region_name,
-    ('https://www.google.com/maps/dir/?api=1&destination='||resource_location_latitude||','||resource_location_longitude) as google_maps_location,
-    (select json_agg(row_to_json((SELECT d FROM (SELECT
-        resource_type_field_name as attribute_name,
-        resource_type_field_value as attribute_value
-    ) d)))
-    from resource_attribute
-    where resource_attribute.resource_id = resource.resource_id)
-    as attributes
-from resource
-natural join submits_resource
-natural join resource_type
-natural join delivery_method
-natural join senate_region
-natural join resource_status
-where resource_type_name = $1;`,
+        resource.resource_id,
+        resource.resource_quantity as resources_available,
+        resource.resource_location_latitude,
+        resource.resource_location_longitude,
+        resource_status.resource_status_name,
+        submits_resource.userid as supplier_id,
+        submits_resource.resource_price as price_per_unit,
+        date_submitted,
+        resource_type_name
+        method_name,
+        senate_region_name,
+        ('https://www.google.com/maps/dir/?api=1&destination='||resource_location_latitude||','||resource_location_longitude) as google_maps_location,
+        (select json_agg(row_to_json((SELECT d FROM (SELECT
+            resource_type_field_name as attribute_name,
+            resource_type_field_value as attribute_value
+        ) d)))
+        from resource_attribute
+        where resource_attribute.resource_id = resource.resource_id)
+        as attributes
+    from resource
+    natural join submits_resource
+    natural join resource_type
+    natural join delivery_method
+    natural join senate_region
+    natural join resource_status
+    where resource_type_name = $1;`,
     qTypeAttribute: `
     select 
     resource_type_id,

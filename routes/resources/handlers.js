@@ -24,6 +24,15 @@ exports.getTypes = (req, res, next) => {
 
 exports.getAllResources = (req, res, next) => {
     let id = req.params.ID;
+
+    if (isNaN(Number(provider_id))) {
+        res.status(401).json({
+            error: "Invalid param for 'resource id'. Must be 'Integer' type.",
+            invalid_param: req.params.id,
+        });
+        return;
+    }
+
     let query;
     if (id) {
         console.log(id);
@@ -61,6 +70,15 @@ Returns the attributes associated with a particular resource type.
 */
 exports.getResourceTypeAttributes = (req, res, next) => {
     let resourceType = req.params.id;
+
+    if (isNaN(Number(resourceType))) {
+        res.status(401).json({
+            error:
+                "Invalid param for 'resource type id'. Must be 'Integer' type.",
+            invalid_param: req.params.id,
+        });
+        return;
+    }
 
     let query = {
         text: querylib.qTypeAttribute,
@@ -292,6 +310,15 @@ exports.getRequests = (req, res, next) => {
 
 exports.getPurchase = (req, res, next) => {
     const id = req.params.ID;
+
+    if (isNaN(Number(id))) {
+        res.status(401).json({
+            error: "Invalid param for 'purchase id'. Must be 'Integer' type.",
+            invalid_param: req.params.id,
+        });
+        return;
+    }
+
     var query;
 
     if (id) {
@@ -329,24 +356,6 @@ exports.getPurchase = (req, res, next) => {
 
         res.json(msg).end();
     });
-};
-
-exports.getReserves = (req, res, next) => {
-    const id = req.params.ID;
-    var msg;
-
-    if (id) {
-        msg = {
-            id: id,
-            purchase: [],
-        };
-        res.json(msg).end();
-    } else {
-        msg = {
-            purchase: [],
-        };
-        res.json(msg).end();
-    }
 };
 
 exports.putUpdate = (req, res, next) => {
