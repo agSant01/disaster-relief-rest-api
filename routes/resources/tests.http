@@ -26,7 +26,7 @@ GET {{url}}/api/resources/2 HTTP/1.1
 GET {{url}}/api/resources/purchase HTTP/1.1
 
 ### Get purchases by id
-GET {{url}}/api/resources/purchase/3 HTTP/1.1
+GET {{url}}/api/resources/purchase/1 HTTP/1.1
 
 ### Get suppliers
 GET {{url}}/api/resources HTTP/1.1
