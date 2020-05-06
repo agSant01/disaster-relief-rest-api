@@ -2579,6 +2579,43 @@ values(
     (select userid from users_table where username = 'annaprentice')
 );
 
+-- reserves id 5
+insert into reserves(userid)
+values(
+    (select userid from users_table where username = 'juliatorres')
+);
+
+-- reserves id 6
+insert into reserves(userid)
+values(
+   (select userid from users_table where username = 'carlitos')
+);
+
+-- reserves id 7
+insert into reserves(userid)
+values(
+    (select userid from users_table where username = 'annaprentice')
+);
+
+-- reserves id 8
+insert into reserves(userid)
+values(
+    (select userid from users_table where username = 'juliatorres')
+);
+
+-- reserves id 9
+insert into reserves(userid)
+values(
+   (select userid from users_table where username = 'carlitos')
+);
+
+-- reserves id 10
+insert into reserves(userid)
+values(
+    (select userid from users_table where username = 'annaprentice')
+);
+
+
 
 --reserved_resources 
 insert into reserved_resources(reserve_id,resource_id,resources_quantity)
