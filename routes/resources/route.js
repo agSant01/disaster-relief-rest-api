@@ -20,9 +20,6 @@ router.get('/requests/:id?', handler.getRequests);
 // Get reserved resource
 router.get('/reserves/:reserveid?', handler.getAllReservedResource);
 
-// Get all reserves
-router.get('/reservations/:ID?', handler.getReserves);
-
 // Get all resources
 router.get('/:ID?', handler.getAllResources);
 
