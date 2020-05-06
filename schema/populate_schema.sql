@@ -1116,6 +1116,95 @@ insert into organization_representative (
     (select organization_id from organization where organization_name = 'ICOM Helpers')
 );
 
+--#3
+insert into organization_representative (
+    userid,
+    organization_id
+) values 
+(
+    (select userid from users_table where username = 'pacheco'),
+    (select organization_id from organization where organization_name = 'Good Vibers')
+);
+
+--#4
+insert into organization_representative (
+    userid,
+    organization_id
+) values 
+(
+    (select userid from users_table where username = 'yaniraruiz'),
+    (select organization_id from organization where organization_name = 'GG')
+);
+
+--#5
+insert into organization_representative (
+    userid,
+    organization_id
+) values 
+(
+    (select userid from users_table where username = 'axperez'),
+    (select organization_id from organization where organization_name = 'FunRunners')
+);
+
+--#6
+insert into organization_representative (
+    userid,
+    organization_id
+) values 
+(
+    (select userid from users_table where username = 'dhernandez'),
+    (select organization_id from organization where organization_name = 'Goal4Us')
+);
+
+--#7
+insert into organization_representative (
+    userid,
+    organization_id
+) values 
+(
+    (select userid from users_table where username = 'juanperez'),
+    (select organization_id from organization where organization_name = 'JCI')
+);
+
+--#8
+insert into organization_representative (
+    userid,
+    organization_id
+) values 
+(
+    (select userid from users_table where username = 'lilliancruz'),
+    (select organization_id from organization where organization_name = 'The Salvation Army')
+);
+
+--#9
+insert into organization_representative (
+    userid,
+    organization_id
+) values 
+(
+    (select userid from users_table where username = 'vsoto'),
+    (select organization_id from organization where organization_name = 'Soles4Souls')
+);
+
+--#10
+insert into organization_representative (
+    userid,
+    organization_id
+) values 
+(
+    (select userid from users_table where username = 'tress'),
+    (select organization_id from organization where organization_name = 'Casa Linda')
+);
+
+--#11
+insert into organization_representative (
+    userid,
+    organization_id
+) values 
+(
+    (select userid from users_table where username = 'paulacordero'),
+    (select organization_id from organization where organization_name = 'SiembraVida')
+);
 
 -- insert delivery methods
 insert into delivery_method(method_name) values('Delivery');
