@@ -8,6 +8,10 @@ router.get('/types', handler.getTypes);
 
 // Get the attribute of a certain resource type
 router.get('/types/:id', handler.getResourceTypeAttributes);
+
+// Get all purchases 
+router.get('/purchase/:ID?', handler.getPurchase);
+
 // Get available resources
 router.get('/available/:provider?', handler.getResourcesAvailable);
 
@@ -20,8 +24,6 @@ router.get('/reserves', handler.getAllReservedResource);
 // Reserve resource
 router.get('/reserves/:reserveid', handler.getReservedResourceById);
 
-// Get all purchases 
-router.get('/purchase/:ID?', handler.getPurchase);
 
 // Get all reserves 
 router.get('/reservations/:ID?', handler.getReserves);

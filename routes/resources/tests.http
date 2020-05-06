@@ -49,3 +49,13 @@ GET {{url}}/api/resources/requests?keyword=wA
 ###
 
 GET {{url}}/api/resources/requests/1?keyword=wA
+
+###
+GET {{url}}/api/resources/requests/purchase
+
+###
+GET {{url}}/api/resources/requests/purchase/1
+
+###
+GET {{url}}/api/resources/requests/purchase/2
+
