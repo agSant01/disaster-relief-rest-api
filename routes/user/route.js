@@ -8,6 +8,9 @@ router.get('/', handler.getAllUsers);
 // Get all users, only for Admin and System Manager
 router.get('/administrators', handler.getAdministrators);
 
+// Add new addministrator
+router.post('/:roleType', handler.registerUser);
+
 // Get available roles
 router.get('/roles', handler.getRoles);
 
