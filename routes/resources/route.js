@@ -33,7 +33,7 @@ router.put('/:id/update-status', handler.putUpdate);
 router.post('/add', handler.postResource);
 
 // Submit resource request
-router.post('/add/request', handler.postResourceRequest);
+router.post('/request', handler.postResourceRequest);
 
 // Reserve resource
 router.post('/reserves', handler.postReserveResource);

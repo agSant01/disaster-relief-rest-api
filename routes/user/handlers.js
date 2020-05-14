@@ -81,11 +81,9 @@ exports.getAdministrators = (req, res, next) => {
 
 const userRoles = {
     administrator: 1,
-    manager: 2,
+    sys_manager: 2,
     supplier: 3,
     requester: 4,
-    org_admin: 5,
-    org_representative: 6,
 };
 
 const roleNames = Object.keys(userRoles);
@@ -188,7 +186,7 @@ exports.registerUser = (req, res, next) => {
         .catch((error) => {
             console.log('Json Validation Error', error);
 
-            res.status(503)
+            res.status(400)
                 .json(error)
                 .end();
         });

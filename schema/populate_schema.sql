@@ -1182,7 +1182,7 @@ insert into resource_attribute_definition (
 values(
     (SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Water'),
     'Water Type',
-    'Distilled '
+    'Distilled'
 );   
 insert into resource_attribute_definition (    
     resource_type_id,
@@ -1192,7 +1192,7 @@ insert into resource_attribute_definition (
 values(
     (SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Water'),
     'Expiration Date',
-    'mm/dd/yyyy'
+    null
 );
  
 insert into resource_attribute_definition (    
@@ -1275,7 +1275,7 @@ resource_type_field_value
 values(
 (SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Medication'),
 'Expiration Date',
-'mm/dd/yyyy'
+null
 );
 insert into resource_attribute_definition (    
     resource_type_id,
@@ -1300,7 +1300,7 @@ values((SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Ba
 insert into resource_attribute_definition (resource_type_id,resource_type_field_name,resource_type_field_value)
 values((SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Baby Food'),'Baby Food Name', null);
 insert into resource_attribute_definition (resource_type_id,resource_type_field_name,resource_type_field_value)
-values((SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Baby Food'),'Expiration Date','mm/dd/yyyy');
+values((SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Baby Food'),'Expiration Date',null);
 insert into resource_attribute_definition (    
     resource_type_id,
     resource_type_field_name,
@@ -1391,7 +1391,7 @@ resource_type_field_value
 values(
 (SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Canned Food'),
 'Expiration Date',
-'mm/dd/yyyy'
+null
 );
 
 
@@ -1411,7 +1411,7 @@ values((SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Dr
 insert into resource_attribute_definition (resource_type_id,resource_type_field_name,resource_type_field_value)
 values((SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Dry Food'),'Dry Food Name', null);
 insert into resource_attribute_definition(resource_type_id,resource_type_field_name,resource_type_field_value)
-values((SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Dry Food'),'Expiration Date','mm/dd/yyyy');
+values((SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Dry Food'),'Expiration Date',null);
 insert into resource_attribute_definition (resource_type_id,resource_type_field_name,resource_type_field_value)
 values((SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Dry Food'),'Quantity Per Unit',null);
 
@@ -1643,7 +1643,7 @@ with first_id as (
     RETURNING resource_id
 ), sixth_id as (
     insert into resource_attribute(resource_id, resource_type_field_name, resource_type_field_value)
-    values((select resource_id from first_id), 'Duration', 2) 
+    values((select resource_id from first_id), 'Duration Period', 2) 
     RETURNING resource_id
 )
 -- submitted id 1

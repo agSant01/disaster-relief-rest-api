@@ -41,6 +41,7 @@ module.exports = {
             first_name,
             last_name,
             city.city_name,
+            senate_region.senate_region_name as senate_region,
             country.country_name,
             users_table.email,
             users_table.phone_number,
@@ -52,6 +53,8 @@ module.exports = {
         natural join city
         natural join country
         natural join roles
+        inner join senate_region on 
+        senate_region.senate_region_id=city.city_senate_region
         where is_enabled = true;`,
     qAllUsersDebug: `select * from users_table;`,
     qUser: `
@@ -59,6 +62,7 @@ module.exports = {
             userid,
             first_name,
             last_name,
+            senate_region.senate_region_name as senate_region,
             city.city_name,
             country.country_name,
             users_table.email,
@@ -71,6 +75,8 @@ module.exports = {
         natural join city
         natural join country
         natural join roles
+        inner join senate_region on 
+        senate_region.senate_region_id=city.city_senate_region
         where userid=$1 and is_enabled=$2;`,
     qUserDebug: `select * from users_table where userid=$1 and is_enabled = $2;`,
     qRoles: `select * from roles;`,

@@ -1,4 +1,3 @@
-const { sanitizations } = require('indicative/sanitizer');
 const { validations } = require('indicative/validator');
 
 module.exports = {

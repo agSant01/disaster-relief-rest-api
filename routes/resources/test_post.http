@@ -1,0 +1,117 @@
+@localhost = http://localhost:3000
+@heroku = https://evening-tor-08768.herokuapp.com
+
+@url = {{localhost}}
+
+###
+# bad request
+POST {{url}}/api/resources/request HTTP/1.1
+content-type: application/json
+
+{
+    "username": "gabrielTe1"
+}
+
+
+###
+# bad request
+POST {{url}}/api/resources/request HTTP/1.1
+content-type: application/json
+
+
+{
+    "userid": 6,
+    "requested_resources": [
+         {
+            "resource_type": "Water",
+            "quantity": 45,
+            "longitude": -69.90,
+            "latitude": -18,
+            "attributes": []
+        }
+    ]
+}
+
+
+###
+# bad request
+POST {{url}}/api/resources/request HTTP/1.1
+content-type: application/json
+
+
+{
+    "userid": 6,
+    "requested_resources": [
+         {
+            "resource_type": "Water",
+            "quantity": 45,
+            "longitude": -69.90,
+            "latitude": -18,
+            "attributes": []
+        }
+    ]
+}
+
+
+###
+# bad request
+POST {{url}}/api/resources/request HTTP/1.1
+content-type: application/json
+
+{
+    "userid": 6,
+    "requested_resources": [
+        {
+            "resource_type": "Water",
+            "quantity": 45,
+            "longitude": -69.90,
+            "latitude": -18,
+            "attributes": [
+                {
+                    "attr_name": "Container Size",
+                    "attr_value": "16oz."
+                },
+                 {
+                    "attr_name": "Water Type",
+                    "attr_value": "purified"
+                },
+                 {
+                    "attr_name": "expiration date",
+                    "attr_value": "2020-12-02"
+                },
+                 {
+                    "attr_name": "quantity per unit",
+                    "attr_value": "89"
+                }
+            ]
+        },
+         {
+            "resource_type": "Heavy Equipment",
+            "quantity": 105,
+            "longitude": -68.5768798090,
+            "latitude": 17.98765678,
+            "attributes": [
+                {
+                    "attr_name": "Equipment Type",
+                    "attr_value": "Bulldozers"
+                },
+                 {
+                    "attr_name": "Fuel Type",
+                    "attr_value": "Diesel"
+                },  
+                {
+                    "attr_name": "Transaction Type",
+                    "attr_value": "Rent"
+                },  
+                {
+                    "attr_name": "Duration Period Unit",
+                    "attr_value": "Week(s)"
+                },  
+                {
+                    "attr_name": "Duration Period",
+                    "attr_value": "6"
+                }
+            ]
+         }
+    ]
+}
