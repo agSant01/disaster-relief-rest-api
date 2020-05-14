@@ -2220,13 +2220,11 @@ with request_info as (
 )
 insert into requested_resources(
     request_id,             
-    resource_id,   
-    resources_quantity    
+    resource_id
 )
 values(
     (select request_id from request_info),
-    1,
-    3
+    1
 );
 ----- end of requst id 4
 
@@ -2243,13 +2241,11 @@ with request_info as (
 )
 insert into requested_resources(
     request_id,             
-    resource_id,   
-    resources_quantity    
+    resource_id
 )
 values(
     (select request_id from request_info),
-    3,
-    1
+    3
 );
 ----- end of requst id 5
 
@@ -2266,13 +2262,11 @@ with request_info as (
 )
 insert into requested_resources(
     request_id,             
-    resource_id,   
-    resources_quantity    
+    resource_id
 )
 values(
     (select request_id from request_info),
-    3,
-    1
+    3
 ); 
 ----- end of requst id 6
  
@@ -2289,13 +2283,11 @@ with request_info as (
 )
 insert into requested_resources(
     request_id,             
-    resource_id,   
-    resources_quantity    
+    resource_id
 )
 values(
     (select request_id from request_info),
-    5,
-    13
+    5
 ); 
 ----- end of requst id 7
 
@@ -2312,13 +2304,11 @@ with request_info as (
 )
 insert into requested_resources(
     request_id,             
-    resource_id,   
-    resources_quantity    
+    resource_id   
 )
 values(
     (select request_id from request_info),
-    3,
-    50
+    3
 ); 
 ----- end of requst id 8
 
@@ -2335,13 +2325,11 @@ with request_info as (
 )
 insert into requested_resources(
     request_id,             
-    resource_id,   
-    resources_quantity    
+    resource_id   
 )
 values(
     (select request_id from request_info),
-    7,
-    2
+    7
 ); 
 ----- end of requst id 9
 
@@ -2358,13 +2346,11 @@ with request_info as (
 )
 insert into requested_resources(
     request_id,             
-    resource_id,   
-    resources_quantity    
+    resource_id    
 )
 values(
     (select request_id from request_info),
-    4,
-    5
+    4
 );
 ----- end of requst id 10
 

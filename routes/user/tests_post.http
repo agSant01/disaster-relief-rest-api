@@ -26,3 +26,68 @@ content-type: application/json
 }
 
 ###
+
+POST {{url}}/api/users/supplier HTTP/1.1
+content-type: application/json
+
+{
+    "username": "suppliertest",
+    "password": "12345678",
+    "first_name": "Suplier",
+    "last_name": "Santiago",
+    "email": "suptest.test@upr.edu",
+    "address": {
+        "street1": "Calle ",
+        "city": "Cabo Rojo",
+        "zip_code": "00645",
+        "country": "Puerto Rico"
+    },
+    "gender":"Male",
+    "dob": "1998-12-09",
+    "phone_number": "7879221444"
+}
+
+
+###
+
+POST {{url}}/api/users/requester HTTP/1.1
+content-type: application/json
+
+{
+    "username": "requestertest",
+    "password": "12345678",
+    "first_name": "Requester",
+    "last_name": "Santiago",
+    "email": "requester.test@upr.edu",
+    "address": {
+        "street1": "Calle ",
+        "city": "Cabo Rojo",
+        "zip_code": "00645",
+        "country": "Puerto Rico"
+    },
+    "gender":"Male",
+    "dob": "1998-12-09",
+    "phone_number": "7879221444"
+}
+
+###
+# test for invalid role
+POST {{url}}/api/users/supavsddaplier HTTP/1.1
+content-type: application/json
+
+{
+   "":""
+}
+
+###
+# test for invalid payload
+POST {{url}}/api/users/supplier HTTP/1.1
+content-type: application/json
+
+{
+    "username": "requestertest",
+    "password": "12345678",
+    "gender":"Male",
+    "dob": "1998-12-09",
+    "phone_number": "7879221444"
+}
