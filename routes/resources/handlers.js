@@ -8,7 +8,7 @@ exports.getTypes = (req, res, next) => {
 
         if (err) {
             res.status(503)
-                .json(err)
+                .json({ error: err.stack })
                 .end();
             return;
         }
@@ -52,7 +52,7 @@ exports.getAllResources = (req, res, next) => {
 
         if (err) {
             res.status(503)
-                .json(err)
+                .json({ error: err.stack })
                 .end();
             return;
         }
@@ -91,7 +91,7 @@ exports.getResourceTypeAttributes = (req, res, next) => {
 
         if (err) {
             res.status(503)
-                .json(err)
+                .json({ error: err.stack })
                 .end();
             return;
         }
@@ -123,7 +123,7 @@ exports.getResourceAttributesByType = (req, res, next) => {
 
         if (err) {
             res.status(503)
-                .json(err)
+                .json({ error: err.stack })
                 .end();
             return;
         }
@@ -182,7 +182,7 @@ exports.getResourcesAvailable = (req, res, next) => {
 
         if (err) {
             res.status(503)
-                .json(err)
+                .json({ error: err.stack })
                 .end();
             return;
         }
@@ -226,7 +226,7 @@ exports.getAllReservedResource = (req, res, next) => {
 
         if (err) {
             res.status(503)
-                .json(err)
+                .json({ error: err.stack })
                 .end();
             return;
         }
@@ -287,7 +287,7 @@ exports.getRequests = (req, res, next) => {
 
         if (err) {
             res.status(503)
-                .json(err)
+                .json({ error: err.stack })
                 .end();
             return;
         }
@@ -337,7 +337,7 @@ exports.getPurchase = (req, res, next) => {
 
         if (err) {
             res.status(503)
-                .json(err)
+                .json({ error: err.stack })
                 .end();
             return;
         }

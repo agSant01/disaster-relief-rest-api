@@ -26,7 +26,7 @@ router.get('/dbtest', (req, res, next) => {
 
         if (err) {
             res.status(504)
-                .json(err)
+                .json({ error: err.toString() })
                 .end();
             return;
         }

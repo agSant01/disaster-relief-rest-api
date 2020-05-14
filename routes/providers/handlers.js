@@ -19,7 +19,9 @@ exports.getProviders = (req, res, next) => {
         console.log(err, result);
 
         if (err) {
-            res.json(err).end();
+            res.status(503)
+                .json({ error: err.toString() })
+                .end();
             return;
         }
         let msg = {
@@ -66,7 +68,9 @@ exports.getProviderById = (req, res, next) => {
         console.log(err, result);
 
         if (err) {
-            res.json(err).end();
+            res.status(503)
+                .json({ error: err.toString() })
+                .end();
             return;
         }
         let msg = {
@@ -97,7 +101,9 @@ exports.getOrganizations = (req, res, next) => {
         console.log(err, result);
 
         if (err) {
-            res.json(err).end();
+            res.status(503)
+                .json({ error: err.toString() })
+                .end();
             return;
         }
 
@@ -195,7 +201,9 @@ exports.getOrganization = (req, res, next) => {
         console.log(err, result);
 
         if (err) {
-            res.json(err).end();
+            res.status(503)
+                .json({ error: err.toString() })
+                .end();
             return;
         }
 
@@ -245,7 +253,9 @@ exports.getRepresentatives = (req, res, next) => {
         console.log(err, result);
 
         if (err) {
-            res.json(err).end();
+            res.status(503)
+                .json({ error: err.toString() })
+                .end();
             return;
         }
         console.log(result);
