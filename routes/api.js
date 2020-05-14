@@ -1,6 +1,5 @@
 var express = require('express');
 var userRoute = require('./user/route');
-var registerRoute = require('./register/route');
 var providersRoute = require('./providers/route');
 var resourcesRoute = require('./resources/route');
 var statisticsRoute = require('./statistics/route');
@@ -10,7 +9,6 @@ const db = require('../database');
 var router = express.Router();
 
 router.use('/users', userRoute);
-router.use('/register', registerRoute);
 router.use('/suppliers', providersRoute);
 router.use('/resources', resourcesRoute);
 router.use('/statistics', statisticsRoute);
@@ -26,7 +24,7 @@ router.get('/dbtest', (req, res, next) => {
 
         if (err) {
             res.status(504)
-                .json(err)
+                .json({ error: err.toString() })
                 .end();
             return;
         }

@@ -1182,7 +1182,7 @@ insert into resource_attribute_definition (
 values(
     (SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Water'),
     'Water Type',
-    'Distilled '
+    'Distilled'
 );   
 insert into resource_attribute_definition (    
     resource_type_id,
@@ -1192,7 +1192,7 @@ insert into resource_attribute_definition (
 values(
     (SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Water'),
     'Expiration Date',
-    'mm/dd/yyyy'
+    null
 );
  
 insert into resource_attribute_definition (    
@@ -1275,7 +1275,7 @@ resource_type_field_value
 values(
 (SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Medication'),
 'Expiration Date',
-'mm/dd/yyyy'
+null
 );
 insert into resource_attribute_definition (    
     resource_type_id,
@@ -1300,7 +1300,7 @@ values((SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Ba
 insert into resource_attribute_definition (resource_type_id,resource_type_field_name,resource_type_field_value)
 values((SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Baby Food'),'Baby Food Name', null);
 insert into resource_attribute_definition (resource_type_id,resource_type_field_name,resource_type_field_value)
-values((SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Baby Food'),'Expiration Date','mm/dd/yyyy');
+values((SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Baby Food'),'Expiration Date',null);
 insert into resource_attribute_definition (    
     resource_type_id,
     resource_type_field_name,
@@ -1391,7 +1391,7 @@ resource_type_field_value
 values(
 (SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Canned Food'),
 'Expiration Date',
-'mm/dd/yyyy'
+null
 );
 
 
@@ -1411,7 +1411,7 @@ values((SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Dr
 insert into resource_attribute_definition (resource_type_id,resource_type_field_name,resource_type_field_value)
 values((SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Dry Food'),'Dry Food Name', null);
 insert into resource_attribute_definition(resource_type_id,resource_type_field_name,resource_type_field_value)
-values((SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Dry Food'),'Expiration Date','mm/dd/yyyy');
+values((SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Dry Food'),'Expiration Date',null);
 insert into resource_attribute_definition (resource_type_id,resource_type_field_name,resource_type_field_value)
 values((SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Dry Food'),'Quantity Per Unit',null);
 
@@ -1643,7 +1643,7 @@ with first_id as (
     RETURNING resource_id
 ), sixth_id as (
     insert into resource_attribute(resource_id, resource_type_field_name, resource_type_field_value)
-    values((select resource_id from first_id), 'Duration', 2) 
+    values((select resource_id from first_id), 'Duration Period', 2) 
     RETURNING resource_id
 )
 -- submitted id 1
@@ -2220,13 +2220,11 @@ with request_info as (
 )
 insert into requested_resources(
     request_id,             
-    resource_id,   
-    resources_quantity    
+    resource_id
 )
 values(
     (select request_id from request_info),
-    1,
-    3
+    1
 );
 ----- end of requst id 4
 
@@ -2243,13 +2241,11 @@ with request_info as (
 )
 insert into requested_resources(
     request_id,             
-    resource_id,   
-    resources_quantity    
+    resource_id
 )
 values(
     (select request_id from request_info),
-    3,
-    1
+    3
 );
 ----- end of requst id 5
 
@@ -2266,13 +2262,11 @@ with request_info as (
 )
 insert into requested_resources(
     request_id,             
-    resource_id,   
-    resources_quantity    
+    resource_id
 )
 values(
     (select request_id from request_info),
-    3,
-    1
+    3
 ); 
 ----- end of requst id 6
  
@@ -2289,13 +2283,11 @@ with request_info as (
 )
 insert into requested_resources(
     request_id,             
-    resource_id,   
-    resources_quantity    
+    resource_id
 )
 values(
     (select request_id from request_info),
-    5,
-    13
+    5
 ); 
 ----- end of requst id 7
 
@@ -2312,13 +2304,11 @@ with request_info as (
 )
 insert into requested_resources(
     request_id,             
-    resource_id,   
-    resources_quantity    
+    resource_id   
 )
 values(
     (select request_id from request_info),
-    3,
-    50
+    3
 ); 
 ----- end of requst id 8
 
@@ -2335,13 +2325,11 @@ with request_info as (
 )
 insert into requested_resources(
     request_id,             
-    resource_id,   
-    resources_quantity    
+    resource_id   
 )
 values(
     (select request_id from request_info),
-    7,
-    2
+    7
 ); 
 ----- end of requst id 9
 
@@ -2358,13 +2346,11 @@ with request_info as (
 )
 insert into requested_resources(
     request_id,             
-    resource_id,   
-    resources_quantity    
+    resource_id    
 )
 values(
     (select request_id from request_info),
-    4,
-    5
+    4
 );
 ----- end of requst id 10
 

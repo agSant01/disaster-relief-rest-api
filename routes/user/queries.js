@@ -1,5 +1,39 @@
 module.exports = {
-    // @todo: add get all administrator query
+    qRegister: `INSERT INTO users_table 
+    (
+        username,
+        user_password,
+        first_name,
+        last_name, 
+        date_of_birth,
+        cityid,
+        zip_code,
+        country_id, 
+        gender,
+        email,
+        phone_number,
+        is_enabled,
+        role_id,
+        street1,
+        street2
+    ) 
+    VALUES (
+        $1,
+        crypt($2, gen_salt('bf')),
+        $3,
+        $4,
+        $5,
+        (select cityid from city where lower(city_name) = lower($6)),
+        $7,
+        (select country_id from country where lower(country_name) = lower($8)),
+        $9,
+        $10,
+        $11,
+        true,
+        (select role_id from roles where role_id = $12),
+        $13,
+        $14
+    ) returning userid;`,
     //users route
     qAllUsers: `
         select 
@@ -7,16 +41,20 @@ module.exports = {
             first_name,
             last_name,
             city.city_name,
+            senate_region.senate_region_name as senate_region,
             country.country_name,
             users_table.email,
             users_table.phone_number,
             users_table.street1,
             users_table.street2,
+            users_table.zip_code,
             roles.role_name
         from users_table
         natural join city
         natural join country
         natural join roles
+        inner join senate_region on 
+        senate_region.senate_region_id=city.city_senate_region
         where is_enabled = true;`,
     qAllUsersDebug: `select * from users_table;`,
     qUser: `
@@ -24,18 +62,22 @@ module.exports = {
             userid,
             first_name,
             last_name,
+            senate_region.senate_region_name as senate_region,
             city.city_name,
             country.country_name,
             users_table.email,
             users_table.phone_number,
             users_table.street1,
             users_table.street2,
+            users_table.zip_code,
             roles.role_name
         from users_table
         natural join city
         natural join country
         natural join roles
-        where userid=$1 and is_enabled = $2;`,
+        inner join senate_region on 
+        senate_region.senate_region_id=city.city_senate_region
+        where userid=$1 and is_enabled=$2;`,
     qUserDebug: `select * from users_table where userid=$1 and is_enabled = $2;`,
     qRoles: `select * from roles;`,
     qGetRequestsByUserId: `
