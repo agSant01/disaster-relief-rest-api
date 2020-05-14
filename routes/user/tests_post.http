@@ -65,7 +65,7 @@ content-type: application/json
         "zip_code": "00645",
         "country": "Puerto Rico"
     },
-    "gender":"Male",
+    "gender":"female",
     "dob": "1998-12-09",
     "phone_number": "7879221444"
 }

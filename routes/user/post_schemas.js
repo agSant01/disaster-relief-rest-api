@@ -18,7 +18,8 @@ module.exports = {
         'address.country': 'required|string',
         gender: [
             validations.required(),
-            validations.subset(['Male', 'Female', 'male', 'female']),
+            validations.in(['Male', 'Female', 'male', 'female']),
+            validations.string(),
         ],
         dob: [validations.dateFormat(['YYYY-MM-DD'])],
         phone_number: [validations.string(), validations.required()],

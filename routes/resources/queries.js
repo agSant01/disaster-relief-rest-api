@@ -27,8 +27,8 @@ module.exports = {
         submits_resource.userid as supplier_id,
         submits_resource.resource_price as price_per_unit,
         date_submitted,
-        resource_type_name
-        method_name,
+        resource_type_name,
+        method_name as delivery_method,
         senate_region_name,
         ('https://www.google.com/maps/dir/?api=1&destination='||resource_location_latitude||','||resource_location_longitude) as google_maps_location,
         (select json_agg(row_to_json((SELECT d FROM (SELECT
@@ -44,7 +44,7 @@ module.exports = {
     natural join delivery_method
     natural join senate_region
     natural join resource_status
-    where resource_type_name = $1;`,
+    where lower(resource_type_name) = lower($1);`,
     qTypeAttribute: `
     select 
     resource_type_id,
@@ -127,8 +127,8 @@ module.exports = {
             submits_resource.userid as supplier_id,
             submits_resource.resource_price as price_per_unit,
             date_submitted,
-            resource_type_name
-            method_name,
+            resource_type_name,
+            method_name as delivery_method,
             senate_region_name,
             ('https://www.google.com/maps/dir/?api=1&destination='||resource_location_latitude||','||resource_location_longitude) as google_maps_location,
             (select json_agg(row_to_json((SELECT d FROM (SELECT
@@ -150,7 +150,7 @@ module.exports = {
             from ordered 
             where ordered.resource_id=resource.resource_id), 0)) > 0
         order by resource_type.resource_type_name;`,
-    qGetAllResourcesAvailableByProvider: `
+    qGetAllResourcesAvailableByProviderWithOptKeyword: `
         with ordered as (
             select resource_id, coalesce(sum(resource_ordered.resources_quantity),0) as ordered_qty
             from resource_ordered group by resource_ordered.resource_id
@@ -168,8 +168,8 @@ module.exports = {
             submits_resource.userid as supplier_id,
             submits_resource.resource_price as price_per_unit,
             date_submitted,
-            resource_type_name
-            method_name,
+            resource_type_name, 
+            method_name as delivery_method,
             senate_region_name,
             ('https://www.google.com/maps/dir/?api=1&destination='||resource_location_latitude||','||resource_location_longitude) as google_maps_location,
             (select json_agg(row_to_json((SELECT d FROM (SELECT
@@ -191,6 +191,51 @@ module.exports = {
             from ordered 
             where ordered.resource_id=resource.resource_id), 0)) > 0
         and userid = $1
+        and lower(
+            regexp_replace(
+                resource_type.resource_type_name, '[\s+]', '', 'g')) like $2
+        order by resource_type.resource_type_name;`,
+    qGetAllResourcesAvailableByResourceId: `
+        with ordered as (
+            select resource_id, coalesce(sum(resource_ordered.resources_quantity),0) as ordered_qty
+            from resource_ordered group by resource_ordered.resource_id
+            UNION
+            select resource_id, coalesce(sum(reserved_resources.resources_quantity),0) as reserved_qty
+            from reserved_resources group by reserved_resources.resource_id
+        )
+        select 
+            resource.resource_id,
+            (resource.resource_quantity - COALESCE((SELECT ordered_qty
+            from ordered where ordered.resource_id=resource.resource_id), 0))::INTEGER as resources_available,
+            resource.resource_location_latitude,
+            resource.resource_location_longitude,
+            resource_status.resource_status_name,
+            submits_resource.userid as supplier_id,
+            submits_resource.resource_price as price_per_unit,
+            date_submitted,
+            resource_type_name, 
+            method_name as delivery_method,
+            senate_region_name,
+            ('https://www.google.com/maps/dir/?api=1&destination='||resource_location_latitude||','||resource_location_longitude) as google_maps_location,
+            (select json_agg(row_to_json((SELECT d FROM (SELECT
+                resource_type_field_name as attribute_name,
+                resource_type_field_value as attribute_value
+            ) d)))
+            from resource_attribute
+            where resource_attribute.resource_id = resource.resource_id)
+            as attributes
+        from resource
+        natural join submits_resource
+        natural join resource_type
+        natural join delivery_method
+        natural join senate_region
+        natural join resource_status
+        where resource_status_id = 1
+        and (resource.resource_quantity - 
+            coalesce((SELECT ordered_qty
+            from ordered 
+            where ordered.resource_id=resource.resource_id), 0)) > 0
+        and resource_id = $1
         order by resource_type.resource_type_name;`,
     qGetAllResourcesAvailableByKeyword: `
         with ordered as (
@@ -210,8 +255,8 @@ module.exports = {
             submits_resource.userid as supplier_id,
             submits_resource.resource_price as price_per_unit,
             date_submitted,
-            resource_type_name
-            method_name,
+            resource_type_name,
+            method_name as delivery_method,
             senate_region_name,
             ('https://www.google.com/maps/dir/?api=1&destination='||resource_location_latitude||','||resource_location_longitude) as google_maps_location,
             (select json_agg(row_to_json((SELECT d FROM (SELECT
@@ -467,4 +512,33 @@ module.exports = {
         from resource_type 
         where lower(resource_type_name)=lower($1))
     group by resource_type_field_name;`,
+
+    // submit resource related
+    qSupplierInfo: `
+    select 
+        cityid 
+    from users_table 
+    natural join roles
+    where userid=$1 
+    and is_enabled=true 
+    and (
+        role_name='Individual Supplier'
+        or role_name='Supplier Organization Administrator'
+        or role_name='Supplier Organization Representative'
+    )`,
+    qInsertSubmit: `
+        insert into submits_resource(
+            resource_id,
+            userid,
+            resource_price,
+            is_for_sale,
+            delivery_method_id
+        ) values(
+            $1,
+            $2,
+            $3,
+            $4,
+            (select delivery_method_id from delivery_method where lower(method_name)=lower($5))
+        );
+    `,
 };

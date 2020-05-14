@@ -116,7 +116,9 @@ exports.registerUser = (req, res, next) => {
                     validatedJson.address.city,
                     validatedJson.address.zip_code,
                     validatedJson.address.country,
-                    validatedJson.gender,
+                    validatedJson.gender.toLowerCase() == 'male'
+                        ? 'Male'
+                        : 'Female',
                     validatedJson.email,
                     validatedJson.phone_number,
                     // get id from roles json
