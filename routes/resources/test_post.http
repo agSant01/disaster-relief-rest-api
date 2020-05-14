@@ -15,7 +15,7 @@ content-type: application/json
 
 ###
 # bad request
-POST {{url}}/api/resources/request HTTP/1.1
+POST {{url}}/api/resources/requests HTTP/1.1
 content-type: application/json
 
 
@@ -35,7 +35,7 @@ content-type: application/json
 
 ###
 # bad request
-POST {{url}}/api/resources/request HTTP/1.1
+POST {{url}}/api/resources/requests HTTP/1.1
 content-type: application/json
 
 
@@ -55,7 +55,7 @@ content-type: application/json
 
 ###
 # bad request
-POST {{url}}/api/resources/request HTTP/1.1
+POST {{url}}/api/resources/requests HTTP/1.1
 content-type: application/json
 
 {
@@ -157,7 +157,7 @@ content-type: application/json
 
 
 ###
-# bad request
+# good request
 POST {{url}}/api/resources HTTP/1.1
 content-type: application/json
 

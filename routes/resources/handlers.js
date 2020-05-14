@@ -26,6 +26,7 @@ exports.getTypes = (req, res, next) => {
 
 exports.getAllResources = (req, res, next) => {
     let id = req.params.ID;
+    const is_debug = req.query.debug == 'true';
 
     let query;
 
@@ -40,12 +41,16 @@ exports.getAllResources = (req, res, next) => {
         }
         console.log(id);
         query = {
-            text: querylib.qGetResourceById,
+            text: is_debug
+                ? querylib.qGetResourceByIdDebug
+                : querylib.qGetResourceById,
             values: [id],
         };
     } else {
         query = {
-            text: querylib.qGetResourceAllResources,
+            text: is_debug
+                ? querylib.qGetResourceAllResourcesDebug
+                : querylib.qGetResourceAllResources,
         };
     }
 
@@ -190,12 +195,13 @@ exports.getResourcesAvailableByResId = (req, res, next) => {
         }
 
         let msg = {
-            count: result.rowCount,
-            resources_available: result.rows,
+            count: result.rows.length,
         };
 
-        if (resourceId && result.rowCount > 0) {
-            msg.resource_id = Number(resourceId);
+        if (result.rows.length == 1) {
+            msg.resource_available = result.rows;
+        } else {
+            msg.resources_available = result.rows;
         }
 
         res.json(msg).end();
