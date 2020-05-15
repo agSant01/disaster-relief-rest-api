@@ -220,4 +220,47 @@ module.exports = {
         (select userid from users_table where username = $1),
         (select organization_id from organization where organization_id = $2)
     );`,
+    // create organization related
+    qIsIndividualSupplier: `select userid 
+    from users_table 
+    where userid=$1
+    and role_id=3;`,
+    qInsertOrganization: `
+        with orginfo as (
+            insert into organization (
+                organization_name, 
+                organization_manager_id,
+                street1,
+                street2,
+                cityid,
+                zip_code,
+                country_id,
+                phone_number,
+                email,
+                is_enabled
+            ) values(
+                $1,
+                $2,
+                $3,
+                $4,
+                (select cityid from city where city_name = $5),
+                $6,
+                (select country_id from country where country_name = $7),
+                $8,
+                $9,
+                true
+            ) 
+            returning organization_id, organization_manager_id
+        ), representativeinsert as (
+            insert into organization_representative(userid, organization_id)
+            values(
+                (select organization_manager_id from orginfo), 
+                (select organization_id from orginfo)
+            )
+            returning userid
+        )
+        update users_table
+        set role_id=5
+        where userid=(select userid from representativeinsert)
+        returning (select organization_id from orginfo);`,
 };

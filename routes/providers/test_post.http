@@ -1,0 +1,38 @@
+@localhost = http://localhost:3000
+@heroku = https://evening-tor-08768.herokuapp.com
+
+@url = {{localhost}}
+
+### invalid user role, this is admin
+POST {{url}}/api/suppliers/organizations HTTP/1.1
+content-type: application/json
+
+{
+    "userid":"1",
+    "organization_name": "Habitat 4 Humanity",
+    "address": {
+        "street1": "23 Hudson Ave.",
+        "city": "Luquillo",
+        "zip_code":"00865",
+        "country": "Puerto Rico"
+    },
+    "phone_number": "8983741009",
+    "email": "organization@habitat.humanity"
+}
+
+### invalid user role, this is admin
+POST {{url}}/api/suppliers/organizations HTTP/1.1
+content-type: application/json
+
+{
+    "userid":"9",
+    "organization_name": "Habitat 4 Humanity",
+    "address": {
+        "street1": "23 Hudson Ave.",
+        "city": "Luquillo",
+        "zip_code":"00865",
+        "country": "Puerto Rico"
+    },
+    "phone_number": "8983741009",
+    "email": "organization@habitat.humanity"
+}
