@@ -68,4 +68,42 @@ module.exports = {
             validations.above([0]),
         ],
     },
+    resourceOrderSchema: {
+        userid: 'required|number',
+        city: 'required|string',
+        latitude: 'required|float',
+        longitude: 'required|float',
+        payment_method: [
+            validations.required(),
+            validations.string(),
+            validations.in([
+                'Credit Card',
+                'Debit',
+                'Cash',
+                'WIC',
+                'ATH-Movil',
+                'PayPal',
+                'ApplePay',
+                'Venmo',
+                'CashApp',
+                'Zelle',
+            ]),
+        ],
+        purchases: [
+            validations.required(),
+            validations.array(),
+            validations.min([1]),
+        ],
+        'purchases.*.resource_id': 'required|number',
+        'purchases.*.delivery_option': [
+            validations.required(),
+            validations.in(['Delivery or Pick-up', 'Delivery', 'Pick-up']),
+            validations.string(),
+        ],
+        'purchases.*.quantity': [
+            validations.number(),
+            validations.required(),
+            validations.above([0]),
+        ],
+    },
 };

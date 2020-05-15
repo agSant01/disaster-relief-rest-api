@@ -2360,77 +2360,124 @@ values(
 
 --orders
 -- order 1
-insert into orders(userid,payment_method_id)
+insert into orders(userid,payment_method_id,
+    cityid,
+    order_location_latitude,
+    order_location_longitude)
 values(
     (select userid from users_table where username = 'annaprentice'),
-    (select payment_method_id from payment_method where payment_method_name = 'Debit')
-    
+    (select payment_method_id from payment_method where payment_method_name = 'Debit'),
+    (select cityid from city where city_name='Fajardo'),
+    18.308806, -65.690428
 );
 
 -- order 2
-insert into orders(userid,payment_method_id)
+insert into orders(userid,payment_method_id,
+    cityid,
+    order_location_latitude,
+    order_location_longitude)
 values(
     (select userid from users_table where username = 'carlitos'),
-    (select payment_method_id from payment_method where payment_method_name = 'WIC')  
+    (select payment_method_id from payment_method where payment_method_name = 'WIC'), 
+    (select cityid from city where city_name='Naranjito'),
+    18.297824, -66.245581
 );
 
 -- order 3
-insert into orders(userid,payment_method_id)
+insert into orders(userid,payment_method_id,
+    cityid,
+    order_location_latitude,
+    order_location_longitude)
 values(
     (select userid from users_table where username = 'juliatorres'),
-    (select payment_method_id from payment_method where payment_method_name = 'Credit Card')  
+    (select payment_method_id from payment_method where payment_method_name = 'Credit Card'),
+    (select cityid from city where city_name='Naranjito'),
+    18.297824, -66.245581
 );
 
 -- order 4
-insert into orders(userid,payment_method_id)
+insert into orders(userid,payment_method_id,
+    cityid,
+    order_location_latitude,
+    order_location_longitude)
 values(
     (select userid from users_table where username = 'annaprentice'),
-    (select payment_method_id from payment_method where payment_method_name = 'ATH-Movil')
-    
+    (select payment_method_id from payment_method where payment_method_name = 'ATH-Movil'),
+    (select cityid from city where city_name='Barceloneta'),
+    18.446648, -66.535710
 );
 
 -- order 5
-insert into orders(userid,payment_method_id)
+insert into orders(userid,payment_method_id,
+    cityid,
+    order_location_latitude,
+    order_location_longitude)
 values(
     (select userid from users_table where username = 'carlitos'),
-    (select payment_method_id from payment_method where payment_method_name = 'PayPal')  
+    (select payment_method_id from payment_method where payment_method_name = 'PayPal') , 
+    (select cityid from city where city_name='Vieques'),
+    18.122262, -65.447101
 );
 
 -- order 6
-insert into orders(userid,payment_method_id)
+insert into orders(userid,payment_method_id,
+    cityid,
+    order_location_latitude,
+    order_location_longitude)
 values(
     (select userid from users_table where username = 'juliatorres'),
-    (select payment_method_id from payment_method where payment_method_name = 'ATH-Movil')  
+    (select payment_method_id from payment_method where payment_method_name = 'ATH-Movil') , 
+    (select cityid from city where city_name='Patillas'),
+    18.071776, -66.068274
 );
 
 -- order 7
-insert into orders(userid,payment_method_id)
+insert into orders(userid,payment_method_id,
+    cityid,
+    order_location_latitude,
+    order_location_longitude)
 values(
     (select userid from users_table where username = 'annaprentice'),
-    (select payment_method_id from payment_method where payment_method_name = 'Venmo')
-    
+    (select payment_method_id from payment_method where payment_method_name = 'Venmo'),
+    (select cityid from city where city_name='Dorado'),
+    18.454727, -66.265412
 );
 
 -- order 8
-insert into orders(userid,payment_method_id)
+insert into orders(userid,payment_method_id,
+    cityid,
+    order_location_latitude,
+    order_location_longitude)
 values(
     (select userid from users_table where username = 'carlitos'),
-    (select payment_method_id from payment_method where payment_method_name = 'Cash')  
+    (select payment_method_id from payment_method where payment_method_name = 'Cash') , 
+    (select cityid from city where city_name='Morovis'),
+    18.266965, -66.431096
 );
 
 -- order 9
-insert into orders(userid,payment_method_id)
+insert into orders(userid,payment_method_id,
+    cityid,
+    order_location_latitude,
+    order_location_longitude)
 values(
     (select userid from users_table where username = 'juliatorres'),
-    (select payment_method_id from payment_method where payment_method_name = 'ApplePay')  
+    (select payment_method_id from payment_method where payment_method_name = 'ApplePay'),  
+    (select cityid from city where city_name='Cidra'),
+    18.179683, -66.161854
 );
 
 -- order 10
-insert into orders(userid,payment_method_id)
+insert into orders(userid,payment_method_id,
+    cityid,
+    order_location_latitude,
+    order_location_longitude)
 values(
     (select userid from users_table where username = 'annaprentice'),
-    (select payment_method_id from payment_method where payment_method_name = 'Zelle')
- );   
+    (select payment_method_id from payment_method where payment_method_name = 'Zelle'),
+    (select cityid from city where city_name='Lajas'),
+    17.970756, -66.912139
+);   
 
 
 --ordered resource

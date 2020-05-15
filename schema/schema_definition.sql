@@ -140,8 +140,11 @@ create table if not exists payment_method(
 create table if not exists orders(
     order_id serial not null,
     userid integer references users_table(userid) not null,
-    order_timestamp timestamptz default transaction_timestamp() not null,
     payment_method_id integer references payment_method(payment_method_id) not null,
+    cityid integer references city(cityid) not null,
+    order_location_latitude float not null,
+    order_location_longitude float not null,
+    order_timestamp timestamptz default transaction_timestamp() not null,
     primary key (order_id)
 );
 

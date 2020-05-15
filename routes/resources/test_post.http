@@ -206,7 +206,7 @@ content-type: application/json
 
 
 #####
-## Reserving 20, 
+## Reserving 2, 
 POST {{url}}/api/resources/reserves HTTP/1.1
 content-type: application/json
 
@@ -223,7 +223,33 @@ content-type: application/json
         },
         {
             "resource_id":"2",
+            "delivery_option":"Delivery",
+            "quantity":"2"
+        }
+    ]
+}
+
+
+#####
+## Bad payload 
+POST {{url}}/api/resources/purchases HTTP/1.1
+content-type: application/json
+
+{
+    "userid": "10",
+    "city": "Jayuya",
+    "latitude": 18.215740,
+    "longitude":-66.593969,
+    "payment_method":"Venmo",
+    "purchases": [
+        {
+            "resource_id":"6",
             "delivery_option":"Pick-up",
+            "quantity":"20"
+        },
+        {
+            "resource_id":"4",
+            "delivery_option":"Delivery",
             "quantity":"2"
         }
     ]

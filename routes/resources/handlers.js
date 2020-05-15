@@ -282,18 +282,10 @@ exports.getAllReservedResource = (req, res, next) => {
             return;
         }
 
-        let msg;
-
-        if (resid) {
-            msg = {
-                reserve: result.rows,
-            };
-        } else {
-            msg = {
-                count: result.rowCount,
-                reserves: result.rows,
-            };
-        }
+        let msg = {
+            count: result.rowCount,
+            reserves: result.rows,
+        };
 
         res.json(msg).end();
     });
@@ -343,18 +335,10 @@ exports.getRequests = (req, res, next) => {
             return;
         }
 
-        let msg;
-
-        if (reqid) {
-            msg = {
-                request: result.rows,
-            };
-        } else {
-            msg = {
-                count: result.rowCount,
-                requests: result.rows,
-            };
-        }
+        let msg = {
+            count: result.rowCount,
+            requests: result.rows,
+        };
 
         res.json(msg).end();
     });
@@ -393,18 +377,10 @@ exports.getPurchase = (req, res, next) => {
             return;
         }
 
-        let msg;
-
-        if (id) {
-            msg = {
-                resource: result.rows,
-            };
-        } else {
-            msg = {
-                count: result.rowCount,
-                resource: result.rows,
-            };
-        }
+        let msg = {
+            count: result.rowCount,
+            purchases: result.rows,
+        };
 
         res.json(msg).end();
     });
@@ -458,7 +434,7 @@ exports.postSubmitResource = (req, res, next) => {
                     // if no result requester does not exist
                     if (supplierInfo.rowCount == 0) {
                         await client.query('ROLLBACK');
-                        res.status(200)
+                        res.status(400)
                             .json({
                                 msg: `User with id: '${validatedData.userid}' is not a supplier.`,
                             })
@@ -667,7 +643,7 @@ exports.postResourceRequest = (req, res, next) => {
                     // if no result requester does not exist
                     if (requesterInfo.rowCount == 0) {
                         await client.query('ROLLBACK');
-                        res.status(200)
+                        res.status(400)
                             .json({
                                 msg: `User with id: '${validatedData.userid}' is not a requestor.`,
                             })
@@ -854,7 +830,7 @@ exports.postReserveResource = (req, res, next) => {
                     // if no result requester does not exist
                     if (requesterInfo.rows.length == 0) {
                         await client.query('ROLLBACK');
-                        res.status(200)
+                        res.status(400)
                             .json({
                                 msg: `User with userid: '${validatedData.userid}' is not a requestor.`,
                             })
@@ -867,7 +843,7 @@ exports.postReserveResource = (req, res, next) => {
                         console.log(reserve);
 
                         const available = await client.query(
-                            querylib.qHasAvailableQuantityOfResourceById,
+                            querylib.qHasAvailableQuantityForReserveResourceById,
                             [reserve.resource_id]
                         );
 
@@ -885,8 +861,7 @@ exports.postReserveResource = (req, res, next) => {
                                 .end();
                             return;
                         }
-                        let remaingQty =
-                            available.rows[0].available_after_transaction;
+                        let remaingQty = available.rows[0].available;
 
                         if (remaingQty - reserve.quantity < 0) {
                             console.log(`More than remaining. Doing Rollback`);
@@ -895,7 +870,7 @@ exports.postReserveResource = (req, res, next) => {
 
                             res.status(400)
                                 .json({
-                                    msg: `The resource exists, but the remainint quantity is ${remaingQty} units. Cannot reserve ${reserve.quantity} units.`,
+                                    msg: `The resource:'${reserve.resource_id}' exists, but the remainint quantity is ${remaingQty} units. Cannot reserve ${reserve.quantity} units.`,
                                 })
                                 .end();
                             return;
@@ -977,26 +952,149 @@ exports.postReserveResource = (req, res, next) => {
 };
 
 exports.postBuyResource = (req, res, next) => {
-    /**
-     * Validate that the post contains all the required fields
-     * - quantity
-     * - location
-     *   - latitude
-     *   - longitude
-     * - Delivery method
-     * - city to be located in
-     * - resource id
-     * - consumer id
-     */
+    validate(req.body, jsonSchemas.resourceOrderSchema)
+        .then((validatedData) => {
+            console.log(validatedData);
+            /////////////////
+            // create a transaction block using await for simplicity
+            (async () => {
+                // note: we don't try/catch this because if connecting throws an exception
+                // we don't need to dispose of the client (it will be undefined)
+                const client = await db.connect();
 
-    let response = {
-        msg: 'Order successfully processed.',
-        order: {
-            order_id: Math.ceil(100000 * Math.random()),
-        },
-    };
+                try {
+                    console.log('Begin Transaction.');
+                    await client.query('BEGIN');
 
-    res.status(200)
-        .json(response)
-        .end();
+                    // validate that user is requester and get city
+                    const requesterInfo = await client.query(
+                        querylib.qRequesterInfo,
+                        [validatedData.userid]
+                    );
+
+                    // if no result requester does not exist
+                    if (requesterInfo.rows.length == 0) {
+                        await client.query('ROLLBACK');
+                        res.status(400)
+                            .json({
+                                msg: `User with userid: '${validatedData.userid}' is not a requestor.`,
+                            })
+                            .end();
+                        return;
+                    }
+
+                    // validate if there are available resources to reserve
+                    for (purchase of validatedData.purchases) {
+                        console.log(purchase);
+
+                        const available = await client.query(
+                            querylib.qHasAvailableQuantityForPurchaseResourceById,
+                            [purchase.resource_id]
+                        );
+
+                        if (available.rows.length == 0) {
+                            console.log(
+                                `Not possible quantity for resource. Doing Rollback`
+                            );
+
+                            await client.query('ROLLBACK');
+
+                            res.status(400)
+                                .json({
+                                    msg: `No resource available for purchase with resourceid: ${purchase.resource_id}`,
+                                })
+                                .end();
+                            return;
+                        }
+
+                        let remaingQty = available.rows[0].available;
+
+                        if (remaingQty - purchase.quantity < 0) {
+                            console.log(`More than remaining. Doing Rollback`);
+
+                            await client.query('ROLLBACK');
+
+                            res.status(400)
+                                .json({
+                                    msg: `The resource:'${purchase.resource_id}' exists, but the remainint quantity is ${remaingQty} units. Cannot purchase ${purchase.quantity} units.`,
+                                })
+                                .end();
+                            return;
+                        }
+                    }
+
+                    // create purchase
+                    const purchaseId = await client.query(
+                        querylib.qInsertOrder,
+                        [
+                            validatedData.userid,
+                            validatedData.city,
+                            validatedData.latitude,
+                            validatedData.longitude,
+                            validatedData.payment_method,
+                        ]
+                    );
+
+                    for (purchase of validatedData.purchases) {
+                        // insert every resource purchased
+
+                        await client.query(querylib.qInsertPurchasedResources, [
+                            purchaseId.rows[0].order_id,
+                            purchase.resource_id,
+                            Number(purchase.quantity),
+                        ]);
+                    }
+
+                    await client.query('COMMIT');
+
+                    let msg = {
+                        msg: 'Resource(s) purchased succesfully.',
+                        purchase_id: purchaseId.rows[0].order_id,
+                    };
+
+                    res.status(201)
+                        .json(msg)
+                        .end();
+                } catch (e) {
+                    // only passes here if there is a problem with any query
+                    console.log('Error during transaction. Doing Rollback.');
+
+                    let emsg = e.toString();
+                    let status = 503;
+
+                    if (e.code == '23502') {
+                        console.log('not_null_violation');
+                        if (e.column == 'resource_type_field_value') {
+                            emsg = `Invalid resource attribute value:'${attr.attr_value}' for attributeField:'${attr.attr_name}' for resource:'${resource.resource_type}'`;
+                        } else if (e.column == 'resource_type_field_name') {
+                            emsg = `Invalid resource attribute:'${attr.attr_name}' for resource:${resource.resource_type}`;
+                        }
+                        status = 400;
+                    }
+                    console.log(e);
+                    await client.query('ROLLBACK');
+
+                    res.status(status)
+                        .json({ error: emsg })
+                        .end();
+                } finally {
+                    console.log('Releasing client.');
+                    client.release();
+                }
+            })().catch((e) => {
+                // passes by here if something went wrong up
+                console.error('Async Block Catch', e.stack);
+                res.status(503)
+                    .json({ error: e.toString() })
+                    .end();
+            });
+            /////////////////////////////////////
+        })
+        .catch((error) => {
+            console.log('Json Validation Error', error);
+
+            res.status(400)
+                .json(error)
+                .end();
+        });
 };

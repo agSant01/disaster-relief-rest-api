@@ -25,12 +25,12 @@ module.exports = {
         resource.resource_location_longitude,
         resource_status.resource_status_name,
         submits_resource.userid as supplier_id,
-        submits_resource.resource_price as price_per_unit,
+        submits_resource.resource_price::real::numeric::money as price_per_unit,
         date_submitted,
         resource_type_name,
         method_name as delivery_method,
-        senate_region_name,
-        ('https://www.google.com/maps/dir/?api=1&destination='||resource_location_latitude||','||resource_location_longitude) as google_maps_location,
+        senate_region_name as resource_senate_region_name,
+        ('https://www.google.com/maps/dir/?api=1&destination='||resource_location_latitude||','||resource_location_longitude) as resource_google_maps_location,
         (select json_agg(row_to_json((SELECT d FROM (SELECT
             resource_type_field_name as attribute_name,
             resource_type_field_value as attribute_value
@@ -73,9 +73,9 @@ module.exports = {
             resource.resource_location_longitude,
             U.resource_status_name,
             T.resource_type_name,
-            S.senate_region_name,
+            S.senate_region_name  as resource_senate_region_name,
             ('https://www.google.com/maps/dir/?api=1&destination='||resource_location_latitude||','||resource_location_longitude) 
-            as google_maps_location,
+            as resource_google_maps_location,
             (select json_agg(row_to_json((SELECT d FROM (SELECT
                 resource_type_field_name as attribute_name,
                 resource_type_field_value as attribute_value
@@ -92,7 +92,7 @@ module.exports = {
         select 
            *,
             ('https://www.google.com/maps/dir/?api=1&destination='||resource_location_latitude||','||resource_location_longitude) 
-            as google_maps_location,
+            as resource_google_maps_location,
             (select json_agg(row_to_json((SELECT d FROM (SELECT
                 resource_type_field_name as attribute_name,
                 resource_type_field_value as attribute_value
@@ -113,8 +113,8 @@ module.exports = {
             resource.resource_location_longitude,
             U.resource_status_name,
             T.resource_type_name,
-            S.senate_region_name,
-            ('https://www.google.com/maps/dir/?api=1&destination='||resource_location_latitude||','||resource_location_longitude) as google_maps_location,
+            S.senate_region_name as resource_senate_region_name,
+            ('https://www.google.com/maps/dir/?api=1&destination='||resource_location_latitude||','||resource_location_longitude) as resource_google_maps_location,
             (select json_agg(row_to_json((SELECT d FROM (SELECT
                 resource_type_field_name as attribute_name,
                 resource_type_field_value as attribute_value
@@ -129,7 +129,7 @@ module.exports = {
     qGetResourceAllResourcesDebug: `
         select 
            *,
-            ('https://www.google.com/maps/dir/?api=1&destination='||resource_location_latitude||','||resource_location_longitude) as google_maps_location,
+            ('https://www.google.com/maps/dir/?api=1&destination='||resource_location_latitude||','||resource_location_longitude) as resource_google_maps_location,
             (select json_agg(row_to_json((SELECT d FROM (SELECT
                 resource_type_field_name as attribute_name,
                 resource_type_field_value as attribute_value
@@ -157,12 +157,12 @@ module.exports = {
             resource.resource_location_longitude,
             resource_status.resource_status_name,
             submits_resource.userid as supplier_id,
-            submits_resource.resource_price as price_per_unit,
+            submits_resource.resource_price::real::numeric::money as price_per_unit,
             date_submitted,
             resource_type_name,
             method_name as delivery_method,
-            senate_region_name,
-            ('https://www.google.com/maps/dir/?api=1&destination='||resource_location_latitude||','||resource_location_longitude) as google_maps_location,
+            senate_region_name as resource_senate_region_name,
+            ('https://www.google.com/maps/dir/?api=1&destination='||resource_location_latitude||','||resource_location_longitude) as resource_google_maps_location,
             (select json_agg(row_to_json((SELECT d FROM (SELECT
                 resource_type_field_name as attribute_name,
                 resource_type_field_value as attribute_value
@@ -198,12 +198,12 @@ module.exports = {
             resource.resource_location_longitude,
             resource_status.resource_status_name,
             submits_resource.userid as supplier_id,
-            submits_resource.resource_price as price_per_unit,
+            submits_resource.resource_price::real::numeric::money as price_per_unit,
             date_submitted,
             resource_type_name, 
             method_name as delivery_method,
-            senate_region_name,
-            ('https://www.google.com/maps/dir/?api=1&destination='||resource_location_latitude||','||resource_location_longitude) as google_maps_location,
+            senate_region_name as resource_senate_region_name,
+            ('https://www.google.com/maps/dir/?api=1&destination='||resource_location_latitude||','||resource_location_longitude) as resource_google_maps_location,
             (select json_agg(row_to_json((SELECT d FROM (SELECT
                 resource_type_field_name as attribute_name,
                 resource_type_field_value as attribute_value
@@ -243,12 +243,12 @@ module.exports = {
             resource.resource_location_longitude,
             resource_status.resource_status_name,
             submits_resource.userid as supplier_id,
-            submits_resource.resource_price as price_per_unit,
+            submits_resource.resource_price::real::numeric::money as price_per_unit,
             date_submitted,
             resource_type_name, 
             method_name as delivery_method,
-            senate_region_name,
-            ('https://www.google.com/maps/dir/?api=1&destination='||resource_location_latitude||','||resource_location_longitude) as google_maps_location,
+            senate_region_name as resource_senate_region_name,
+            ('https://www.google.com/maps/dir/?api=1&destination='||resource_location_latitude||','||resource_location_longitude) as resource_google_maps_location,
             (select json_agg(row_to_json((SELECT d FROM (SELECT
                 resource_type_field_name as attribute_name,
                 resource_type_field_value as attribute_value
@@ -285,12 +285,12 @@ module.exports = {
             resource.resource_location_longitude,
             resource_status.resource_status_name,
             submits_resource.userid as supplier_id,
-            submits_resource.resource_price as price_per_unit,
+            submits_resource.resource_price::real::numeric::money as price_per_unit,
             date_submitted,
             resource_type_name,
             method_name as delivery_method,
-            senate_region_name,
-            ('https://www.google.com/maps/dir/?api=1&destination='||resource_location_latitude||','||resource_location_longitude) as google_maps_location,
+            senate_region_name as resource_senate_region_name,
+            ('https://www.google.com/maps/dir/?api=1&destination='||resource_location_latitude||','||resource_location_longitude) as resource_google_maps_location,
             (select json_agg(row_to_json((SELECT d FROM (SELECT
                 resource_type_field_name as attribute_name,
                 resource_type_field_value as attribute_value
@@ -323,14 +323,14 @@ module.exports = {
     qGetAllRequests: `select
             request.request_id,
             request.date_requested,
-            request.userid,
+            request.userid as requestor_userid,
             (
                 select json_agg(row_to_json((SELECT d FROM (SELECT 
                     resource.resource_id,
                     resource.resource_quantity as quantity_requested,
                     resource.resource_location_latitude,
                     resource.resource_location_longitude,
-                    ('https://www.google.com/maps/dir/?api=1&destination='||resource_location_latitude||','||resource_location_longitude) as google_maps_location,
+                    ('https://www.google.com/maps/dir/?api=1&destination='||resource_location_latitude||','||resource_location_longitude) as request_google_maps_location,
                     resource_type_name
                 ) d))) 
                 from resource
@@ -343,14 +343,14 @@ module.exports = {
     qGetRequestsById: `select
         request.request_id,
         request.date_requested,
-        request.userid,
+        request.userid as requestor_userid,
         (
             select json_agg(row_to_json((SELECT d FROM (SELECT 
                 resource.resource_id,
                 resource.resource_quantity as quantity_requested,
                 resource.resource_location_latitude,
                 resource.resource_location_longitude,
-                ('https://www.google.com/maps/dir/?api=1&destination='||resource_location_latitude||','||resource_location_longitude) as google_maps_location,
+                ('https://www.google.com/maps/dir/?api=1&destination='||resource_location_latitude||','||resource_location_longitude) as request_google_maps_location,
                 resource_type_name
             ) d))) 
             from resource
@@ -368,8 +368,8 @@ module.exports = {
             resource.resource_quantity as requested_quantity,
             resource.resource_location_latitude,
             resource.resource_location_longitude,
-            ('https://www.google.com/maps/dir/?api=1&destination='||resource_location_latitude||','||resource_location_longitude) as google_maps_location,
-            senate_region.senate_region_name,
+            ('https://www.google.com/maps/dir/?api=1&destination='||resource_location_latitude||','||resource_location_longitude) as request_google_maps_location,
+            senate_region.senate_region_name as resource_senate_region_name,
             requested_resources.request_id,
             request.date_requested
         from requested_resources
@@ -386,12 +386,12 @@ module.exports = {
         select
             reserves.reserve_id,
             reserves.date_reserved,
-            reserves.userid,
+            reserves.userid as reserves_userid,
             city.city_name as reserved_city,
             senate_region.senate_region_name as reserved_senate_region,
             reserves.reserves_location_latitude,
             reserves.reserves_location_longitude,
-            ('https://www.google.com/maps/dir/?api=1&destination='||reserves_location_latitude||','||reserves_location_longitude) as reserve_google_maps_location,
+            ('https://www.google.com/maps/dir/?api=1&destination='||reserves_location_latitude||','||reserves_location_longitude) as reserved_google_maps_location,
             (
                 select json_agg(row_to_json((SELECT d FROM (SELECT 
                     resource.resource_id,
@@ -399,7 +399,7 @@ module.exports = {
                     resource.resource_location_latitude,
                     resource.resource_location_longitude,
                     ('https://www.google.com/maps/dir/?api=1&destination='||resource_location_latitude||','||resource_location_longitude) as resource_google_maps_location,
-                    senate_region_name,
+                    senate_region_name as resource_senate_region_name,
                     resource_type_name
                 ) d)))
                 from reserved_resources
@@ -417,20 +417,20 @@ module.exports = {
         select
             reserves.reserve_id,
             reserves.date_reserved,
-            reserves.userid,
+            reserves.userid as reserves_userid,
             city.city_name as reserved_city,
             senate_region.senate_region_name as reserved_senate_region,
             reserves.reserves_location_latitude,
             reserves.reserves_location_longitude,
-            ('https://www.google.com/maps/dir/?api=1&destination='||reserves_location_latitude||','||reserves_location_longitude) as reserve_google_maps_location,
+            ('https://www.google.com/maps/dir/?api=1&destination='||reserves_location_latitude||','||reserves_location_longitude) as reserved_google_maps_location,
             (
                 select json_agg(row_to_json((SELECT d FROM (SELECT 
                     resource.resource_id,
                     reserved_resources.resources_quantity as quantity_reserved,
                     resource.resource_location_latitude,
                     resource.resource_location_longitude,
-                    ('https://www.google.com/maps/dir/?api=1&destination='||resource_location_latitude||','||resource_location_longitude) as google_maps_location,
-                    senate_region_name,
+                    ('https://www.google.com/maps/dir/?api=1&destination='||resource_location_latitude||','||resource_location_longitude) as resource_google_maps_location,
+                    senate_region_name as resource_senate_region_name,
                     resource_type_name
                 ) d)))
                 from reserved_resources
@@ -444,17 +444,25 @@ module.exports = {
         inner join senate_region 
             on city.city_senate_region=senate_region.senate_region_id
         where reserves.reserve_id = $1;`,
-    qPurchasesByID: `select 
+    qPurchasesByID: `
+    select 
         orders.order_id as purchase_id,
         payment_method.payment_method_name as payment_method,
+        orders.userid as requestor_userid,
+        city.city_name as purchased_city,
+        senate_region.senate_region_name as purchase_senate_region,
+        orders.order_location_latitude,
+        orders.order_location_longitude,
+        ('https://www.google.com/maps/dir/?api=1&destination='||order_location_latitude||','||order_location_longitude) as purchase_google_maps_location,
         (
         select json_agg(row_to_json((SELECT d FROM (SELECT 
             resource.resource_id,
             resource_ordered.resources_quantity as purchased_quantity,
-            resource.resource_location_latitude,
-            resource.resource_location_longitude,
+            resource_ordered.order_price::real::numeric::money as purchase_price,
+            resource.resource_location_latitude as purchase_location_latitude,
+            resource.resource_location_longitude as purchase_location_longitude,
             resource_type.resource_type_name,
-            ('https://www.google.com/maps/dir/?api=1&destination='||resource_location_latitude||','||resource_location_longitude) as google_maps_location,    
+            ('https://www.google.com/maps/dir/?api=1&destination='||resource_location_latitude||','||resource_location_longitude) as resource_google_maps_location,    
             (
                 select json_agg(row_to_json((SELECT d FROM (SELECT 
                     resource_type_field_name as attribute_name,
@@ -472,19 +480,29 @@ module.exports = {
         orders.order_timestamp as date_purchased
     from orders
     natural join payment_method
+    natural join city
+        inner join senate_region 
+            on city.city_senate_region=senate_region.senate_region_id
     where orders.order_id = $1
     order by orders.order_id;`,
     qPurchases: `select 
         orders.order_id as purchase_id,
         payment_method.payment_method_name as payment_method,
+        orders.userid as requestor_userid,
+        city.city_name as purchase_city,
+        senate_region.senate_region_name as purchase_senate_region,
+        orders.order_location_latitude as purchase_location_latitude,
+        orders.order_location_longitude as purchase_location_longitude,
+        ('https://www.google.com/maps/dir/?api=1&destination='||order_location_latitude||','||order_location_longitude) as purchase_google_maps_location,
         (
         select json_agg(row_to_json((SELECT d FROM (SELECT 
             resource.resource_id,
             resource_ordered.resources_quantity as purchased_quantity,
+            resource_ordered.order_price::real::numeric::money as purchase_price,
             resource.resource_location_latitude,
             resource.resource_location_longitude,
             resource_type.resource_type_name,
-            ('https://www.google.com/maps/dir/?api=1&destination='||resource_location_latitude||','||resource_location_longitude) as google_maps_location,    
+            ('https://www.google.com/maps/dir/?api=1&destination='||resource_location_latitude||','||resource_location_longitude) as resource_google_maps_location,    
             (
                 select json_agg(row_to_json((SELECT d FROM (SELECT 
                     resource_type_field_name as attribute_name,
@@ -502,6 +520,9 @@ module.exports = {
         orders.order_timestamp as date_purchased
     from orders
     natural join payment_method
+    natural join city
+    inner join senate_region 
+        on city.city_senate_region=senate_region.senate_region_id
     order by orders.order_id;`,
     qInsertResource: `insert into resource(
         resource_quantity,
@@ -603,12 +624,12 @@ module.exports = {
             $4
         ) 
         returning reserve_id;`,
-    qHasAvailableQuantityOfResourceById: `
+    qHasAvailableQuantityForReserveResourceById: `
     select 
         resource_id,
         (resource.resource_quantity - 
             sum(reserved_resources.resources_quantity)) 
-            as available_after_transaction
+            as available
     from submits_resource 
     natural left join resource 
     natural left join reserved_resources
@@ -627,4 +648,47 @@ module.exports = {
         values(
             $1, $2, $3
         );`,
+    // purchase resource related
+    qInsertOrder: `
+    insert into orders(
+        userid,
+        cityid,
+        order_location_latitude,
+        order_location_longitude,
+        payment_method_id
+    ) values(
+        $1,
+        (SELECT cityid from city where city_name = $2),
+        $3,
+        $4,
+        (select payment_method_id from payment_method where payment_method_name=$5)
+    ) 
+    returning order_id;`,
+    qInsertPurchasedResources: `
+        insert into resource_ordered(
+            order_id,
+            resource_id,
+            resources_quantity,
+            order_price
+        )
+        values(
+            $1, $2, $3, 
+            (select resource_price*$3::integer from submits_resource where resource_id=$2)
+        );`,
+    qHasAvailableQuantityForPurchaseResourceById: `
+    select 
+        resource_id,
+        submits_resource.resource_price,
+        (resource.resource_quantity - 
+            sum(resource_ordered.resources_quantity)) 
+            as available
+    from submits_resource 
+    natural left join resource 
+    natural left join resource_ordered
+    where resource_id=$1 
+        and submits_resource.is_for_sale=true
+        and submits_resource.resource_price > 0
+    group by resource_id, resource.resource_quantity, submits_resource.resource_price
+    having (resource.resource_quantity - 
+        sum(resource_ordered.resources_quantity)) >= 0`,
 };
