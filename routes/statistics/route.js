@@ -3,6 +3,15 @@ var handler = require('./handlers');
 var router = express.Router();
 
 // GET statistics listing.
-router.get('/', handler.getStatistics);
+router.get('/weekly', handler.getStatisticsWeekly);
 
-module.exports = router
+// GET statistics listing.
+router.get('/daily', handler.getStatisticsDaily);
+
+// GET statistics listing.
+router.get('/senate-region/weekly', handler.getStatisticsBySenateWeekly);
+
+// GET statistics listing.
+router.get('/senate-region/daily', handler.getStatisticsBySenateDaily);
+
+module.exports = router;
