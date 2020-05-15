@@ -1759,7 +1759,7 @@ values(
 with first_id as (
     insert into resource (resource_quantity,resource_location_latitude,resource_location_longitude,resource_type_id,resource_status_id, senate_region_id)
     values(
-        120,
+        1532,
         18.19614793,
         -67.14750767,
         (select resource_type_id from resource_type where resource_type_name = 'Baby Food'),
@@ -2224,7 +2224,7 @@ insert into requested_resources(
 )
 values(
     (select request_id from request_info),
-    1
+    11
 );
 ----- end of requst id 4
 
@@ -2245,7 +2245,7 @@ insert into requested_resources(
 )
 values(
     (select request_id from request_info),
-    3
+    9
 );
 ----- end of requst id 5
 
@@ -2266,7 +2266,7 @@ insert into requested_resources(
 )
 values(
     (select request_id from request_info),
-    3
+    12
 ); 
 ----- end of requst id 6
  
@@ -2287,7 +2287,7 @@ insert into requested_resources(
 )
 values(
     (select request_id from request_info),
-    5
+    13
 ); 
 ----- end of requst id 7
 
@@ -2308,7 +2308,7 @@ insert into requested_resources(
 )
 values(
     (select request_id from request_info),
-    3
+    8
 ); 
 ----- end of requst id 8
 
@@ -2350,7 +2350,7 @@ insert into requested_resources(
 )
 values(
     (select request_id from request_info),
-    4
+    9
 );
 ----- end of requst id 10
 
