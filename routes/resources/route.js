@@ -12,20 +12,25 @@ router.get('/types/:id', handler.getResourceTypeAttributes);
 router.get('/purchases/:ID?', handler.getPurchase);
 
 // Get available resources by provider
+// supports keyword
 router.get(
     '/available/provider/:provider',
     handler.getResourcesAvailableByProvider
 );
 
+// Get available resources either free or to purchase
+// supports kewyword search
 router.get('/available/:resourceid?', handler.getResourcesAvailableByResId);
 
 // Get all open resource requests
+// supports kewyword search
 router.get('/requests/:id?', handler.getRequests);
 
 // Get reserved resource
 router.get('/reserves/:reserveid?', handler.getAllReservedResource);
 
 // Get all resources
+// supports `debug`
 router.get('/:ID?', handler.getAllResources);
 
 // Get the attribute by type

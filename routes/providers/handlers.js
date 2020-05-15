@@ -1,5 +1,7 @@
 const querylib = require('./queries');
 const db = require('../../database');
+const jsonSchema = require('./post_schemas');
+const { validate } = require('indicative/validator');
 
 exports.getProviders = (req, res, next) => {
     const is_debug = req.query.debug == 'true';
@@ -25,8 +27,8 @@ exports.getProviders = (req, res, next) => {
             return;
         }
         let msg = {
-            providers: result.rows,
             count: result.rowCount,
+            providers: result.rows,
         };
 
         res.json(result ? msg : err).end();
@@ -116,51 +118,98 @@ exports.getOrganizations = (req, res, next) => {
     });
 };
 
-exports.postRegister = (req, res, next) => {
-    /*
-    Validate that the structure of the post has the required fields:
-    - Organization Name
-    - Birth Date
-    - Address
-        - Street 1
-        - Street 2
-        - City
-        - Country
-        - Zip code
-    - Phone Number
-    - Email
-    - Username
-    - Password
-    - Administrator
-    */
+exports.postRegisterOrganization = (req, res, next) => {
+    validate(req.body, jsonSchema.organizationRegister)
+        .then((validatedJson) => {
+            console.log(validatedJson);
 
-    /* 
-    The server will return an 200-OK with Organization Object
-    */
-    let response = {
-        organization: {
-            organization_id: 1241,
-            organization_name: 'Disaster Relief Aid',
-            address: {
-                street_1: 'MCS Plaza 152, #87',
-                street_2: null,
-                city: 'Hato Rey',
-                country: {
-                    name: 'Puerto Rico',
-                    abbreviation: 'PR',
-                },
-                zip_code: '00865',
-            },
-            phone: {
-                area_code: '939',
-                line_number: '5555555',
-            },
-            administrator_username: 'juandelpueblo',
-            email: 'disasteraid@pr.com',
-        },
-    };
+            /////////////////
+            // create a transaction block using await for simplicity
+            (async () => {
+                // note: we don't try/catch this because if connecting throws an exception
+                // we don't need to dispose of the client (it will be undefined)
+                const client = await db.connect();
+                try {
+                    console.log('Begin Transaction.');
+                    await client.query('BEGIN');
 
-    res.json(response).end();
+                    const supplierInfo = await client.query(
+                        querylib.qIsIndividualSupplier,
+                        [validatedJson.userid]
+                    );
+
+                    if (supplierInfo.rows.length == 0) {
+                        console.log('Not a supplier');
+                        res.status(400)
+                            .json({
+                                msg: `User role is not 'Individual Supplier'. Cannot create organization`,
+                            })
+                            .end();
+                        return;
+                    }
+
+                    const insertOrganization = {
+                        text: querylib.qInsertOrganization,
+                        values: [
+                            validatedJson.organization_name,
+                            validatedJson.userid,
+                            validatedJson.address.street1,
+                            validatedJson.address.street2,
+                            validatedJson.address.city,
+                            validatedJson.address.zip_code,
+                            validatedJson.address.country,
+                            validatedJson.phone_number,
+                            validatedJson.email,
+                        ],
+                    };
+
+                    console.log(insertOrganization);
+
+                    const orgInfo = await client.query(insertOrganization);
+
+                    console.log('Committing Transaction.');
+
+                    await client.query('COMMIT');
+
+                    let msg = {
+                        msg: `Created organization successfully.`,
+                        organization_id: orgInfo.rows[0].organization_id,
+                    };
+
+                    res.status(201)
+                        .json(msg)
+                        .end();
+                } catch (e) {
+                    // only passes here if there is a problem with any query
+                    console.log('Error during transaction. Doing Rollback.', e);
+
+                    let emsg = e.toString();
+                    let status = 503;
+
+                    await client.query('ROLLBACK');
+
+                    res.status(status)
+                        .json({ error: emsg })
+                        .end();
+                } finally {
+                    console.log('Releasing client.');
+                    client.release();
+                }
+            })().catch((e) => {
+                // passes by here if something went wrong up
+                console.error('Async Block Catch', e.stack);
+                res.status(503)
+                    .json({ error: e.toString() })
+                    .end();
+            });
+            /////////////////////////////////////
+        })
+        .catch((error) => {
+            console.log('JSON Validation Error', error);
+            res.status(400)
+                .json(error)
+                .end();
+        });
 };
 
 exports.getOrganization = (req, res, next) => {
@@ -261,9 +310,9 @@ exports.getRepresentatives = (req, res, next) => {
         console.log(result);
 
         const msg = {
+            count: result.rowCount,
             organization_id: orgid,
             representatives: result.rows,
-            count: result.rowCount,
         };
 
         res.json(msg).end();
@@ -278,11 +327,100 @@ exports.postAddRepresentative = (req, res, next) => {
     */
     let organization_id = Number(req.params.orgID);
 
-    // Empty response
-    let response = {};
+    if (isNaN(organization_id)) {
+        res.status(401).json({
+            error:
+                "Invalid param for 'organization id'. Must be 'Integer' type.",
+            invalid_param: req.params.orgID,
+        });
+        return;
+    }
 
-    /* 
-    The server will return an 200-OK with Organization Object
-    */
-    res.json(response).end();
+    validate(req.body, jsonSchema.organizationAddRepresentatives)
+        .then((validatedJson) => {
+            console.log(validatedJson);
+
+            /////////////////
+            // create a transaction block using await for simplicity
+            (async () => {
+                // note: we don't try/catch this because if connecting throws an exception
+                // we don't need to dispose of the client (it will be undefined)
+                const client = await db.connect();
+                try {
+                    console.log('Begin Transaction.');
+                    await client.query('BEGIN');
+
+                    const supplierInfo = await client.query(
+                        querylib.qOrgganizationValidteRoleToAddRepresentative,
+                        [validatedJson.adminid, organization_id]
+                    );
+
+                    if (supplierInfo.rows.length == 0) {
+                        console.log(
+                            'User do not posses the credentials to add representative to organization'
+                        );
+                        res.status(400)
+                            .json({
+                                msg: `User do not posses the credentials to add representative to organization:${organization_id}`,
+                            })
+                            .end();
+                        return;
+                    }
+
+                    const addRepresentative = {
+                        text: querylib.qOrganizationAddRepresentative,
+                        values: [
+                            validatedJson.representative_id,
+                            organization_id,
+                        ],
+                    };
+
+                    console.log(addRepresentative);
+
+                    await client.query(addRepresentative);
+
+                    console.log('Committing Transaction.');
+
+                    await client.query('COMMIT');
+
+                    let msg = {
+                        msg: `Added representative to organization successfully.`,
+                        organization_id: organization_id,
+                        new_representative_id: validatedJson.representative_id,
+                    };
+
+                    res.status(201)
+                        .json(msg)
+                        .end();
+                } catch (e) {
+                    // only passes here if there is a problem with any query
+                    console.log('Error during transaction. Doing Rollback.', e);
+
+                    let emsg = e.toString();
+                    let status = 503;
+
+                    await client.query('ROLLBACK');
+
+                    res.status(status)
+                        .json({ error: emsg })
+                        .end();
+                } finally {
+                    console.log('Releasing client.');
+                    client.release();
+                }
+            })().catch((e) => {
+                // passes by here if something went wrong up
+                console.error('Async Block Catch', e.stack);
+                res.status(503)
+                    .json({ error: e.toString() })
+                    .end();
+            });
+            /////////////////////////////////////
+        })
+        .catch((error) => {
+            console.log('JSON Validation Error', error);
+            res.status(400)
+                .json(error)
+                .end();
+        });
 };
