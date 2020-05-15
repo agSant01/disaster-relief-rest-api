@@ -11,16 +11,26 @@ router.get('/types/:id', handler.getResourceTypeAttributes);
 // Get all purchases
 router.get('/purchases/:ID?', handler.getPurchase);
 
-// Get available resources
-router.get('/available/:provider?', handler.getResourcesAvailable);
+// Get available resources by provider
+// supports keyword
+router.get(
+    '/available/provider/:provider',
+    handler.getResourcesAvailableByProvider
+);
+
+// Get available resources either free or to purchase
+// supports kewyword search
+router.get('/available/:resourceid?', handler.getResourcesAvailableByResId);
 
 // Get all open resource requests
+// supports kewyword search
 router.get('/requests/:id?', handler.getRequests);
 
 // Get reserved resource
 router.get('/reserves/:reserveid?', handler.getAllReservedResource);
 
 // Get all resources
+// supports `debug`
 router.get('/:ID?', handler.getAllResources);
 
 // Get the attribute by type
@@ -30,15 +40,15 @@ router.get('/:types/attributes', handler.getResourceAttributesByType);
 router.put('/:id/update-status', handler.putUpdate);
 
 // Submit resource
-router.post('/add', handler.postResource);
+router.post('/', handler.postSubmitResource);
 
 // Submit resource request
-router.post('/add/request', handler.postResourceRequest);
+router.post('/requests', handler.postResourceRequest);
 
 // Reserve resource
 router.post('/reserves', handler.postReserveResource);
 
 // Buy resource
-router.post('/buy', handler.postBuyResource);
+router.post('/purchases', handler.postBuyResource);
 
 module.exports = router;

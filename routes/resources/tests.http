@@ -62,11 +62,11 @@ GET {{url}}/api/resources/requests?keyword=wA
 GET {{url}}/api/resources/requests/1?keyword=wA
 
 ###
-GET {{url}}/api/resources/purchase
+GET {{url}}/api/resources/purchases
 
 ###
-GET {{url}}/api/resources/purchase/1
+GET {{url}}/api/resources/purchases/1
 
 ###
-GET {{url}}/api/resources/purchase/2
+GET {{url}}/api/resources/purchases/2
 

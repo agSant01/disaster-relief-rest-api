@@ -1,12 +1,12 @@
 create extension pgcrypto;
 
-create table senate_region (
+create table if not exists senate_region (
     senate_region_id serial not null,
     senate_region_name varchar(40) not null unique,
     primary key (senate_region_id)
 );
 
-create table city (
+create table if not exists city (
     cityid serial not null,
     city_name varchar(40) not null unique,
     city_senate_region integer not null,
@@ -14,20 +14,20 @@ create table city (
     primary key (cityid)
 );
 
-create table country (
+create table if not exists country (
     country_id serial not null,
     country_name varchar(40) not null unique,
     primary key (country_id)
 );
 
-create table roles (
+create table if not exists roles (
     role_id serial not null,
     role_name text not null,
     role_description text not null,
     primary key (role_id)
 );
 
-create table users_table (
+create table if not exists users_table (
     userid serial not null,
     username varchar(20) not null unique,
     user_password text not null,
@@ -51,7 +51,7 @@ create table users_table (
     foreign key (role_id) references roles(role_id)
 );
 
-create table organization (
+create table if not exists organization (
     organization_id serial not null,
     organization_name varchar(40) not null unique,
     organization_manager_id integer references users_table(userid) not null,
@@ -69,26 +69,26 @@ create table organization (
     foreign key (cityid) references city(cityid)
 );
 
-create table organization_representative(
+create table if not exists organization_representative(
     userid integer not null references users_table(userid),
     organization_id integer not null references organization(organization_id),
     primary key (userid, organization_id)
 );
 
-create table delivery_method (
+create table if not exists delivery_method (
     delivery_method_id serial not null,
     method_name varchar(20) not null,
     primary key (delivery_method_id)
 );
 
-create table resource_type(
+create table if not exists resource_type(
     resource_type_id serial not null,
     resource_type_name varchar(40) unique not null,
     primary key (resource_type_id)
 );
 
 -- resource attributes allowed
-create table resource_attribute_definition(
+create table if not exists resource_attribute_definition(
     resource_attribute_id serial not null, 
     resource_type_id integer references resource_type(resource_type_id) not null,
     resource_type_field_name varchar(40) not null,
@@ -96,14 +96,14 @@ create table resource_attribute_definition(
     primary key (resource_attribute_id)
 ); 
 
-create table resource_status(
+create table if not exists resource_status(
     resource_status_id serial not null,
     resource_status_name varchar(20) not null,
     resource_status_description text not null,
     primary key (resource_status_id)
 );
 
-create table resource (
+create table if not exists resource (
     resource_id serial not null,
     resource_quantity integer not null,
     resource_location_latitude float not null,
@@ -114,13 +114,13 @@ create table resource (
     primary key (resource_id)
 );
 
-create table resource_attribute(
+create table if not exists resource_attribute(
     resource_type_field_value varchar(40) not null,
     resource_type_field_name varchar(40) not null,
     resource_id integer references resource(resource_id) not null
 );
 
-create table submits_resource(
+create table if not exists submits_resource(
     resource_id integer references resource(resource_id) not null,
     userid integer references users_table(userid) not null,
     resource_price real not null,
@@ -131,21 +131,24 @@ create table submits_resource(
 );
 
 
-create table payment_method(
+create table if not exists payment_method(
     payment_method_id serial not null,
     payment_method_name varchar(40) not null,
     primary key (payment_method_id)
 );
 
-create table orders(
+create table if not exists orders(
     order_id serial not null,
     userid integer references users_table(userid) not null,
-    order_timestamp timestamptz default transaction_timestamp() not null,
     payment_method_id integer references payment_method(payment_method_id) not null,
+    cityid integer references city(cityid) not null,
+    order_location_latitude float not null,
+    order_location_longitude float not null,
+    order_timestamp timestamptz default transaction_timestamp() not null,
     primary key (order_id)
 );
 
-create table resource_ordered(
+create table if not exists resource_ordered(
     order_id integer references orders(order_id) not null,
     resource_id integer references resource(resource_id) not null,
     resources_quantity integer not null,
@@ -153,28 +156,31 @@ create table resource_ordered(
     primary key (resource_id,order_id)
 );
 
-create table reserves(
+create table if not exists reserves(
     reserve_id serial not null,
     userid integer references users_table(userid) not null,
+    cityid integer references city(cityid) not null,
+    reserves_location_latitude float not null,
+    reserves_location_longitude float not null,
     date_reserved timestamptz default transaction_timestamp() not null,
     primary key (reserve_id)
 );
 
-create table reserved_resources(
+create table if not exists reserved_resources(
     reserve_id integer references reserves(reserve_id) not null,
     resource_id integer references resource(resource_id) not null,
     resources_quantity integer not null,
     primary key (resource_id,reserve_id)
 );
 
-create table request_status (
+create table if not exists request_status (
     request_status_id serial not null,
     request_status_name varchar(20) not null,
     request_status_description text not null,
     primary key (request_status_id)
 );
 
-create table request (
+create table if not exists request (
     request_id serial not null,
     userid integer references users_table(userid) not null,
     request_status_id integer references request_status(request_status_id) not null,
@@ -182,7 +188,7 @@ create table request (
     primary key (request_id)
 );
 
-create table requested_resources(
+create table if not exists requested_resources(
     request_id integer references request(request_id) not null,
     resource_id integer references resource(resource_id) not null,
     primary key (resource_id,request_id)
