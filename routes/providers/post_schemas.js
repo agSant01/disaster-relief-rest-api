@@ -17,4 +17,8 @@ module.exports = {
         phone_number: 'required|string',
         email: 'required|email',
     },
+    organizationAddRepresentatives: {
+        representative_id: 'required|number',
+        adminid: 'required|number',
+    },
 };

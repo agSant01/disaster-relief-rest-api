@@ -263,4 +263,24 @@ module.exports = {
         set role_id=5
         where userid=(select userid from representativeinsert)
         returning (select organization_id from orginfo);`,
+    // add representative
+    qOrgganizationValidteRoleToAddRepresentative: `
+            select 
+                userid 
+            from users_table
+            where userid=$1 and ((role_id=1 or role_id=2) 
+            or (
+                role_id=5 and userid = (select organization_manager_id from organization where organization_id=$2)
+            ));
+    `,
+    qOrganizationAddRepresentative: `
+        with representativeinsert as (
+            insert into organization_representative(userid, organization_id)
+            values($1,$2)
+            returning userid
+        )
+        update users_table
+        set role_id=6
+        where userid=$1;
+    `,
 };

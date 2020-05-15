@@ -36,3 +36,22 @@ content-type: application/json
     "phone_number": "8983741009",
     "email": "organization@habitat.humanity"
 }
+
+### bad role
+POST {{url}}/api/suppliers/organizations/1/representative HTTP/1.1
+content-type: application/json
+
+{
+    "representative_id":"5",
+    "adminid":10
+}
+
+
+### good
+POST {{url}}/api/suppliers/organizations/1/representative HTTP/1.1
+content-type: application/json
+
+{
+    "representative_id":"5",
+    "adminid":2
+}

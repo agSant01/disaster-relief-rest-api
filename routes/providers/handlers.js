@@ -310,9 +310,9 @@ exports.getRepresentatives = (req, res, next) => {
         console.log(result);
 
         const msg = {
+            count: result.rowCount,
             organization_id: orgid,
             representatives: result.rows,
-            count: result.rowCount,
         };
 
         res.json(msg).end();
@@ -327,11 +327,100 @@ exports.postAddRepresentative = (req, res, next) => {
     */
     let organization_id = Number(req.params.orgID);
 
-    // Empty response
-    let response = {};
+    if (isNaN(organization_id)) {
+        res.status(401).json({
+            error:
+                "Invalid param for 'organization id'. Must be 'Integer' type.",
+            invalid_param: req.params.orgID,
+        });
+        return;
+    }
 
-    /* 
-    The server will return an 200-OK with Organization Object
-    */
-    res.json(response).end();
+    validate(req.body, jsonSchema.organizationAddRepresentatives)
+        .then((validatedJson) => {
+            console.log(validatedJson);
+
+            /////////////////
+            // create a transaction block using await for simplicity
+            (async () => {
+                // note: we don't try/catch this because if connecting throws an exception
+                // we don't need to dispose of the client (it will be undefined)
+                const client = await db.connect();
+                try {
+                    console.log('Begin Transaction.');
+                    await client.query('BEGIN');
+
+                    const supplierInfo = await client.query(
+                        querylib.qOrgganizationValidteRoleToAddRepresentative,
+                        [validatedJson.adminid, organization_id]
+                    );
+
+                    if (supplierInfo.rows.length == 0) {
+                        console.log(
+                            'User do not posses the credentials to add representative to organization'
+                        );
+                        res.status(400)
+                            .json({
+                                msg: `User do not posses the credentials to add representative to organization:${organization_id}`,
+                            })
+                            .end();
+                        return;
+                    }
+
+                    const addRepresentative = {
+                        text: querylib.qOrganizationAddRepresentative,
+                        values: [
+                            validatedJson.representative_id,
+                            organization_id,
+                        ],
+                    };
+
+                    console.log(addRepresentative);
+
+                    await client.query(addRepresentative);
+
+                    console.log('Committing Transaction.');
+
+                    await client.query('COMMIT');
+
+                    let msg = {
+                        msg: `Added representative to organization successfully.`,
+                        organization_id: organization_id,
+                        new_representative_id: validatedJson.representative_id,
+                    };
+
+                    res.status(201)
+                        .json(msg)
+                        .end();
+                } catch (e) {
+                    // only passes here if there is a problem with any query
+                    console.log('Error during transaction. Doing Rollback.', e);
+
+                    let emsg = e.toString();
+                    let status = 503;
+
+                    await client.query('ROLLBACK');
+
+                    res.status(status)
+                        .json({ error: emsg })
+                        .end();
+                } finally {
+                    console.log('Releasing client.');
+                    client.release();
+                }
+            })().catch((e) => {
+                // passes by here if something went wrong up
+                console.error('Async Block Catch', e.stack);
+                res.status(503)
+                    .json({ error: e.toString() })
+                    .end();
+            });
+            /////////////////////////////////////
+        })
+        .catch((error) => {
+            console.log('JSON Validation Error', error);
+            res.status(400)
+                .json(error)
+                .end();
+        });
 };

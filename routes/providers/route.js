@@ -24,7 +24,7 @@ router.get('/:id', handler.getProviderById);
 
 // Add organization representative
 router.post(
-    '/organizations/:orgID/add_representative',
+    '/organizations/:orgID/representative',
     handler.postAddRepresentative
 );
 
