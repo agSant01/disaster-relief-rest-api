@@ -184,3 +184,47 @@ content-type: application/json
         }
     ]
 }
+
+###
+## Invalid quantity to reserve
+POST {{url}}/api/resources/reserves HTTP/1.1
+content-type: application/json
+
+{
+    "userid": 6,
+    "city": "San Sebastian",
+    "latitude": "18.310803",
+    "longitude":"-66.973648",
+    "reserves": [
+        {
+            "resource_id":"5",
+            "delivery_option":"Pick-up",
+            "quantity":"1200"
+        }
+    ]
+}
+
+
+#####
+## Reserving 20, 
+POST {{url}}/api/resources/reserves HTTP/1.1
+content-type: application/json
+
+{
+    "userid": 6,
+    "city": "Cabo Rojo",
+    "latitude": "18.310803",
+    "longitude":"-66.973648",
+    "reserves": [
+        {
+            "resource_id":"5",
+            "delivery_option":"Pick-up",
+            "quantity":"20"
+        },
+        {
+            "resource_id":"2",
+            "delivery_option":"Pick-up",
+            "quantity":"2"
+        }
+    ]
+}

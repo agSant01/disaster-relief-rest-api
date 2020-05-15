@@ -387,13 +387,18 @@ module.exports = {
             reserves.reserve_id,
             reserves.date_reserved,
             reserves.userid,
+            city.city_name as reserved_city,
+            senate_region.senate_region_name as reserved_senate_region,
+            reserves.reserves_location_latitude,
+            reserves.reserves_location_longitude,
+            ('https://www.google.com/maps/dir/?api=1&destination='||reserves_location_latitude||','||reserves_location_longitude) as reserve_google_maps_location,
             (
                 select json_agg(row_to_json((SELECT d FROM (SELECT 
                     resource.resource_id,
                     reserved_resources.resources_quantity as quantity_reserved,
                     resource.resource_location_latitude,
                     resource.resource_location_longitude,
-                    ('https://www.google.com/maps/dir/?api=1&destination='||resource_location_latitude||','||resource_location_longitude) as google_maps_location,
+                    ('https://www.google.com/maps/dir/?api=1&destination='||resource_location_latitude||','||resource_location_longitude) as resource_google_maps_location,
                     senate_region_name,
                     resource_type_name
                 ) d)))
@@ -404,12 +409,20 @@ module.exports = {
                 where reserved_resources.reserve_id = reserves.reserve_id
             ) as reserved_resources
         from reserves
+        natural join city
+        inner join senate_region 
+            on city.city_senate_region=senate_region.senate_region_id
         order by reserve_id;`,
     getAllReservedResourcesById: `
         select
             reserves.reserve_id,
             reserves.date_reserved,
             reserves.userid,
+            city.city_name as reserved_city,
+            senate_region.senate_region_name as reserved_senate_region,
+            reserves.reserves_location_latitude,
+            reserves.reserves_location_longitude,
+            ('https://www.google.com/maps/dir/?api=1&destination='||reserves_location_latitude||','||reserves_location_longitude) as reserve_google_maps_location,
             (
                 select json_agg(row_to_json((SELECT d FROM (SELECT 
                     resource.resource_id,
@@ -427,6 +440,9 @@ module.exports = {
                 where reserved_resources.reserve_id = reserves.reserve_id
             ) as reserved_resources
         from reserves
+        natural join city
+        inner join senate_region 
+            on city.city_senate_region=senate_region.senate_region_id
         where reserves.reserve_id = $1;`,
     qPurchasesByID: `select 
         orders.order_id as purchase_id,
@@ -573,4 +589,42 @@ module.exports = {
             (select delivery_method_id from delivery_method where lower(method_name)=lower($5))
         );
     `,
+    // reserve resource related
+    qInsertReserve: `
+        insert into reserves(
+            userid,
+            cityid,
+            reserves_location_latitude,
+            reserves_location_longitude
+        ) values(
+            $1,
+            (SELECT cityid from city where city_name = $2),
+            $3,
+            $4
+        ) 
+        returning reserve_id;`,
+    qHasAvailableQuantityOfResourceById: `
+    select 
+        resource_id,
+        (resource.resource_quantity - 
+            sum(reserved_resources.resources_quantity)) 
+            as available_after_transaction
+    from submits_resource 
+    natural left join resource 
+    natural left join reserved_resources
+    where resource_id=$1 
+    and submits_resource.is_for_sale=false
+    and submits_resource.resource_price = 0
+    group by resource_id,resource.resource_quantity
+    having (resource.resource_quantity - 
+        sum(reserved_resources.resources_quantity)) >= 0`,
+    qInsertReservedResources: `
+        insert into reserved_resources(
+            reserve_id,
+            resource_id,
+            resources_quantity
+        )
+        values(
+            $1, $2, $3
+        );`,
 };

@@ -46,4 +46,26 @@ module.exports = {
         'attributes.*.attr_name': 'required|string',
         'attributes.*.attr_value': 'required|string',
     },
+    resourceReserveSchema: {
+        userid: 'required|number',
+        city: 'required|string',
+        latitude: 'required|float',
+        longitude: 'required|float',
+        reserves: [
+            validations.required(),
+            validations.array(),
+            validations.min([1]),
+        ],
+        'reserves.*.resource_id': 'required|number',
+        'reserves.*.delivery_option': [
+            validations.required(),
+            validations.in(['Delivery or Pick-up', 'Delivery', 'Pick-up']),
+            validations.string(),
+        ],
+        'reserves.*.quantity': [
+            validations.number(),
+            validations.required(),
+            validations.above([0]),
+        ],
+    },
 };

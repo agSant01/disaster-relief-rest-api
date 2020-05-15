@@ -2542,63 +2542,124 @@ values(
 -- start of reserves
 
 -- reserves id 1
-insert into reserves(userid)
+insert into reserves(
+    userid,
+    cityid,
+    reserves_location_latitude,
+    reserves_location_longitude
+)
 values(
-    (select userid from users_table where username = 'annaprentice')
+    (select userid from users_table where username = 'annaprentice'),
+    (select cityid from city where city_name = 'Adjuntas'),
+    18.163641,
+    -66.681455
 );
 
 -- reserves id 2
-insert into reserves(userid)
+insert into reserves(userid,
+    cityid,
+    reserves_location_latitude,
+    reserves_location_longitude)
 values(
-    (select userid from users_table where username = 'juliatorres')
+    (select userid from users_table where username = 'juliatorres'),
+    (select cityid from city where city_name = 'Ponce'),
+    18.163641,
+    -66.681455
 );
 
 -- reserves id 3
-insert into reserves(userid)
+insert into reserves(userid,
+    cityid,
+    reserves_location_latitude,
+    reserves_location_longitude)
 values(
-   (select userid from users_table where username = 'carlitos')
+   (select userid from users_table where username = 'carlitos'),
+   (select cityid from city where city_name = 'Aguadilla'),
+    18.463049,
+    -67.099207
 );
 
 -- reserves id 4
-insert into reserves(userid)
+insert into reserves(userid,
+    cityid,
+    reserves_location_latitude,
+    reserves_location_longitude)
 values(
-    (select userid from users_table where username = 'annaprentice')
+    (select userid from users_table where username = 'annaprentice'),
+    (select cityid from city where city_name = 'Utuado'),
+    18.269827, -66.704328
 );
 
 -- reserves id 5
-insert into reserves(userid)
+insert into reserves(userid,
+    cityid,
+    reserves_location_latitude,
+    reserves_location_longitude)
 values(
-    (select userid from users_table where username = 'juliatorres')
+    (select userid from users_table where username = 'juliatorres'),
+    (select cityid from city where city_name = 'Corozal'),
+    18.310607, 
+    -66.327630
 );
 
 -- reserves id 6
-insert into reserves(userid)
+insert into reserves(userid,
+    cityid,
+    reserves_location_latitude,
+    reserves_location_longitude)
 values(
-   (select userid from users_table where username = 'carlitos')
+   (select userid from users_table where username = 'carlitos'),
+   (select cityid from city where city_name = 'Adjuntas'),
+    18.163641,
+    -66.681455
 );
 
 -- reserves id 7
-insert into reserves(userid)
+insert into reserves(userid,
+    cityid,
+    reserves_location_latitude,
+    reserves_location_longitude)
 values(
-    (select userid from users_table where username = 'annaprentice')
+    (select userid from users_table where username = 'annaprentice'),
+    (select cityid from city where city_name = 'Cidra'),
+    18.206738, 
+    -66.157116
 );
 
 -- reserves id 8
-insert into reserves(userid)
+insert into reserves(userid,
+    cityid,
+    reserves_location_latitude,
+    reserves_location_longitude)
 values(
-    (select userid from users_table where username = 'juliatorres')
+    (select userid from users_table where username = 'juliatorres'),
+    (select cityid from city where city_name = 'Adjuntas'),
+    18.163641,
+    -66.681455
 );
 
 -- reserves id 9
-insert into reserves(userid)
+insert into reserves(userid,
+    cityid,
+    reserves_location_latitude,
+    reserves_location_longitude)
 values(
-   (select userid from users_table where username = 'carlitos')
+   (select userid from users_table where username = 'carlitos'),
+   (select cityid from city where city_name = 'Adjuntas'),
+    18.163641,
+    -66.681455
 );
 
 -- reserves id 10
-insert into reserves(userid)
+insert into reserves(userid,
+    cityid,
+    reserves_location_latitude,
+    reserves_location_longitude)
 values(
-    (select userid from users_table where username = 'annaprentice')
+    (select userid from users_table where username = 'annaprentice'),
+    (select cityid from city where city_name = 'Lares'),
+    18.277698, 
+    -66.870911
 );
 
 
