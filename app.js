@@ -6,18 +6,21 @@ try {
     // Do nothing. Config does not exists
 }
 
+// modules
+var bodyParser = require('body-parser');
 const debug = require('debug')('e-template:server');
 const http = require('http');
 const cors = require('cors');
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
-const db = require('./database');
-var bodyParser = require('body-parser');
-
-const api = require('./routes/api');
-
+const { configure } = require('indicative/validator');
+const { JsonApiFormatter } = require('indicative-formatters');
 const app = express();
+
+// Application dependencies
+const db = require('./database');
+const api = require('./routes/api');
 
 app.use(cors());
 app.use(logger('dev'));
@@ -42,6 +45,8 @@ app.set('port', port);
  * Create HTTP server.
  */
 const server = http.createServer(app);
+
+configureJsonValidator();
 
 /**
  * Listen on provided port, on all network interfaces.
@@ -107,4 +112,13 @@ function onListening() {
         typeof addr === 'string' ? 'pipe ' + addr : 'port ' + addr.port;
     debug('Listening on ' + bind);
     console.log('Listening on ' + bind);
+}
+
+/**
+ * Set up JSON Validator
+ */
+function configureJsonValidator() {
+    configure({
+        formatter: JsonApiFormatter,
+    });
 }

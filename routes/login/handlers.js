@@ -21,7 +21,7 @@ exports.postLogin = (req, res, next) => {
     db.query(query, (qerr, qres) => {
         if (qerr) {
             res.status(503)
-                .json(qerr.stack)
+                .json({ error: qerr.stack })
                 .end();
         } else {
             const msg = {

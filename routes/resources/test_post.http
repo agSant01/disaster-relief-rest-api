@@ -1,0 +1,256 @@
+@localhost = http://localhost:3000
+@heroku = https://evening-tor-08768.herokuapp.com
+
+@url = {{localhost}}
+
+###
+# bad request
+POST {{url}}/api/resources/request HTTP/1.1
+content-type: application/json
+
+{
+    "username": "gabrielTe1"
+}
+
+
+###
+# bad request
+POST {{url}}/api/resources/requests HTTP/1.1
+content-type: application/json
+
+
+{
+    "userid": 6,
+    "requested_resources": [
+         {
+            "resource_type": "Water",
+            "quantity": 45,
+            "longitude": -69.90,
+            "latitude": -18,
+            "attributes": []
+        }
+    ]
+}
+
+
+###
+# bad request
+POST {{url}}/api/resources/requests HTTP/1.1
+content-type: application/json
+
+
+{
+    "userid": 6,
+    "requested_resources": [
+         {
+            "resource_type": "Water",
+            "quantity": 45,
+            "longitude": -69.90,
+            "latitude": -18,
+            "attributes": []
+        }
+    ]
+}
+
+
+###
+# bad request
+POST {{url}}/api/resources/requests HTTP/1.1
+content-type: application/json
+
+{
+    "userid": 6,
+    "requested_resources": [
+        {
+            "resource_type": "Water",
+            "quantity": 45,
+            "longitude": -69.90,
+            "latitude": -18,
+            "attributes": [
+                {
+                    "attr_name": "Container Size",
+                    "attr_value": "16oz."
+                },
+                 {
+                    "attr_name": "Water Type",
+                    "attr_value": "purified"
+                },
+                 {
+                    "attr_name": "expiration date",
+                    "attr_value": "2020-12-02"
+                },
+                 {
+                    "attr_name": "quantity per unit",
+                    "attr_value": "89"
+                }
+            ]
+        },
+         {
+            "resource_type": "Heavy Equipment",
+            "quantity": 105,
+            "longitude": -68.5768798090,
+            "latitude": 17.98765678,
+            "attributes": [
+                {
+                    "attr_name": "Equipment Type",
+                    "attr_value": "Bulldozers"
+                },
+                 {
+                    "attr_name": "Fuel Type",
+                    "attr_value": "Diesel"
+                },  
+                {
+                    "attr_name": "Transaction Type",
+                    "attr_value": "Rent"
+                },  
+                {
+                    "attr_name": "Duration Period Unit",
+                    "attr_value": "Week(s)"
+                },  
+                {
+                    "attr_name": "Duration Period",
+                    "attr_value": "6"
+                }
+            ]
+         }
+    ]
+}
+
+
+###
+# bad request
+POST {{url}}/api/resources HTTP/1.1
+content-type: application/json
+
+{
+    "userid": 3,    
+    "resource_type": "Heavy Equipment",
+    "quantity": 15,
+    "longitude": -69.5768798090,
+    "latitude": 18.98765678,
+    //"price": "0",
+    "is_for_sale": false,
+    "delivery_option": "Delivery or Pick-up",
+    "attributes": [
+        {
+            "attr_name": "Equipment Type",
+            "attr_value": "Bulldozers"
+        },
+            {
+            "attr_name": "Fuel Type",
+            "attr_value": "Diesel"
+        },  
+        {
+            "attr_name": "Transaction Type",
+            "attr_value": "Rent"
+        },  
+        {
+            "attr_name": "Duration Period Unit",
+            "attr_value": "Week(s)"
+        },  
+        {
+            "attr_name": "Duration Period",
+            "attr_value": "6"
+        }
+    ]
+}
+
+
+###
+# good request
+POST {{url}}/api/resources HTTP/1.1
+content-type: application/json
+
+{
+    "userid": 3,    
+    "resource_type": "Heavy Equipment",
+    "quantity": 3,
+    "longitude": -67.5768798090,
+    "latitude": 19.98765678,
+    "price": "899.00",
+    "delivery_option": "Delivery or Pick-up",
+    "attributes": [
+        {
+            "attr_name": "Equipment Type",
+            "attr_value": "Excavators"
+        },
+            {
+            "attr_name": "Fuel Type",
+            "attr_value": "Diesel"
+        },  
+        {
+            "attr_name": "Transaction Type",
+            "attr_value": "Buy"
+        }
+    ]
+}
+
+###
+## Invalid quantity to reserve
+POST {{url}}/api/resources/reserves HTTP/1.1
+content-type: application/json
+
+{
+    "userid": 6,
+    "city": "San Sebastian",
+    "latitude": "18.310803",
+    "longitude":"-66.973648",
+    "reserves": [
+        {
+            "resource_id":"5",
+            "delivery_option":"Pick-up",
+            "quantity":"1200"
+        }
+    ]
+}
+
+
+#####
+## Reserving 2, 
+POST {{url}}/api/resources/reserves HTTP/1.1
+content-type: application/json
+
+{
+    "userid": 6,
+    "city": "Cabo Rojo",
+    "latitude": "18.310803",
+    "longitude":"-66.973648",
+    "reserves": [
+        {
+            "resource_id":"5",
+            "delivery_option":"Pick-up",
+            "quantity":"20"
+        },
+        {
+            "resource_id":"2",
+            "delivery_option":"Delivery",
+            "quantity":"2"
+        }
+    ]
+}
+
+
+#####
+## Bad payload 
+POST {{url}}/api/resources/purchases HTTP/1.1
+content-type: application/json
+
+{
+    "userid": "10",
+    "city": "Jayuya",
+    "latitude": 18.215740,
+    "longitude":-66.593969,
+    "payment_method":"Venmo",
+    "purchases": [
+        {
+            "resource_id":"6",
+            "delivery_option":"Pick-up",
+            "quantity":"20"
+        },
+        {
+            "resource_id":"4",
+            "delivery_option":"Delivery",
+            "quantity":"2"
+        }
+    ]
+}

@@ -1271,7 +1271,7 @@ insert into resource_attribute_definition (
 values(
     (SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Water'),
     'Water Type',
-    'Distilled '
+    'Distilled'
 );   
 insert into resource_attribute_definition (    
     resource_type_id,
@@ -1281,7 +1281,7 @@ insert into resource_attribute_definition (
 values(
     (SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Water'),
     'Expiration Date',
-    'mm/dd/yyyy'
+    null
 );
  
 insert into resource_attribute_definition (    
@@ -1364,7 +1364,7 @@ resource_type_field_value
 values(
 (SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Medication'),
 'Expiration Date',
-'mm/dd/yyyy'
+null
 );
 insert into resource_attribute_definition (    
     resource_type_id,
@@ -1389,7 +1389,7 @@ values((SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Ba
 insert into resource_attribute_definition (resource_type_id,resource_type_field_name,resource_type_field_value)
 values((SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Baby Food'),'Baby Food Name', null);
 insert into resource_attribute_definition (resource_type_id,resource_type_field_name,resource_type_field_value)
-values((SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Baby Food'),'Expiration Date','mm/dd/yyyy');
+values((SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Baby Food'),'Expiration Date',null);
 insert into resource_attribute_definition (    
     resource_type_id,
     resource_type_field_name,
@@ -1480,7 +1480,7 @@ resource_type_field_value
 values(
 (SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Canned Food'),
 'Expiration Date',
-'mm/dd/yyyy'
+null
 );
 
 
@@ -1500,7 +1500,7 @@ values((SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Dr
 insert into resource_attribute_definition (resource_type_id,resource_type_field_name,resource_type_field_value)
 values((SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Dry Food'),'Dry Food Name', null);
 insert into resource_attribute_definition(resource_type_id,resource_type_field_name,resource_type_field_value)
-values((SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Dry Food'),'Expiration Date','mm/dd/yyyy');
+values((SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Dry Food'),'Expiration Date',null);
 insert into resource_attribute_definition (resource_type_id,resource_type_field_name,resource_type_field_value)
 values((SELECT resource_type_id FROM resource_type WHERE resource_type_name ='Dry Food'),'Quantity Per Unit',null);
 
@@ -1732,7 +1732,7 @@ with first_id as (
     RETURNING resource_id
 ), sixth_id as (
     insert into resource_attribute(resource_id, resource_type_field_name, resource_type_field_value)
-    values((select resource_id from first_id), 'Duration', 2) 
+    values((select resource_id from first_id), 'Duration Period', 2) 
     RETURNING resource_id
 )
 -- submitted id 1
@@ -2459,13 +2459,11 @@ with request_info as (
 )
 insert into requested_resources(
     request_id,             
-    resource_id,   
-    resources_quantity    
+    resource_id
 )
 values(
     (select request_id from request_info),
-    1,
-    3
+    1
 );
 ----- end of requst id 4
 
@@ -2482,13 +2480,11 @@ with request_info as (
 )
 insert into requested_resources(
     request_id,             
-    resource_id,   
-    resources_quantity    
+    resource_id
 )
 values(
     (select request_id from request_info),
-    3,
-    1
+    3
 );
 ----- end of requst id 5
 
@@ -2505,13 +2501,11 @@ with request_info as (
 )
 insert into requested_resources(
     request_id,             
-    resource_id,   
-    resources_quantity    
+    resource_id
 )
 values(
     (select request_id from request_info),
-    3,
-    1
+    3
 ); 
 ----- end of requst id 6
  
@@ -2528,13 +2522,11 @@ with request_info as (
 )
 insert into requested_resources(
     request_id,             
-    resource_id,   
-    resources_quantity    
+    resource_id
 )
 values(
     (select request_id from request_info),
-    5,
-    13
+    5
 ); 
 ----- end of requst id 7
 
@@ -2551,13 +2543,11 @@ with request_info as (
 )
 insert into requested_resources(
     request_id,             
-    resource_id,   
-    resources_quantity    
+    resource_id   
 )
 values(
     (select request_id from request_info),
-    3,
-    50
+    3
 ); 
 ----- end of requst id 8
 
@@ -2574,13 +2564,11 @@ with request_info as (
 )
 insert into requested_resources(
     request_id,             
-    resource_id,   
-    resources_quantity    
+    resource_id   
 )
 values(
     (select request_id from request_info),
-    7,
-    2
+    7
 ); 
 ----- end of requst id 9
 
@@ -2597,13 +2585,11 @@ with request_info as (
 )
 insert into requested_resources(
     request_id,             
-    resource_id,   
-    resources_quantity    
+    resource_id    
 )
 values(
     (select request_id from request_info),
-    4,
-    5
+    4
 );
 ----- end of requst id 10
 
@@ -2613,77 +2599,124 @@ values(
 
 --orders
 -- order 1
-insert into orders(userid,payment_method_id)
+insert into orders(userid,payment_method_id,
+    cityid,
+    order_location_latitude,
+    order_location_longitude)
 values(
     (select userid from users_table where username = 'annaprentice'),
-    (select payment_method_id from payment_method where payment_method_name = 'Debit')
-    
+    (select payment_method_id from payment_method where payment_method_name = 'Debit'),
+    (select cityid from city where city_name='Fajardo'),
+    18.308806, -65.690428
 );
 
 -- order 2
-insert into orders(userid,payment_method_id)
+insert into orders(userid,payment_method_id,
+    cityid,
+    order_location_latitude,
+    order_location_longitude)
 values(
     (select userid from users_table where username = 'carlitos'),
-    (select payment_method_id from payment_method where payment_method_name = 'WIC')  
+    (select payment_method_id from payment_method where payment_method_name = 'WIC'), 
+    (select cityid from city where city_name='Naranjito'),
+    18.297824, -66.245581
 );
 
 -- order 3
-insert into orders(userid,payment_method_id)
+insert into orders(userid,payment_method_id,
+    cityid,
+    order_location_latitude,
+    order_location_longitude)
 values(
     (select userid from users_table where username = 'juliatorres'),
-    (select payment_method_id from payment_method where payment_method_name = 'Credit Card')  
+    (select payment_method_id from payment_method where payment_method_name = 'Credit Card'),
+    (select cityid from city where city_name='Naranjito'),
+    18.297824, -66.245581
 );
 
 -- order 4
-insert into orders(userid,payment_method_id)
+insert into orders(userid,payment_method_id,
+    cityid,
+    order_location_latitude,
+    order_location_longitude)
 values(
     (select userid from users_table where username = 'annaprentice'),
-    (select payment_method_id from payment_method where payment_method_name = 'ATH-Movil')
-    
+    (select payment_method_id from payment_method where payment_method_name = 'ATH-Movil'),
+    (select cityid from city where city_name='Barceloneta'),
+    18.446648, -66.535710
 );
 
 -- order 5
-insert into orders(userid,payment_method_id)
+insert into orders(userid,payment_method_id,
+    cityid,
+    order_location_latitude,
+    order_location_longitude)
 values(
     (select userid from users_table where username = 'carlitos'),
-    (select payment_method_id from payment_method where payment_method_name = 'PayPal')  
+    (select payment_method_id from payment_method where payment_method_name = 'PayPal') , 
+    (select cityid from city where city_name='Vieques'),
+    18.122262, -65.447101
 );
 
 -- order 6
-insert into orders(userid,payment_method_id)
+insert into orders(userid,payment_method_id,
+    cityid,
+    order_location_latitude,
+    order_location_longitude)
 values(
     (select userid from users_table where username = 'juliatorres'),
-    (select payment_method_id from payment_method where payment_method_name = 'ATH-Movil')  
+    (select payment_method_id from payment_method where payment_method_name = 'ATH-Movil') , 
+    (select cityid from city where city_name='Patillas'),
+    18.071776, -66.068274
 );
 
 -- order 7
-insert into orders(userid,payment_method_id)
+insert into orders(userid,payment_method_id,
+    cityid,
+    order_location_latitude,
+    order_location_longitude)
 values(
     (select userid from users_table where username = 'annaprentice'),
-    (select payment_method_id from payment_method where payment_method_name = 'Venmo')
-    
+    (select payment_method_id from payment_method where payment_method_name = 'Venmo'),
+    (select cityid from city where city_name='Dorado'),
+    18.454727, -66.265412
 );
 
 -- order 8
-insert into orders(userid,payment_method_id)
+insert into orders(userid,payment_method_id,
+    cityid,
+    order_location_latitude,
+    order_location_longitude)
 values(
     (select userid from users_table where username = 'carlitos'),
-    (select payment_method_id from payment_method where payment_method_name = 'Cash')  
+    (select payment_method_id from payment_method where payment_method_name = 'Cash') , 
+    (select cityid from city where city_name='Morovis'),
+    18.266965, -66.431096
 );
 
 -- order 9
-insert into orders(userid,payment_method_id)
+insert into orders(userid,payment_method_id,
+    cityid,
+    order_location_latitude,
+    order_location_longitude)
 values(
     (select userid from users_table where username = 'juliatorres'),
-    (select payment_method_id from payment_method where payment_method_name = 'ApplePay')  
+    (select payment_method_id from payment_method where payment_method_name = 'ApplePay'),  
+    (select cityid from city where city_name='Cidra'),
+    18.179683, -66.161854
 );
 
 -- order 10
-insert into orders(userid,payment_method_id)
+insert into orders(userid,payment_method_id,
+    cityid,
+    order_location_latitude,
+    order_location_longitude)
 values(
     (select userid from users_table where username = 'annaprentice'),
-    (select payment_method_id from payment_method where payment_method_name = 'Zelle')
- );   
+    (select payment_method_id from payment_method where payment_method_name = 'Zelle'),
+    (select cityid from city where city_name='Lajas'),
+    17.970756, -66.912139
+);   
 
 
 --ordered resource
@@ -2795,63 +2828,124 @@ values(
 -- start of reserves
 
 -- reserves id 1
-insert into reserves(userid)
+insert into reserves(
+    userid,
+    cityid,
+    reserves_location_latitude,
+    reserves_location_longitude
+)
 values(
-    (select userid from users_table where username = 'annaprentice')
+    (select userid from users_table where username = 'annaprentice'),
+    (select cityid from city where city_name = 'Adjuntas'),
+    18.163641,
+    -66.681455
 );
 
 -- reserves id 2
-insert into reserves(userid)
+insert into reserves(userid,
+    cityid,
+    reserves_location_latitude,
+    reserves_location_longitude)
 values(
-    (select userid from users_table where username = 'juliatorres')
+    (select userid from users_table where username = 'juliatorres'),
+    (select cityid from city where city_name = 'Ponce'),
+    18.163641,
+    -66.681455
 );
 
 -- reserves id 3
-insert into reserves(userid)
+insert into reserves(userid,
+    cityid,
+    reserves_location_latitude,
+    reserves_location_longitude)
 values(
-   (select userid from users_table where username = 'carlitos')
+   (select userid from users_table where username = 'carlitos'),
+   (select cityid from city where city_name = 'Aguadilla'),
+    18.463049,
+    -67.099207
 );
 
 -- reserves id 4
-insert into reserves(userid)
+insert into reserves(userid,
+    cityid,
+    reserves_location_latitude,
+    reserves_location_longitude)
 values(
-    (select userid from users_table where username = 'annaprentice')
+    (select userid from users_table where username = 'annaprentice'),
+    (select cityid from city where city_name = 'Utuado'),
+    18.269827, -66.704328
 );
 
 -- reserves id 5
-insert into reserves(userid)
+insert into reserves(userid,
+    cityid,
+    reserves_location_latitude,
+    reserves_location_longitude)
 values(
-    (select userid from users_table where username = 'juliatorres')
+    (select userid from users_table where username = 'juliatorres'),
+    (select cityid from city where city_name = 'Corozal'),
+    18.310607, 
+    -66.327630
 );
 
 -- reserves id 6
-insert into reserves(userid)
+insert into reserves(userid,
+    cityid,
+    reserves_location_latitude,
+    reserves_location_longitude)
 values(
-   (select userid from users_table where username = 'carlitos')
+   (select userid from users_table where username = 'carlitos'),
+   (select cityid from city where city_name = 'Adjuntas'),
+    18.163641,
+    -66.681455
 );
 
 -- reserves id 7
-insert into reserves(userid)
+insert into reserves(userid,
+    cityid,
+    reserves_location_latitude,
+    reserves_location_longitude)
 values(
-    (select userid from users_table where username = 'annaprentice')
+    (select userid from users_table where username = 'annaprentice'),
+    (select cityid from city where city_name = 'Cidra'),
+    18.206738, 
+    -66.157116
 );
 
 -- reserves id 8
-insert into reserves(userid)
+insert into reserves(userid,
+    cityid,
+    reserves_location_latitude,
+    reserves_location_longitude)
 values(
-    (select userid from users_table where username = 'juliatorres')
+    (select userid from users_table where username = 'juliatorres'),
+    (select cityid from city where city_name = 'Adjuntas'),
+    18.163641,
+    -66.681455
 );
 
 -- reserves id 9
-insert into reserves(userid)
+insert into reserves(userid,
+    cityid,
+    reserves_location_latitude,
+    reserves_location_longitude)
 values(
-   (select userid from users_table where username = 'carlitos')
+   (select userid from users_table where username = 'carlitos'),
+   (select cityid from city where city_name = 'Adjuntas'),
+    18.163641,
+    -66.681455
 );
 
 -- reserves id 10
-insert into reserves(userid)
+insert into reserves(userid,
+    cityid,
+    reserves_location_latitude,
+    reserves_location_longitude)
 values(
-    (select userid from users_table where username = 'annaprentice')
+    (select userid from users_table where username = 'annaprentice'),
+    (select cityid from city where city_name = 'Lares'),
+    18.277698, 
+    -66.870911
 );
 
 
