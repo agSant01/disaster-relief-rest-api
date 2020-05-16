@@ -552,6 +552,7 @@ module.exports = {
     where userid=$1 
     and is_enabled=true 
     and role_id = (select role_id from roles where role_name='Requester')`,
+    qGetCity:`select cityid from city where lower(city_name) = lower($1)`,
     qInsertAttributes: `
     insert into resource_attribute(
         resource_id, 

@@ -431,6 +431,11 @@ exports.postSubmitResource = (req, res, next) => {
                         [validatedData.userid]
                     );
 
+                    const requesterCity= await client.query(
+                        querylib.qGetCity,
+                        [validatedData.city]
+                    );
+
                     // if no result requester does not exist
                     if (supplierInfo.rowCount == 0) {
                         await client.query('ROLLBACK');
@@ -634,10 +639,16 @@ exports.postResourceRequest = (req, res, next) => {
                     console.log('Begin Transaction.');
                     await client.query('BEGIN');
 
-                    // validate that user is requester and get city
+                    // validate that user is requester 
                     const requesterInfo = await client.query(
                         querylib.qRequesterInfo,
                         [validatedData.userid]
+                    );
+                    
+                    // validate and get city *******
+                    const requesterCity= await client.query(
+                        querylib.qGetCity,
+                        [validatedData.city]
                     );
 
                     // if no result requester does not exist
@@ -646,6 +657,16 @@ exports.postResourceRequest = (req, res, next) => {
                         res.status(400)
                             .json({
                                 msg: `User with id: '${validatedData.userid}' is not a requestor.`,
+                            })
+                            .end();
+                        return;
+                    }
+                    //if no result city does not exist
+                    if (requesterCity.rowCount == 0) {
+                        await client.query('ROLLBACK');
+                        res.status(400)
+                            .json({
+                                msg: `User with id: '${validatedData.city}' is not a city.`,
                             })
                             .end();
                         return;
@@ -692,7 +713,7 @@ exports.postResourceRequest = (req, res, next) => {
                                 resource.latitude,
                                 resource.longitude,
                                 resource.resource_type,
-                                requesterInfo.rows[0].cityid,
+                                requesterCity.rows[0].cityid,
                             ],
                         };
 
@@ -833,6 +854,17 @@ exports.postReserveResource = (req, res, next) => {
                         res.status(400)
                             .json({
                                 msg: `User with userid: '${validatedData.userid}' is not a requestor.`,
+                            })
+                            .end();
+                        return;
+                    }
+
+                    //if no result city does not exist
+                    if (requesterCity.rowCount == 0) {
+                        await client.query('ROLLBACK');
+                        res.status(400)
+                            .json({
+                                msg: `User with id: '${validatedData.city}' is not a city.`,
                             })
                             .end();
                         return;

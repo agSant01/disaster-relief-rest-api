@@ -364,3 +364,49 @@ exports.getUserOrders = (req, res, next) => {
         }
     });
 };
+
+exports.toggle = (req, res, next)=>{
+    let username = req.body.username
+    let enable = req.body.enable
+
+    if(username){
+        if(isNaN(Boolean(enable))){
+            res.status(401).json({
+                error:
+                    "Invalid param for 'enable'. Must be 'Boolean' type.",
+                invalid_param: req.body.enable,
+            });
+            return;
+        }
+
+        const query = {
+            text: querylib.qToggle,
+            values: [username,enable],
+        };
+    
+        db.query(query, (qerr, qres) => {
+            console.log(qerr, qres);
+    
+            if (qerr) {
+                res.status(503)
+                    .json({ error: qerr.stack })
+                    .end();
+            } else {
+                let msg = {
+                    status:`user succesfully ${enable?"enabled":"disabled"}` 
+                };
+    
+                res.json(msg).end();
+            }
+        });
+    }
+    else{
+        res.status(401).json({
+            error:
+                "Invalid param for 'username'",
+            invalid_param: req.body.username,
+        });
+        return;
+    }
+    
+};

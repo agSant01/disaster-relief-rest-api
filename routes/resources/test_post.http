@@ -54,12 +54,13 @@ content-type: application/json
 
 
 ###
-# bad request
+# good request
 POST {{url}}/api/resources/requests HTTP/1.1
 content-type: application/json
 
 {
     "userid": 6,
+    "city":"vega alta",
     "requested_resources": [
         {
             "resource_type": "Water",
@@ -123,7 +124,8 @@ POST {{url}}/api/resources HTTP/1.1
 content-type: application/json
 
 {
-    "userid": 3,    
+    "userid": 3,  
+    "city":"vega baja",  
     "resource_type": "Heavy Equipment",
     "quantity": 15,
     "longitude": -69.5768798090,
