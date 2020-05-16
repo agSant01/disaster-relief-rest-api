@@ -6,6 +6,10 @@ var router = express.Router();
 // supports debug
 router.get('/', handler.getAllUsers);
 
+//enable or disable user
+router.post('/toggle', handler.toggle);
+
+
 // Get all users, only for Admin and System Manager
 // supports debug
 router.get('/administrators', handler.getAdministrators);

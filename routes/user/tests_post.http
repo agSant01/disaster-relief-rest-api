@@ -91,3 +91,23 @@ content-type: application/json
     "dob": "1998-12-09",
     "phone_number": "7879221444"
 }
+
+###
+# disable user
+POST {{url}}/api/users/toggle HTTP/1.1
+content-type: application/json
+
+{
+    "username": "valeria",
+    "enable": false
+}
+
+###
+# enable user
+POST {{url}}/api/users/toggle HTTP/1.1
+content-type: application/json
+
+{
+    "username": "valeria",
+    "enable": true
+}

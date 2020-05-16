@@ -3,6 +3,7 @@ const { validations } = require('indicative/validator');
 module.exports = {
     resourceRequestSchema: {
         userid: 'required|number',
+        city: 'required|string',
         requested_resources: [
             validations.required(),
             validations.array(),
