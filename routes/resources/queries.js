@@ -331,11 +331,13 @@ module.exports = {
                     resource.resource_location_latitude,
                     resource.resource_location_longitude,
                     ('https://www.google.com/maps/dir/?api=1&destination='||resource_location_latitude||','||resource_location_longitude) as request_google_maps_location,
+                    senate_region.senate_region_name as resource_senate_region_name,
                     resource_type_name
                 ) d))) 
                 from resource
                 natural join requested_resources
                 natural join resource_type
+                natural join senate_region
                 where requested_resources.request_id = request.request_id
             ) as requested_resources
         from request
@@ -351,11 +353,13 @@ module.exports = {
                 resource.resource_location_latitude,
                 resource.resource_location_longitude,
                 ('https://www.google.com/maps/dir/?api=1&destination='||resource_location_latitude||','||resource_location_longitude) as request_google_maps_location,
+                senate_region.senate_region_name as resource_senate_region_name,
                 resource_type_name
             ) d))) 
             from resource
             natural join requested_resources
             natural join resource_type
+            natural join senate_region
             where requested_resources.request_id = request.request_id
         ) as requested_resources
     from request
