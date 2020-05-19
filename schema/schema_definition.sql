@@ -183,7 +183,6 @@ create table if not exists request_status (
 create table if not exists request (
     request_id serial not null,
     userid integer references users_table(userid) not null,
-    cityid integer references city(cityid) not null,
     request_status_id integer references request_status(request_status_id) not null,
     date_requested timestamptz default transaction_timestamp() not null,
     primary key (request_id)
