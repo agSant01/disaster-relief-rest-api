@@ -79,7 +79,7 @@ module.exports = {
         senate_region.senate_region_id=city.city_senate_region
         where userid=$1 and is_enabled=$2;`,
     qUserDebug: `select * from users_table where userid=$1 and is_enabled = $2;`,
-    qRoles: `select * from roles;`,
+    qRoles: `select * from rsoles;`,
     qGetRequestsByUserId: `
             select 
                 request_id,
@@ -237,7 +237,7 @@ module.exports = {
         where orders.userid = $1 and 
         orders.order_id = $2
         order by orders.order_id;`,
-        qToggle:`update users_table
+    qToggle: `update users_table
         set is_enabled = $2
-        where username = $1;`
+        where username = $1;`,
 };
