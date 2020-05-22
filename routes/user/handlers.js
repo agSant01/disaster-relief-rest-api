@@ -1,10 +1,9 @@
 const { validate } = require('indicative/validator');
 const postSchemas = require('./post_schemas');
-const usersDao = require('./dao');
+const UsersDao = require('./dao');
 
 exports.getRoles = (req, res, next) => {
-    usersDao
-        .getAllRoles()
+    UsersDao.getAllRoles()
         .then((result) => {
             console.log('result', result);
             res.status(200)
@@ -20,8 +19,7 @@ exports.getRoles = (req, res, next) => {
 exports.getAllUsers = (req, res, next) => {
     const is_debug = req.query.debug == 'true';
 
-    usersDao
-        .getAllUsers(is_debug)
+    UsersDao.getAllUsers(is_debug)
         .then((result) => {
             console.log('result', result);
             res.status(200)
@@ -37,8 +35,7 @@ exports.getAllUsers = (req, res, next) => {
 exports.getAdministrators = (req, res, next) => {
     const is_debug = req.query.debug == 'true';
 
-    usersDao
-        .getAllAdministrators(is_debug)
+    UsersDao.getAllAdministrators(is_debug)
         .then((result) => {
             console.log('result', result);
             res.status(200)
@@ -55,7 +52,7 @@ exports.registerUser = (req, res, next) => {
     const roleToAdd = req.params.roleType.toLowerCase();
 
     // validate role to add
-    if (!usersDao.isValidUserType(roleToAdd)) {
+    if (!UsersDao.isValidUserType(roleToAdd)) {
         res.status(400).json({
             error: `Invalid role:'${roleToAdd}' for registering user.`,
             invalid_param: roleToAdd,
@@ -68,23 +65,22 @@ exports.registerUser = (req, res, next) => {
         .then((validatedJson) => {
             console.log(validatedJson);
 
-            usersDao
-                .insertUser(
-                    validatedJson.username,
-                    validatedJson.password,
-                    validatedJson.first_name,
-                    validatedJson.last_name,
-                    validatedJson.dob,
-                    validatedJson.address.city,
-                    validatedJson.address.zip_code,
-                    validatedJson.address.country,
-                    validatedJson.gender.toLowerCase(),
-                    validatedJson.email,
-                    validatedJson.phone_number,
-                    roleToAdd,
-                    validatedJson.address.street1,
-                    validatedJson.address.street2
-                )
+            UsersDao.insertUser(
+                validatedJson.username,
+                validatedJson.password,
+                validatedJson.first_name,
+                validatedJson.last_name,
+                validatedJson.dob,
+                validatedJson.address.city,
+                validatedJson.address.zip_code,
+                validatedJson.address.country,
+                validatedJson.gender.toLowerCase(),
+                validatedJson.email,
+                validatedJson.phone_number,
+                roleToAdd,
+                validatedJson.address.street1,
+                validatedJson.address.street2
+            )
                 .then((result) => {
                     console.log('result', result);
                     res.json(result).end();
@@ -132,8 +128,7 @@ exports.getUserById = (req, res, next) => {
         return;
     }
 
-    usersDao
-        .getUserById(user_id, is_debug, is_not_enabled)
+    UsersDao.getUserById(user_id, is_debug, is_not_enabled)
         .then((result) => {
             console.log('result', result);
             res.status(200)
@@ -159,8 +154,7 @@ exports.getRequestsByUser = (req, res, next) => {
         return;
     }
 
-    usersDao
-        .getAllRequestsByUserId(user_id)
+    UsersDao.getAllRequestsByUserId(user_id)
         .then((result) => {
             console.log('result', result);
             res.status(200)
@@ -186,8 +180,7 @@ exports.getReservesByUser = (req, res, next) => {
         return;
     }
 
-    usersDao
-        .getReservesByUserId(user_id)
+    UsersDao.getReservesByUserId(user_id)
         .then((result) => {
             console.log('result', result);
             res.status(200)
@@ -225,12 +218,12 @@ exports.getUserOrders = (req, res, next) => {
             });
             return;
         }
-        queryPromise = usersDao.getUserPurchaseByPurchaseId(
+        queryPromise = UsersDao.getUserPurchaseByPurchaseId(
             user_id,
             purchase_id
         );
     } else {
-        queryPromise = usersDao.getAllPurchasesByUserId(user_id);
+        queryPromise = UsersDao.getAllPurchasesByUserId(user_id);
     }
 
     queryPromise
@@ -261,8 +254,7 @@ exports.toggle = (req, res, next) => {
             return;
         }
 
-        usersDao
-            .enableOrDisableUserByUsername(username, enable)
+        UsersDao.enableOrDisableUserByUsername(username, enable)
             .then((result) => {
                 console.log('result', result);
                 res.status(200)

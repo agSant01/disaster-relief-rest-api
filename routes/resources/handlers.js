@@ -2,26 +2,20 @@ const db = require('../../database');
 const querylib = require('./queries');
 const { validate } = require('indicative/validator');
 const jsonSchemas = require('./post_schemas');
+const ResourcesDao = require('./dao');
 
 exports.getTypes = (req, res, next) => {
-    // callback
-    db.query(querylib.qAllTypes, (err, result) => {
-        console.log(err, result);
-
-        if (err) {
-            res.status(503)
-                .json({ error: err.stack })
+    ResourcesDao.getAllTypes()
+        .then((result) => {
+            console.log(result);
+            res.status(200)
+                .json(result)
                 .end();
-            return;
-        }
-
-        const msg = {
-            count: result.rowCount,
-            resource_types: result.rows,
-        };
-
-        res.json(msg).end();
-    });
+        })
+        .catch((error) => {
+            console.log('error', error);
+            res.status(503).json({ error: error.stack });
+        });
 };
 
 exports.getAllResources = (req, res, next) => {
@@ -32,7 +26,7 @@ exports.getAllResources = (req, res, next) => {
 
     if (id) {
         if (isNaN(Number(id))) {
-            res.status(401).json({
+            res.status(400).json({
                 error:
                     "Invalid param for 'resource id'. Must be 'Integer' type.",
                 invalid_param: id,
@@ -80,7 +74,7 @@ exports.getResourceTypeAttributes = (req, res, next) => {
     let resourceType = req.params.id;
 
     if (isNaN(Number(resourceType))) {
-        res.status(401).json({
+        res.status(400).json({
             error:
                 "Invalid param for 'resource type id'. Must be 'Integer' type.",
             invalid_param: resourceType,
@@ -88,33 +82,17 @@ exports.getResourceTypeAttributes = (req, res, next) => {
         return;
     }
 
-    let query = {
-        text: querylib.qTypeAttribute,
-        values: [resourceType],
-    };
-
-    db.query(query, (err, result) => {
-        console.log(err, result);
-
-        if (err) {
-            res.status(503)
-                .json({ error: err.stack })
+    ResourcesDao.getResourceTypeAttributesById(resourceType)
+        .then((result) => {
+            console.log(result);
+            res.status(200)
+                .json(result)
                 .end();
-            return;
-        }
-
-        let set = new Set();
-
-        result.rows.forEach((val, inx) => set.add(val.attribute_name));
-
-        console.log(set, set.size);
-
-        const msg = {
-            resource_attributes: result.rows,
-        };
-
-        res.json(msg).end();
-    });
+        })
+        .catch((error) => {
+            console.log('error', error);
+            res.status(503).json({ error: error.stack });
+        });
 };
 
 exports.getResourceAttributesByType = (req, res, next) => {
@@ -149,116 +127,71 @@ exports.getResourceAttributesByType = (req, res, next) => {
     });
 };
 
-exports.getResourcesAvailableByResId = (req, res, next) => {
+exports.getAvailableResources = (req, res, next) => {
     const resourceId = req.params.resourceid;
+    const keyword = req.query.keyword;
 
-    let query = querylib.qGetAllResourcesAvailable;
+    let queryPromise;
 
     if (resourceId) {
         if (isNaN(Number(resourceId))) {
-            res.status(401).json({
+            res.status(400).json({
                 error:
                     "Invalid param for 'resource id'. Must be 'Integer' type.",
                 invalid_param: resourceId,
             });
             return;
         }
-
-        query = {
-            text: querylib.qGetAllResourcesAvailableByResourceId,
-            values: [resourceId],
-        };
+        queryPromise = ResourcesDao.getAvailableResourceById(resourceId);
     } else {
-        const keyword = req.query.keyword;
-
-        if (keyword) {
-            console.log(keyword);
-
-            query = {
-                text: querylib.qGetAllResourcesAvailableByKeyword,
-                values: [`%${keyword.toLowerCase().replace(/\s/g, '')}%`],
-            };
-        }
+        queryPromise = ResourcesDao.getAllAvailableResources(keyword);
     }
 
-    console.log(query);
-
-    // callback
-    db.query(query, (err, result) => {
-        console.log(err, result);
-
-        if (err) {
-            res.status(503)
-                .json({ error: err.stack })
+    queryPromise
+        .then((result) => {
+            console.log(result);
+            res.status(200)
+                .json(result)
                 .end();
-            return;
-        }
-
-        let msg = {
-            count: result.rows.length,
-        };
-
-        if (result.rows.length == 1) {
-            msg.resource_available = result.rows;
-        } else {
-            msg.resources_available = result.rows;
-        }
-
-        res.json(msg).end();
-    });
+        })
+        .catch((error) => {
+            console.log('error', error);
+            res.status(503).json({ error: error.stack });
+        });
 };
 
 exports.getResourcesAvailableByProvider = (req, res, next) => {
     const provider_id = req.params.provider;
+    const keyword = req.query.keyword || '';
 
     if (isNaN(Number(provider_id))) {
-        res.status(401).json({
+        res.status(400).json({
             error: "Invalid param for 'supplier id'. Must be 'Integer' type.",
             invalid_param: provider_id,
         });
         return;
     }
-    const keyword = req.query.keyword || '';
 
-    query = {
-        text: querylib.qGetAllResourcesAvailableByProviderWithOptKeyword,
-        values: [provider_id, `%${keyword.toLowerCase().replace(/\s/g, '')}%`],
-    };
-
-    console.log(query);
-
-    // callback
-    db.query(query, (err, result) => {
-        console.log(err, result);
-
-        if (err) {
-            res.status(503)
-                .json({ error: err.stack })
+    ResourcesDao.getAvailableResourcesByProviderId(provider_id, keyword)
+        .then((result) => {
+            console.log(result);
+            res.status(200)
+                .json(result)
                 .end();
-            return;
-        }
-
-        let msg = {
-            count: result.rowCount,
-            resources_available: result.rows,
-        };
-
-        if (provider_id && result.rowCount > 0) {
-            msg.supplier_id = Number(provider_id);
-        }
-
-        res.json(msg).end();
-    });
+        })
+        .catch((error) => {
+            console.log('error', error);
+            res.status(503).json({ error: error.stack });
+        });
 };
 
-exports.getAllReservedResource = (req, res, next) => {
+exports.getReservedResources = (req, res, next) => {
     const resid = req.params.reserveid;
-
-    let query = querylib.getAllReservedResources;
+    let queryPromise;
 
     if (resid) {
         if (isNaN(Number(resid))) {
-            res.status(401).json({
+            res.status(400).json({
                 error:
                     "Invalid param for 'reserve id'. Must be 'Integer' type.",
                 invalid_param: resid,
@@ -266,134 +199,98 @@ exports.getAllReservedResource = (req, res, next) => {
             return;
         }
 
-        query = {
-            text: querylib.getAllReservedResourcesById,
-            values: [resid],
-        };
+        queryPromise = ResourcesDao.getReserveById(resid);
+    } else {
+        queryPromise = ResourcesDao.getAllReserves();
     }
 
-    db.query(query, (err, result) => {
-        console.log(err, result);
-
-        if (err) {
+    queryPromise
+        .then((result) =>
+            res
+                .status(200)
+                .json(result)
+                .end()
+        )
+        .catch((error) => {
+            console.log('error', error);
             res.status(503)
-                .json({ error: err.stack })
+                .json({ error: error.stack })
                 .end();
-            return;
-        }
-
-        let msg = {
-            count: result.rowCount,
-            reserves: result.rows,
-        };
-
-        res.json(msg).end();
-    });
+        });
 };
 
 exports.getRequests = (req, res, next) => {
     const reqid = req.params.id;
+    const keyword = req.query.keyword;
 
-    let query = querylib.qGetAllRequests;
+    let queryPromise;
 
     if (reqid) {
         if (isNaN(Number(reqid))) {
-            res.status(401).json({
-                error:
-                    "Invalid param for 'request id'. Must be 'Integer' type.",
-                invalid_param: reqid,
-            });
-            return;
-        }
-
-        query = {
-            text: querylib.qGetRequestsById,
-            values: [reqid],
-        };
-    } else {
-        const keyword = req.query.keyword;
-
-        if (keyword) {
-            console.log(keyword);
-
-            query = {
-                text: querylib.qGetAllRequestsByKeyword,
-                values: [`%${keyword.toLowerCase().replace(/\s/g, '')}%`],
-            };
-        }
-    }
-
-    console.log(query);
-
-    db.query(query, (err, result) => {
-        console.log(err, result);
-
-        if (err) {
-            res.status(503)
-                .json({ error: err.stack })
+            res.status(400)
+                .json({
+                    error:
+                        "Invalid param for 'request id'. Must be 'Integer' type.",
+                    invalid_param: reqid,
+                })
                 .end();
             return;
         }
 
-        let msg = {
-            count: result.rowCount,
-            requests: result.rows,
-        };
+        queryPromise = ResourcesDao.getRequestById(reqid);
+    } else {
+        queryPromise = ResourcesDao.getAllRequests(keyword);
+    }
 
-        res.json(msg).end();
-    });
+    queryPromise
+        .then((result) =>
+            res
+                .status(200)
+                .json(result)
+                .end()
+        )
+        .catch((error) => {
+            console.log('error', error);
+            res.status(503)
+                .json({ error: error.stack })
+                .end();
+        });
 };
 
 exports.getPurchase = (req, res, next) => {
     const id = req.params.ID;
 
-    var query;
+    // used to unwrap the result returned by the DAO
+    let queryPromise;
 
     if (id) {
         if (isNaN(Number(id))) {
-            res.status(401).json({
+            res.status(400).json({
                 error:
                     "Invalid param for 'purchase id'. Must be 'Integer' type.",
                 invalid_param: id,
             });
             return;
         }
-        query = {
-            text: querylib.qPurchasesByID,
-            values: [id],
-        };
+
+        queryPromise = ResourcesDao.getPurchaseById(id);
     } else {
-        query = {
-            text: querylib.qPurchases,
-        };
+        queryPromise = ResourcesDao.getAllPurchases();
     }
-    db.query(query, (err, result) => {
-        console.log(err, result);
 
-        if (err) {
+    queryPromise
+        .then((result) =>
+            res
+                .status(200)
+                .json(result)
+                .end()
+        )
+        .catch((error) => {
+            console.log('error', error);
             res.status(503)
-                .json({ error: err.stack })
+                .json({ error: error.stack })
                 .end();
-            return;
-        }
-
-        let msg = {
-            count: result.rowCount,
-            purchases: result.rows,
-        };
-
-        res.json(msg).end();
-    });
-};
-
-exports.putUpdate = (req, res, next) => {
-    let msg = {
-        request: {
-            info: {},
-            status: '',
-        },
-    };
-    res.json(msg).end();
+        });
 };
 
 exports.postSubmitResource = (req, res, next) => {
@@ -431,7 +328,7 @@ exports.postSubmitResource = (req, res, next) => {
                         [validatedData.userid]
                     );
 
-                    const requesterCity= await client.query(
+                    const requesterCity = await client.query(
                         querylib.qGetCity,
                         [validatedData.city]
                     );
@@ -639,14 +536,14 @@ exports.postResourceRequest = (req, res, next) => {
                     console.log('Begin Transaction.');
                     await client.query('BEGIN');
 
-                    // validate that user is requester 
+                    // validate that user is requester
                     const requesterInfo = await client.query(
                         querylib.qRequesterInfo,
                         [validatedData.userid]
                     );
-                    
+
                     // validate and get city *******
-                    const requesterCity= await client.query(
+                    const requesterCity = await client.query(
                         querylib.qGetCity,
                         [validatedData.city]
                     );
