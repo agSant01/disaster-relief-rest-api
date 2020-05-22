@@ -31,10 +31,10 @@ router.get('/reserves/:reserveid?', handler.getReservedResources);
 
 // Get all resources
 // supports `debug`
-router.get('/:ID?', handler.getAllResources);
+router.get('/:ID?', handler.getResources);
 
 // Get the attribute by type
-router.get('/:types/attributes', handler.getResourceAttributesByType);
+router.get('/:typeName/attributes', handler.getResourceAttributesByTypeName);
 
 // Submit resource
 router.post('/', handler.postSubmitResource);

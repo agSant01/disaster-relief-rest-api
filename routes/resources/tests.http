@@ -7,6 +7,12 @@
 ### Get all resources
 GET {{url}}/api/resources HTTP/1.1
 
+### Get resource
+GET {{url}}/api/resources/2 HTTP/1.1
+
+### Get resource by id
+GET {{url}}/api/resources/3 HTTP/1.1
+
 ### Get Types
 GET {{url}}/api/resources/types HTTP/1.1
 
@@ -30,9 +36,6 @@ GET {{url}}/api/resources/available?keyword=a HTTP/1.1
 
 ### Get Available resources searched by id=3, id supperceds keyword 
 GET {{url}}/api/resources/available/3?keyword=baBy HTTP/1.1
-
-### Get requests by id and keyword
-GET {{url}}/api/resources/2 HTTP/1.1
 
 ### Get all purchases
 GET {{url}}/api/resources/purchase HTTP/1.1

@@ -171,3 +171,384 @@ exports.getReserveById = async (resid) => {
         reserves: result.rows,
     };
 };
+
+exports.getAllResources = async (is_debug) => {
+    const query = {
+        text: is_debug
+            ? querylib.qGetResourceAllResourcesDebug
+            : querylib.qGetResourceAllResources,
+    };
+    const result = await db.query(query);
+    return {
+        count: result.rowCount,
+        resource: result.rows,
+    };
+};
+
+exports.getResourceById = async (resid, is_debug) => {
+    const query = {
+        text: is_debug
+            ? querylib.qGetResourceByIdDebug
+            : querylib.qGetResourceById,
+        values: [resid],
+    };
+    const result = await db.query(query);
+    return {
+        count: result.rowCount,
+        resource: result.rows,
+    };
+};
+
+exports.getResourceAttributeByTypeName = async (resourceTypeName) => {
+    const query = {
+        text: querylib.qAttributByType,
+        values: [resourceTypeName],
+    };
+    const result = await db.query(query);
+    return {
+        count: result.rows.length,
+        resource_attributes: result.rows,
+    };
+};
+
+exports.insertAvailableResource = async (
+    userid,
+    city,
+    latitude,
+    longitude,
+    quantity,
+    price,
+    is_for_sale,
+    resource_type,
+    attributes,
+    delivery_option
+) => {
+    // note: we don't try/catch this because if connecting throws an exception
+    // we don't need to dispose of the client (it will be undefined)
+    const client = await db.connect();
+
+    let attr;
+
+    try {
+        console.log('Begin Transaction.');
+        await client.query('BEGIN');
+
+        // validate that user is requester and get city
+        const supplierInfo = await client.query(querylib.qSupplierInfo, [
+            userid,
+        ]);
+
+        const requesterCity = await client.query(querylib.qGetCity, [city]);
+
+        // if no result requester does not exist
+        if (supplierInfo.rowCount == 0) {
+            await client.query('ROLLBACK');
+            let error = Error('invalid credential');
+            error.response_msg = `User with id: '${userid}' is not a supplier.`;
+            error.status = 400;
+            throw error;
+        }
+
+        // validate qty of attrbs
+        const attrbsDefinitions = await client.query(
+            querylib.qGetAttributeFields,
+            [resource_type]
+        );
+
+        let attrbsSet = new Set();
+
+        // put all the field names in a set for use in comparing
+        // amount and validating that all attributes were added
+        attrbsDefinitions.rows.forEach((row) => {
+            attrbsSet.add(row.resource_type_field_name.toLowerCase());
+        });
+
+        // used for if the resource can be bought or rented
+        let hasTransactionType = attrbsSet.has('transaction type');
+        let isBought = false;
+
+        console.log(attrbsSet);
+
+        // prepare query object
+        const insertResource = {
+            text: querylib.qInsertResource,
+            values: [
+                quantity,
+                latitude,
+                longitude,
+                resource_type,
+                requesterCity.rows[0].cityid, // city id
+            ],
+        };
+
+        // insert resource, returns a row with resource_id
+        const resourceId = await client.query(insertResource);
+        const generatedResourceId = resourceId.rows[0].resource_id;
+
+        // insert each attribute
+        for (attr of attributes) {
+            if (
+                hasTransactionType &&
+                attr.attr_name.toLowerCase() == 'transaction type' &&
+                attr.attr_value.toLowerCase() == 'buy'
+            ) {
+                isBought = true;
+            }
+
+            let insertAttr = {
+                text: querylib.qInsertAttributes,
+                values: [
+                    generatedResourceId, // resource_id of recently created resource
+                    attr.attr_name,
+                    attr.attr_value,
+                    resource_type,
+                ],
+            };
+
+            // print query obj
+            console.log(insertAttr);
+
+            // insert attribute
+            await client.query(insertAttr);
+
+            // delete created attribute of recently inserted attrbute
+            attrbsSet.delete(attr.attr_name.toLowerCase());
+
+            // print remaining attributes
+            console.log(attrbsSet);
+        }
+
+        // verify if it is bought, if it is bough then remove
+        // 'Duration Period Unit' and 'Duration Period' from attribute set
+        if (isBought) {
+            attrbsSet.delete('duration period unit');
+            attrbsSet.delete('duration period');
+        }
+
+        // if the remaining amount of required-attributes after adding all the
+        // provided fields in the payload raise and error and do a rollback
+        if (attrbsSet.size > 0) {
+            await client.query('ROLLBACK');
+
+            let error = Error('missing attributes');
+            error.response_msg = `Not all attributes specified. Missing: '${Array.from(
+                error.data_payload
+            ).join(', ')}'`;
+            error.status = 400;
+            throw error;
+        }
+
+        if (price) {
+            is_for_sale = true;
+        } else if (is_for_sale != undefined) {
+            if (is_for_sale == false) {
+                price = 0;
+            }
+        }
+
+        const insertSubmitQuery = {
+            text: querylib.qInsertSubmit,
+            values: [
+                generatedResourceId,
+                userid,
+                price,
+                is_for_sale,
+                delivery_option,
+            ],
+        };
+
+        console.log(insertSubmitQuery);
+
+        await client.query(insertSubmitQuery);
+
+        await client.query('COMMIT');
+
+        const msg = {
+            msg: 'Resource submitted succesfully.',
+            resource_id: generatedResourceId,
+        };
+
+        return msg;
+    } catch (error) {
+        // only passes here if there is a problem with any query
+        console.log('Error during transaction. Doing Rollback.', error);
+        await client.query('ROLLBACK');
+
+        if (error.code == '23502') {
+            console.log('not_null_violation');
+            if (error.column == 'resource_type_field_value') {
+                error.response_msg = `Invalid resource attribute value:'${attr.attr_value}' for attributeField:'${attr.attr_name}' for resource:'${resource_type}'`;
+            } else if (error.column == 'resource_type_field_name') {
+                error.response_msg = `Invalid resource attribute:'${attr.attr_name}' for resource:${resource_type}`;
+            }
+            error.status = 400;
+        }
+
+        throw error;
+    } finally {
+        console.log('Releasing client.');
+        client.release();
+    }
+};
+
+exports.insertResourceRequest = async (userid, city, requested_resources) => {
+    // note: we don't try/catch this because if connecting throws an exception
+    // we don't need to dispose of the client (it will be undefined)
+    const client = await db.connect();
+
+    let attr, resource;
+
+    try {
+        console.log('Begin Transaction.');
+        await client.query('BEGIN');
+
+        // validate that user is requester
+        const requesterInfo = await client.query(querylib.qRequesterInfo, [
+            userid,
+        ]);
+
+        // validate and get city *******
+        const requesterCity = await client.query(querylib.qGetCity, [city]);
+
+        // if no result requester does not exist
+        if (requesterInfo.rowCount == 0) {
+            await client.query('ROLLBACK');
+
+            let error = Error('invalid credential');
+
+            error.response_msg = {
+                error: `User with id: '${userid}' is not a requestor.`,
+            };
+            error.status = 401;
+            throw error;
+        }
+        //if no result city does not exist
+        if (requesterCity.rowCount == 0) {
+            await client.query('ROLLBACK');
+            let error = Error('invalid city');
+            error.response_msg = {
+                error: `User with id: '${city}' is not a city.`,
+            };
+            error.status = 400;
+            throw error;
+        }
+
+        // create request
+        const requestId = await client.query(querylib.qInsertRequest, [userid]);
+
+        // insert each resource
+        for (resource of requested_resources) {
+            console.log(resource);
+
+            // validate qty of attrbs
+            const attrbsDefinitions = await client.query(
+                querylib.qGetAttributeFields,
+                [resource.resource_type]
+            );
+
+            let attrbsSet = new Set();
+
+            attrbsDefinitions.rows.forEach((value) => {
+                attrbsSet.add(value.resource_type_field_name.toLowerCase());
+            });
+
+            // used for if the resource can be bought or rented
+            let hasTransactionType = attrbsSet.has('transaction type');
+            let isBought = false;
+
+            console.log(attrbsSet);
+
+            const insertResource = {
+                text: querylib.qInsertResource,
+                values: [
+                    resource.quantity,
+                    resource.latitude,
+                    resource.longitude,
+                    resource.resource_type,
+                    requesterCity.rows[0].cityid,
+                ],
+            };
+
+            const resourceId = await client.query(insertResource);
+
+            // insert each attribute
+            for (attr of resource.attributes) {
+                if (
+                    hasTransactionType &&
+                    attr.attr_name.toLowerCase() == 'transaction type' &&
+                    attr.attr_value.toLowerCase() == 'buy'
+                ) {
+                    isBought = true;
+                }
+
+                let insertAttr = {
+                    text: querylib.qInsertAttributes,
+                    values: [
+                        resourceId.rows[0].resource_id,
+                        attr.attr_name,
+                        attr.attr_value,
+                        resource.resource_type,
+                    ],
+                };
+                console.log(insertAttr);
+
+                await client.query(insertAttr);
+
+                attrbsSet.delete(attr.attr_name.toLowerCase());
+
+                console.log(attrbsSet);
+            }
+
+            // verify if it is bought, if it is bough then remove
+            // 'Duration Period Unit' and 'Duration Period' from attribute set
+            if (isBought) {
+                attrbsSet.delete('duration period unit');
+                attrbsSet.delete('duration period');
+            }
+
+            if (attrbsSet.size > 0) {
+                await client.query('ROLLBACK');
+                let error = Error('missing attributes');
+                error.response_msg = {
+                    error: `Not all attributes specified. Missing: '${Array.from(
+                        attrbsSet
+                    ).join(', ')}'`,
+                };
+                error.status = 400;
+                throw error;
+            }
+
+            await client.query(querylib.qInsertRequestedResource, [
+                requestId.rows[0].request_id,
+                resourceId.rows[0].resource_id,
+            ]);
+        }
+
+        await client.query('COMMIT');
+
+        const msg = {
+            msg: 'Request created succesfully.',
+            request_id: requestId.rows[0].request_id,
+        };
+
+        return msg;
+    } catch (e) {
+        // only passes here if there is a problem with any query
+        console.log('Error during transaction. Doing Rollback.', e);
+        await client.query('ROLLBACK');
+
+        if (e.code == '23502') {
+            console.log('not_null_violation');
+            if (e.column == 'resource_type_field_value') {
+                e.response_msg = `Invalid resource attribute value:'${attr.attr_value}' for attributeField:'${attr.attr_name}' for resource:'${resource.resource_type}'`;
+            } else if (e.column == 'resource_type_field_name') {
+                e.response_msg = `Invalid resource attribute:'${attr.attr_name}' for resource:${resource.resource_type}`;
+            }
+            e.status = 400;
+        }
+        throw e;
+    } finally {
+        console.log('Releasing client.');
+        client.release();
+    }
+};
