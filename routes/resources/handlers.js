@@ -374,7 +374,7 @@ exports.postSubmitResource = (req, res, next) => {
                             validatedData.latitude,
                             validatedData.longitude,
                             validatedData.resource_type,
-                            supplierInfo.rows[0].cityid, // city id
+                            requesterCity.rows[0].cityid, // city id
                         ],
                     };
 

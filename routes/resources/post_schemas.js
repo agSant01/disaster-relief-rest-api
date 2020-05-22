@@ -24,6 +24,7 @@ module.exports = {
     resourceSubmitSchema: {
         userid: 'required|number',
         resource_type: 'required|string',
+        city: 'required|string',
         quantity: 'required|number',
         price: [
             validations.requiredWithoutAny(['is_for_sale']),
