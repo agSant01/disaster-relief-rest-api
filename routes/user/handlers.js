@@ -83,7 +83,9 @@ exports.registerUser = (req, res, next) => {
             )
                 .then((result) => {
                     console.log('result', result);
-                    res.json(result).end();
+                    res.status(201)
+                        .json(result)
+                        .end();
                 })
                 .catch((error) => {
                     console.log('error', error);
