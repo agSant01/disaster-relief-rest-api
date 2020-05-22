@@ -196,7 +196,7 @@ exports.postAddRepresentative = (req, res, next) => {
         .then((validatedJson) => {
             console.log(validatedJson);
 
-            ProvidersDao.insertOrganizationRepresenative(
+            ProvidersDao.insertOrganizationRepresentative(
                 validatedJson.adminid,
                 validatedJson.representative_id,
                 organization_id

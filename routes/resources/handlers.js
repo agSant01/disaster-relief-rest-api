@@ -1,5 +1,3 @@
-const db = require('../../database');
-const querylib = require('./queries');
 const { validate } = require('indicative/validator');
 const jsonSchemas = require('./post_schemas');
 const ResourcesDao = require('./dao');

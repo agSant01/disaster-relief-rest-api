@@ -133,7 +133,7 @@ exports.getProviderById = async (provid, is_debug) => {
     return msg;
 };
 
-exports.insertOrganizationRepresenative = async (
+exports.insertOrganizationRepresentative = async (
     adminid,
     representative_id,
     organization_id
@@ -150,7 +150,7 @@ exports.insertOrganizationRepresenative = async (
             [adminid, organization_id]
         );
 
-        console.log(supplierInfo);
+        console.log('supplierinfo', supplierInfo);
 
         if (supplierInfo.rows.length == 0) {
             console.log(
@@ -158,7 +158,7 @@ exports.insertOrganizationRepresenative = async (
             );
             let error = Error(`invalid credential`);
             error.response_msg = {
-                error: `User with id:'${validatedJson.adminid}' do not posses the credentials to add representative to organization:${organization_id}`,
+                error: `User with id:'${adminid}' do not posses the credentials to add representative to organization:${organization_id}`,
             };
             error.status = 400;
             throw error;
@@ -166,7 +166,8 @@ exports.insertOrganizationRepresenative = async (
 
         // validate is representative to add is an individual supplier
         const result = await db.query(
-            querylib.qOrganizationAddRepresentativeValidateIndividualSupplier
+            querylib.qOrganizationAddRepresentativeValidateIndividualSupplier,
+            [representative_id]
         );
 
         if (result.rows.length == 0) {
@@ -175,7 +176,7 @@ exports.insertOrganizationRepresenative = async (
             );
             error.status = 400;
             error.response_msg = {
-                error: `User '${representative_id} is not an individual supplier and cannot be org representative`,
+                error: `User '${representative_id}' is not an 'Individual Supplier'. Cannot be Organization representative`,
             };
             throw error;
         }
@@ -211,7 +212,7 @@ exports.insertOrganizationRepresenative = async (
         ) {
             error.status = 400;
             error.response_msg = {
-                error: `Supplier with id:'${validatedJson.representative_id}' is already a representative .`,
+                error: `Supplier with id:'${representative_id}' is already a representative .`,
             };
         }
 
