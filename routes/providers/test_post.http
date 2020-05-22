@@ -46,6 +46,16 @@ content-type: application/json
     "adminid":10
 }
 
+### bad role: rep to add is not supplier
+POST {{url}}/api/suppliers/organizations/1/representative HTTP/1.1
+content-type: application/json
+
+{
+    "representative_id":"6",
+    "adminid":2
+}
+
+
 
 ### good
 POST {{url}}/api/suppliers/organizations/1/representative HTTP/1.1

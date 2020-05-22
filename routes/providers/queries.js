@@ -212,14 +212,6 @@ module.exports = {
         (select userid from users_table where username = $1),
         (select organization_id from organization where organization_name = $2)
     );`,
-    qOrganizationAddRepresentative: `insert into organization_representative (
-        userid,
-        organization_id
-    ) values 
-    (
-        (select userid from users_table where username = $1),
-        (select organization_id from organization where organization_id = $2)
-    );`,
     // create organization related
     qIsIndividualSupplier: `select userid 
     from users_table 
@@ -264,9 +256,9 @@ module.exports = {
         where userid=(select userid from representativeinsert)
         returning (select organization_id from orginfo);`,
     // add representative
-    qOrgganizationValidteRoleToAddRepresentative: `
+    qOrganizationValidteRoleToAddRepresentative: `
             select 
-                userid 
+                userid
             from users_table
             where userid=$1 and ((role_id=1 or role_id=2) 
             or (
@@ -276,11 +268,13 @@ module.exports = {
     qOrganizationAddRepresentative: `
         with representativeinsert as (
             insert into organization_representative(userid, organization_id)
-            values($1,$2)
-            returning userid
+            values($1,$2) returning userid
         )
         update users_table
         set role_id=6
         where userid=$1;
+    `,
+    qOrganizationAddRepresentativeValidateIndividualSupplier: `
+        select userid from users_table where userid=$1 and role_id=3;
     `,
 };

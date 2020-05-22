@@ -59,11 +59,6 @@ module.exports = {
             validations.min([1]),
         ],
         'reserves.*.resource_id': 'required|number',
-        'reserves.*.delivery_option': [
-            validations.required(),
-            validations.in(['Delivery or Pick-up', 'Delivery', 'Pick-up']),
-            validations.string(),
-        ],
         'reserves.*.quantity': [
             validations.number(),
             validations.required(),
@@ -97,11 +92,6 @@ module.exports = {
             validations.min([1]),
         ],
         'purchases.*.resource_id': 'required|number',
-        'purchases.*.delivery_option': [
-            validations.required(),
-            validations.in(['Delivery or Pick-up', 'Delivery', 'Pick-up']),
-            validations.string(),
-        ],
         'purchases.*.quantity': [
             validations.number(),
             validations.required(),

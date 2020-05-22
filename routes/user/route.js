@@ -9,7 +9,6 @@ router.get('/', handler.getAllUsers);
 //enable or disable user
 router.post('/toggle', handler.toggle);
 
-
 // Get all users, only for Admin and System Manager
 // supports debug
 router.get('/administrators', handler.getAdministrators);
@@ -18,13 +17,13 @@ router.get('/administrators', handler.getAdministrators);
 router.get('/roles', handler.getRoles);
 
 // Get specific user information
-router.get('/:id', handler.getUser);
+router.get('/:id', handler.getUserById);
 
 // Get Requests submited by user
-router.get('/:id/requests', handler.getRequests);
+router.get('/:id/requests', handler.getRequestsByUser);
 
 // Get reserved by user
-router.get('/:id/reserves', handler.getReserves);
+router.get('/:id/reserves', handler.getReservesByUser);
 
 // Get reserved by user
 router.get('/:id/purchases/:purchaseid?', handler.getUserOrders);
