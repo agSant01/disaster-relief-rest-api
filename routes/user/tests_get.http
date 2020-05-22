@@ -24,7 +24,7 @@ GET {{url}}/api/users/2
 GET {{url}}/api/users/2?debug=true
 
 ###
-
+# should not return any user, is querying an inactive user
 GET {{url}}/api/users/2?enabled=false&debug=true
 
 ###
@@ -45,8 +45,13 @@ GET {{url}}/api/users/10/requests
 
 ###
 
-GET {{url}}/api/users/3/reserves
+GET {{url}}/api/users/6/reserves
 
 ###
 
-GET {{url}}/api/users/2/purchases
+GET {{url}}/api/users/6/purchases
+
+
+###
+
+GET {{url}}/api/users/6/purchases/10

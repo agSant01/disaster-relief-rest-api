@@ -1,74 +1,79 @@
 const db = require('../../database');
 const querylib = require('./queries');
+const statisticDao = require('./dao');
 
 exports.getStatisticsWeekly = (req, res, next) => {
-    db.query(querylib.qGetWeeklyStatistics, (qerr, result) => {
-        if (qerr) {
-            console.log(qerr.stack);
-            res.status(503)
-                .json({ error: qerr.stack })
+    statisticDao
+        .getStatisticsWeekly()
+        .then((result) => {
+            console.log('result', result);
+
+            res.status(200)
+                .json(result)
                 .end();
-            return;
-        }
+        })
+        .catch((error) => {
+            console.log(error);
 
-        const msg = {
-            weekly_statistics: result.rows,
-        };
-
-        res.json(msg).end();
-    });
+            res.status(503)
+                .json({ error: error.stack })
+                .end();
+        });
 };
 
 exports.getStatisticsDaily = (req, res, next) => {
-    db.query(querylib.qGetDailyStatistics, (qerr, result) => {
-        if (qerr) {
-            console.log(qerr.stack);
-            res.status(503)
-                .json({ error: qerr.stack })
+    statisticDao
+        .getStatisticsDaily()
+        .then((result) => {
+            console.log('result', result);
+
+            res.status(200)
+                .json(result)
                 .end();
-            return;
-        }
+        })
+        .catch((error) => {
+            console.log(error);
 
-        const msg = {
-            daily_statistics_by_senate: result.rows,
-        };
-
-        res.json(msg).end();
-    });
+            res.status(503)
+                .json({ error: error.stack })
+                .end();
+        });
 };
 
 exports.getStatisticsBySenateWeekly = (req, res, next) => {
-    db.query(querylib.qGetSenateRegionWeekly, (qerr, result) => {
-        if (qerr) {
-            console.log(qerr.stack);
-            res.status(503)
-                .json({ error: qerr.stack })
-                .end();
-            return;
-        }
+    statisticDao
+        .getStatisticsBySenateWeekly()
+        .then((result) => {
+            console.log('result', result);
 
-        const msg = {
-            count: result.rows.length,
-            weekly_statistics_by_senate: result.rows,
-        };
-        res.json(msg).end();
-    });
+            res.status(200)
+                .json(result)
+                .end();
+        })
+        .catch((error) => {
+            console.log(error);
+
+            res.status(503)
+                .json({ error: error.stack })
+                .end();
+        });
 };
 
 exports.getStatisticsBySenateDaily = (req, res, next) => {
-    db.query(querylib.qGetSenateRegionDaily, (qerr, result) => {
-        if (qerr) {
-            console.log(qerr.stack);
-            res.status(503)
-                .json({ error: qerr.stack })
-                .end();
-            return;
-        }
+    statisticDao
+        .getStatisticsBySenateDaily()
+        .then((result) => {
+            console.log('result', result);
 
-        const msg = {
-            count: result.rows.length,
-            weekly_statistics_by_senate: result.rows,
-        };
-        res.json(msg).end();
-    });
+            res.status(200)
+                .json(result)
+                .end();
+        })
+        .catch((error) => {
+            console.log(error);
+
+            res.status(503)
+                .json({ error: error.stack })
+                .end();
+        });
 };

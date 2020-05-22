@@ -8,3 +8,9 @@ GET {{url}}/api/statistics/daily
 
 ###
 GET {{url}}/api/statistics/weekly
+
+###
+GET {{url}}/api/statistics/senate-region/weekly
+
+###
+GET {{url}}/api/statistics/senate-region/daily

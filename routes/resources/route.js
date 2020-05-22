@@ -20,24 +20,21 @@ router.get(
 
 // Get available resources either free or to purchase
 // supports kewyword search
-router.get('/available/:resourceid?', handler.getResourcesAvailableByResId);
+router.get('/available/:resourceid?', handler.getAvailableResources);
 
 // Get all open resource requests
 // supports kewyword search
 router.get('/requests/:id?', handler.getRequests);
 
 // Get reserved resource
-router.get('/reserves/:reserveid?', handler.getAllReservedResource);
+router.get('/reserves/:reserveid?', handler.getReservedResources);
 
 // Get all resources
 // supports `debug`
-router.get('/:ID?', handler.getAllResources);
+router.get('/:ID?', handler.getResources);
 
 // Get the attribute by type
-router.get('/:types/attributes', handler.getResourceAttributesByType);
-
-// Update
-router.put('/:id/update-status', handler.putUpdate);
+router.get('/:typeName/attributes', handler.getResourceAttributesByTypeName);
 
 // Submit resource
 router.post('/', handler.postSubmitResource);

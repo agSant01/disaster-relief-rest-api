@@ -237,7 +237,7 @@ module.exports = {
         where orders.userid = $1 and 
         orders.order_id = $2
         order by orders.order_id;`,
-        qToggle:`update users_table
+    qToggle: `update users_table
         set is_enabled = $2
-        where username = $1;`
+        where username = $1;`,
 };

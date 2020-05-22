@@ -7,6 +7,12 @@
 ### Get all resources
 GET {{url}}/api/resources HTTP/1.1
 
+### Get resource
+GET {{url}}/api/resources/2 HTTP/1.1
+
+### Get resource by id
+GET {{url}}/api/resources/3 HTTP/1.1
+
 ### Get Types
 GET {{url}}/api/resources/types HTTP/1.1
 
@@ -16,6 +22,9 @@ GET {{url}}/api/resources/types/1 HTTP/1.1
 ### Get Attributes by type
 GET {{url}}/api/resources/Baby%20Food/attributes HTTP/1.1
 
+###
+GET {{url}}/api/resources/available/2
+
 ### Get Available resources 
 GET {{url}}/api/resources/available HTTP/1.1
 
@@ -23,27 +32,21 @@ GET {{url}}/api/resources/available HTTP/1.1
 GET {{url}}/api/resources/available/2 HTTP/1.1
 
 ### Get Available resources searched by keyword 
-GET {{url}}/api/resources/available?keyword=baBy HTTP/1.1
+GET {{url}}/api/resources/available?keyword=a HTTP/1.1
 
 ### Get Available resources searched by id=3, id supperceds keyword 
 GET {{url}}/api/resources/available/3?keyword=baBy HTTP/1.1
 
-### Get requests by id and keyword
-GET {{url}}/api/resources/2 HTTP/1.1
-
 ### Get all purchases
-GET {{url}}/api/resources/purchase HTTP/1.1
+GET {{url}}/api/resources/purchases HTTP/1.1
 
 ### Get purchases by id
-GET {{url}}/api/resources/purchase/1 HTTP/1.1
+GET {{url}}/api/resources/purchases/1 HTTP/1.1
 ###
-GET {{url}}/api/resources/purchase/2 HTTP/1.1
+GET {{url}}/api/resources/purchases/2 HTTP/1.1
 
 ### Get suppliers
 GET {{url}}/api/resources HTTP/1.1
-###
-
-GET {{url}}/api/resources/available/2
 
 ###
 
@@ -55,7 +58,7 @@ GET {{url}}/api/resources/requests/3
 
 ###
 
-GET {{url}}/api/resources/requests?keyword=wA
+GET {{url}}/api/resources/requests?keyword=Wa
 
 ###
 
@@ -70,3 +73,9 @@ GET {{url}}/api/resources/purchases/1
 ###
 GET {{url}}/api/resources/purchases/2
 
+
+###
+GET {{url}}/api/resources/reserves
+
+###
+GET {{url}}/api/resources/reserves/2

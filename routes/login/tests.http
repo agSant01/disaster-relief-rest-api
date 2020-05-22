@@ -1,7 +1,7 @@
 @localhost = http://localhost:3000
 @heroku = https://evening-tor-08768.herokuapp.com
 
-@url = {{heroku}}
+@url = {{localhost}}
 
 POST {{url}}/api/login HTTP/1.1
 content-type: application/json
