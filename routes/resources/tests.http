@@ -38,12 +38,12 @@ GET {{url}}/api/resources/available?keyword=a HTTP/1.1
 GET {{url}}/api/resources/available/3?keyword=baBy HTTP/1.1
 
 ### Get all purchases
-GET {{url}}/api/resources/purchase HTTP/1.1
+GET {{url}}/api/resources/purchases HTTP/1.1
 
 ### Get purchases by id
-GET {{url}}/api/resources/purchase/1 HTTP/1.1
+GET {{url}}/api/resources/purchases/1 HTTP/1.1
 ###
-GET {{url}}/api/resources/purchase/2 HTTP/1.1
+GET {{url}}/api/resources/purchases/2 HTTP/1.1
 
 ### Get suppliers
 GET {{url}}/api/resources HTTP/1.1
@@ -58,7 +58,7 @@ GET {{url}}/api/resources/requests/3
 
 ###
 
-GET {{url}}/api/resources/requests?keyword=
+GET {{url}}/api/resources/requests?keyword=Wa
 
 ###
 

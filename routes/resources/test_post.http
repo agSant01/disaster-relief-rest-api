@@ -179,7 +179,7 @@ content-type: application/json
     "delivery_option": "Delivery or Pick-up",
     "attributes": [
         {
-            "attr_name": "Eqjuipment Type",
+            "attr_name": "Equipment Type",
             "attr_value": "Excavators"
         },
             {
@@ -210,7 +210,7 @@ content-type: application/json
             "attr_value": "Excavators"
         },
         {
-            "attr_name": "Fuesl Type",
+            "attr_name": "Fuel Type",
             "attr_value": "Diesel"
         },  
         {
@@ -226,7 +226,7 @@ POST {{url}}/api/resources/reserves HTTP/1.1
 content-type: application/json
 
 {
-    "userid": 6,
+    "userid": 7,
     "city": "San Sebastian",
     "latitude": "18.310803",
     "longitude":"-66.973648",
@@ -253,12 +253,10 @@ content-type: application/json
     "reserves": [
         {
             "resource_id":"5",
-            "delivery_option":"Pick-up",
             "quantity":"20"
         },
         {
             "resource_id":"2",
-            "delivery_option":"Delivery",
             "quantity":"2"
         }
     ]
@@ -279,12 +277,10 @@ content-type: application/json
     "purchases": [
         {
             "resource_id":"6",
-            "delivery_option":"Pick-up",
             "quantity":"20"
         },
         {
             "resource_id":"4",
-            "delivery_option":"Delivery",
             "quantity":"2"
         }
     ]

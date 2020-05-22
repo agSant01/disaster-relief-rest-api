@@ -298,7 +298,7 @@ exports.postSubmitResource = (req, res, next) => {
                 .then((result) => {
                     console.log(result);
 
-                    res.status(200)
+                    res.status(201)
                         .json(result)
                         .end();
                 })
@@ -338,7 +338,7 @@ exports.postResourceRequest = (req, res, next) => {
                 .then((result) => {
                     console.log(result);
 
-                    res.status(200)
+                    res.status(201)
                         .json(result)
                         .end();
                 })
@@ -369,148 +369,34 @@ exports.postReserveResource = (req, res, next) => {
     validate(req.body, jsonSchemas.resourceReserveSchema)
         .then((validatedData) => {
             console.log(validatedData);
-            /////////////////
-            // create a transaction block using await for simplicity
-            (async () => {
-                // note: we don't try/catch this because if connecting throws an exception
-                // we don't need to dispose of the client (it will be undefined)
-                const client = await db.connect();
 
-                try {
-                    console.log('Begin Transaction.');
-                    await client.query('BEGIN');
-
-                    // validate that user is requester and get city
-                    const requesterInfo = await client.query(
-                        querylib.qRequesterInfo,
-                        [validatedData.userid]
-                    );
-
-                    // if no result requester does not exist
-                    if (requesterInfo.rows.length == 0) {
-                        await client.query('ROLLBACK');
-                        res.status(400)
-                            .json({
-                                msg: `User with userid: '${validatedData.userid}' is not a requestor.`,
-                            })
-                            .end();
-                        return;
-                    }
-
-                    //if no result city does not exist
-                    if (requesterCity.rowCount == 0) {
-                        await client.query('ROLLBACK');
-                        res.status(400)
-                            .json({
-                                msg: `User with id: '${validatedData.city}' is not a city.`,
-                            })
-                            .end();
-                        return;
-                    }
-
-                    // validate if there are available resources to reserve
-                    for (reserve of validatedData.reserves) {
-                        console.log(reserve);
-
-                        const available = await client.query(
-                            querylib.qHasAvailableQuantityForReserveResourceById,
-                            [reserve.resource_id]
-                        );
-
-                        if (available.rows.length == 0) {
-                            console.log(
-                                `Not possible quantity for resource. Doing Rollback`
-                            );
-
-                            await client.query('ROLLBACK');
-
-                            res.status(400)
-                                .json({
-                                    msg: `No resource available for reserve with resourceid: ${reserve.resource_id}`,
-                                })
-                                .end();
-                            return;
-                        }
-                        let remaingQty = available.rows[0].available;
-
-                        if (remaingQty - reserve.quantity < 0) {
-                            console.log(`More than remaining. Doing Rollback`);
-
-                            await client.query('ROLLBACK');
-
-                            res.status(400)
-                                .json({
-                                    msg: `The resource:'${reserve.resource_id}' exists, but the remainint quantity is ${remaingQty} units. Cannot reserve ${reserve.quantity} units.`,
-                                })
-                                .end();
-                            return;
-                        }
-                    }
-
-                    // create reserve
-                    const reserveId = await client.query(
-                        querylib.qInsertReserve,
-                        [
-                            validatedData.userid,
-                            validatedData.city,
-                            validatedData.latitude,
-                            validatedData.longitude,
-                        ]
-                    );
-
-                    for (reserve of validatedData.reserves) {
-                        // insert every resource reserved
-                        await client.query(querylib.qInsertReservedResources, [
-                            reserveId.rows[0].reserve_id,
-                            reserve.resource_id,
-                            reserve.quantity,
-                        ]);
-                    }
-
-                    await client.query('COMMIT');
-
-                    let msg = {
-                        msg: 'Resource(s) reserved succesfully.',
-                        reserve_id: reserveId.rows[0].reserve_id,
-                    };
+            ResourcesDao.insertReservedResource(
+                validatedData.userid,
+                validatedData.reserves,
+                validatedData.city,
+                validatedData.latitude,
+                validatedData.longitude
+            )
+                .then((result) => {
+                    console.log(result);
 
                     res.status(201)
-                        .json(msg)
+                        .json(result)
                         .end();
-                } catch (e) {
-                    // only passes here if there is a problem with any query
-                    console.log('Error during transaction. Doing Rollback.');
+                })
+                .catch((error) => {
+                    console.log('error', error);
 
-                    let emsg = e.toString();
-                    let status = 503;
-
-                    if (e.code == '23502') {
-                        console.log('not_null_violation');
-                        if (e.column == 'resource_type_field_value') {
-                            emsg = `Invalid resource attribute value:'${attr.attr_value}' for attributeField:'${attr.attr_name}' for resource:'${resource.resource_type}'`;
-                        } else if (e.column == 'resource_type_field_name') {
-                            emsg = `Invalid resource attribute:'${attr.attr_name}' for resource:${resource.resource_type}`;
-                        }
-                        status = 400;
+                    if (error.response_msg) {
+                        res.status(error.status)
+                            .json(error.response_msg)
+                            .end();
+                    } else {
+                        res.status(503)
+                            .json({ error: error.stack })
+                            .end();
                     }
-                    console.log(e);
-                    await client.query('ROLLBACK');
-
-                    res.status(status)
-                        .json({ error: emsg })
-                        .end();
-                } finally {
-                    console.log('Releasing client.');
-                    client.release();
-                }
-            })().catch((e) => {
-                // passes by here if something went wrong up
-                console.error('Async Block Catch', e.stack);
-                res.status(503)
-                    .json({ error: e.toString() })
-                    .end();
-            });
-            /////////////////////////////////////
+                });
         })
         .catch((error) => {
             console.log('Json Validation Error', error);
@@ -525,140 +411,34 @@ exports.postBuyResource = (req, res, next) => {
     validate(req.body, jsonSchemas.resourceOrderSchema)
         .then((validatedData) => {
             console.log(validatedData);
-            /////////////////
-            // create a transaction block using await for simplicity
-            (async () => {
-                // note: we don't try/catch this because if connecting throws an exception
-                // we don't need to dispose of the client (it will be undefined)
-                const client = await db.connect();
-
-                try {
-                    console.log('Begin Transaction.');
-                    await client.query('BEGIN');
-
-                    // validate that user is requester and get city
-                    const requesterInfo = await client.query(
-                        querylib.qRequesterInfo,
-                        [validatedData.userid]
-                    );
-
-                    // if no result requester does not exist
-                    if (requesterInfo.rows.length == 0) {
-                        await client.query('ROLLBACK');
-                        res.status(400)
-                            .json({
-                                msg: `User with userid: '${validatedData.userid}' is not a requestor.`,
-                            })
-                            .end();
-                        return;
-                    }
-
-                    // validate if there are available resources to reserve
-                    for (purchase of validatedData.purchases) {
-                        console.log(purchase);
-
-                        const available = await client.query(
-                            querylib.qHasAvailableQuantityForPurchaseResourceById,
-                            [purchase.resource_id]
-                        );
-
-                        if (available.rows.length == 0) {
-                            console.log(
-                                `Not possible quantity for resource. Doing Rollback`
-                            );
-
-                            await client.query('ROLLBACK');
-
-                            res.status(400)
-                                .json({
-                                    msg: `No resource available for purchase with resourceid: ${purchase.resource_id}`,
-                                })
-                                .end();
-                            return;
-                        }
-
-                        let remaingQty = available.rows[0].available;
-
-                        if (remaingQty - purchase.quantity < 0) {
-                            console.log(`More than remaining. Doing Rollback`);
-
-                            await client.query('ROLLBACK');
-
-                            res.status(400)
-                                .json({
-                                    msg: `The resource:'${purchase.resource_id}' exists, but the remainint quantity is ${remaingQty} units. Cannot purchase ${purchase.quantity} units.`,
-                                })
-                                .end();
-                            return;
-                        }
-                    }
-
-                    // create purchase
-                    const purchaseId = await client.query(
-                        querylib.qInsertOrder,
-                        [
-                            validatedData.userid,
-                            validatedData.city,
-                            validatedData.latitude,
-                            validatedData.longitude,
-                            validatedData.payment_method,
-                        ]
-                    );
-
-                    for (purchase of validatedData.purchases) {
-                        // insert every resource purchased
-
-                        await client.query(querylib.qInsertPurchasedResources, [
-                            purchaseId.rows[0].order_id,
-                            purchase.resource_id,
-                            Number(purchase.quantity),
-                        ]);
-                    }
-
-                    await client.query('COMMIT');
-
-                    let msg = {
-                        msg: 'Resource(s) purchased succesfully.',
-                        purchase_id: purchaseId.rows[0].order_id,
-                    };
+            ResourcesDao.insertPurchase(
+                validatedData.userid,
+                validatedData.city,
+                validatedData.purchases,
+                validatedData.latitude,
+                validatedData.longitude,
+                validatedData.payment_method
+            )
+                .then((result) => {
+                    console.log(result);
 
                     res.status(201)
-                        .json(msg)
+                        .json(result)
                         .end();
-                } catch (e) {
-                    // only passes here if there is a problem with any query
-                    console.log('Error during transaction. Doing Rollback.');
+                })
+                .catch((error) => {
+                    console.log('error', error);
 
-                    let emsg = e.toString();
-                    let status = 503;
-
-                    if (e.code == '23502') {
-                        console.log('not_null_violation');
-                        if (e.column == 'resource_type_field_value') {
-                            emsg = `Invalid resource attribute value:'${attr.attr_value}' for attributeField:'${attr.attr_name}' for resource:'${resource.resource_type}'`;
-                        } else if (e.column == 'resource_type_field_name') {
-                            emsg = `Invalid resource attribute:'${attr.attr_name}' for resource:${resource.resource_type}`;
-                        }
-                        status = 400;
+                    if (error.response_msg) {
+                        res.status(error.status)
+                            .json(error.response_msg)
+                            .end();
+                    } else {
+                        res.status(503)
+                            .json({ error: error.stack })
+                            .end();
                     }
-                    console.log(e);
-                    await client.query('ROLLBACK');
-
-                    res.status(status)
-                        .json({ error: emsg })
-                        .end();
-                } finally {
-                    console.log('Releasing client.');
-                    client.release();
-                }
-            })().catch((e) => {
-                // passes by here if something went wrong up
-                console.error('Async Block Catch', e.stack);
-                res.status(503)
-                    .json({ error: e.toString() })
-                    .end();
-            });
-            /////////////////////////////////////
+                });
         })
         .catch((error) => {
             console.log('Json Validation Error', error);

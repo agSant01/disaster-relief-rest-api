@@ -332,7 +332,7 @@ exports.insertAvailableResource = async (
 
             let error = Error('missing attributes');
             error.response_msg = `Not all attributes specified. Missing: '${Array.from(
-                error.data_payload
+                attrbsSet
             ).join(', ')}'`;
             error.status = 400;
             throw error;
@@ -547,6 +547,240 @@ exports.insertResourceRequest = async (userid, city, requested_resources) => {
             e.status = 400;
         }
         throw e;
+    } finally {
+        console.log('Releasing client.');
+        client.release();
+    }
+};
+
+exports.insertReservedResource = async (
+    userid,
+    reserves,
+    city,
+    latitude,
+    longitude
+) => {
+    // note: we don't try/catch this because if connecting throws an exception
+    // we don't need to dispose of the client (it will be undefined)
+    const client = await db.connect();
+
+    try {
+        console.log('Begin Transaction.');
+        await client.query('BEGIN');
+
+        // validate that user is requester and get city
+        const requesterInfo = await client.query(querylib.qRequesterInfo, [
+            userid,
+        ]);
+
+        // if no result requester does not exist
+        if (requesterInfo.rows.length == 0) {
+            await client.query('ROLLBACK');
+            let error = Error('invalid credential');
+            error.response_msg = {
+                error: `User with userid: '${userid}' is not a requestor.`,
+            };
+            error.status = 400;
+            throw error;
+        }
+
+        // validate and get city *******
+        const requesterCity = await client.query(querylib.qGetCity, [city]);
+
+        //if no result city does not exist
+        if (requesterCity.rowCount == 0) {
+            await client.query('ROLLBACK');
+            let error = Error('invalid city');
+            error.response_msg = {
+                error: `User with id: '${city}' is not a city.`,
+            };
+            error.status = 400;
+            throw error;
+        }
+
+        // validate if there are available resources to reserve
+        for (reserve of reserves) {
+            console.log(reserve);
+
+            const available = await client.query(
+                querylib.qHasAvailableQuantityForReserveResourceById,
+                [reserve.resource_id]
+            );
+
+            if (available.rows.length == 0) {
+                console.log(
+                    `Not possible quantity for resource. Doing Rollback`
+                );
+
+                await client.query('ROLLBACK');
+
+                let error = Error(
+                    `resource ${reserve.resource_id} is exhausted`
+                );
+                error.status = 401;
+                error.response_msg = {
+                    error: `Cannot reserve exhausted resource:${reserve.resource_id}.`,
+                };
+                throw error;
+            }
+
+            let remaingQty = available.rows[0].available;
+
+            if (remaingQty - reserve.quantity < 0) {
+                console.log(`More than remaining. Doing Rollback`);
+
+                await client.query('ROLLBACK');
+
+                let error = Error(
+                    'reserving more than remaining for resource',
+                    reserves.resource_id
+                );
+                error.response_msg = {
+                    error: `The resource:'${reserve.resource_id}' exists, but the remainint quantity is ${remaingQty} units. Cannot reserve ${reserve.quantity} units.`,
+                };
+                error.status = 400;
+                throw error;
+            }
+        }
+
+        // create reserve
+        const reserveId = await client.query(querylib.qInsertReserve, [
+            userid,
+            city,
+            latitude,
+            longitude,
+        ]);
+
+        for (reserve of reserves) {
+            // insert every resource reserved
+            await client.query(querylib.qInsertReservedResources, [
+                reserveId.rows[0].reserve_id,
+                reserve.resource_id,
+                reserve.quantity,
+            ]);
+        }
+
+        await client.query('COMMIT');
+
+        const msg = {
+            msg: 'Resource(s) reserved succesfully.',
+            reserve_id: reserveId.rows[0].reserve_id,
+        };
+
+        return msg;
+    } catch (error) {
+        // only passes here if there is a problem with any query
+        console.log('Error during transaction. Doing Rollback.', error);
+        await client.query('ROLLBACK');
+        throw error;
+    } finally {
+        console.log('Releasing client.');
+        client.release();
+    }
+};
+
+exports.insertPurchase = async (
+    userid,
+    city,
+    purchases,
+    latitude,
+    longitude,
+    payment_method
+) => {
+    // note: we don't try/catch this because if connecting throws an exception
+    // we don't need to dispose of the client (it will be undefined)
+    const client = await db.connect();
+
+    try {
+        console.log('Begin Transaction.');
+        await client.query('BEGIN');
+
+        // validate that user is requester and get city
+        const requesterInfo = await client.query(querylib.qRequesterInfo, [
+            userid,
+        ]);
+
+        // if no result requester does not exist
+        if (requesterInfo.rows.length == 0) {
+            await client.query('ROLLBACK');
+            let error = Error('invalid credential');
+            error.status = 400;
+            error.response_msg = {
+                error: `User with userid: '${validatedData.userid}' is not a requestor.`,
+            };
+            throw error;
+        }
+
+        // validate if there are available resources to reserve
+        for (purchase of purchases) {
+            console.log(purchase);
+
+            const available = await client.query(
+                querylib.qHasAvailableQuantityForPurchaseResourceById,
+                [purchase.resource_id]
+            );
+
+            if (available.rows.length == 0) {
+                console.log(
+                    `Not possible quantity for resource. Doing Rollback`
+                );
+
+                await client.query('ROLLBACK');
+                let error = Error('invalid credential');
+                error.status = 400;
+                error.response_msg = {
+                    error: `No resource available for purchase with resourceid: ${purchase.resource_id}`,
+                };
+                throw error;
+            }
+
+            let remaingQty = available.rows[0].available;
+
+            if (remaingQty - purchase.quantity < 0) {
+                console.log(`More than remaining. Doing Rollback`);
+
+                await client.query('ROLLBACK');
+                let error = Error('invalid credential');
+                error.status = 400;
+                error.response_msg = {
+                    error: `The resource:'${purchase.resource_id}' exists, but the remainint quantity is ${remaingQty} units. Cannot purchase ${purchase.quantity} units.`,
+                };
+                throw error;
+            }
+        }
+
+        // create purchase
+        const purchaseId = await client.query(querylib.qInsertOrder, [
+            userid,
+            city,
+            latitude,
+            longitude,
+            payment_method,
+        ]);
+
+        for (purchase of purchases) {
+            // insert every resource purchased
+
+            await client.query(querylib.qInsertPurchasedResources, [
+                purchaseId.rows[0].order_id,
+                purchase.resource_id,
+                Number(purchase.quantity),
+            ]);
+        }
+
+        await client.query('COMMIT');
+
+        const msg = {
+            msg: 'Resource(s) purchased succesfully.',
+            purchase_id: purchaseId.rows[0].order_id,
+        };
+
+        return msg;
+    } catch (error) {
+        // only passes here if there is a problem with any query
+        console.log('Error during transaction. Doing Rollback.', error);
+        await client.query('ROLLBACK');
+        throw error;
     } finally {
         console.log('Releasing client.');
         client.release();
