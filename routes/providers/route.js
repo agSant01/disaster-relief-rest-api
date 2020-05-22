@@ -4,19 +4,22 @@ var router = express.Router();
 
 // Get all organizations
 // supports debug
-router.get('/organizations', handler.getOrganizations);
+router.get('/organizations', handler.getAllOrganizations);
 
 // Get Org By Id
 // supports debug
-router.get('/organizations/:orgID', handler.getOrganization);
+router.get('/organizations/:orgID', handler.getOrganizationById);
 
 // Get organization representatives
 // supports debug
-router.get('/organizations/:orgID/representatives', handler.getRepresentatives);
+router.get(
+    '/organizations/:orgID/representatives',
+    handler.getRepresentativesByOrgId
+);
 
 //get providers list
 // supports debug
-router.get('/', handler.getProviders);
+router.get('/', handler.getAllProviders);
 
 //get providers list by id
 // supports debug

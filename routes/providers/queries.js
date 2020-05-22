@@ -264,9 +264,9 @@ module.exports = {
         where userid=(select userid from representativeinsert)
         returning (select organization_id from orginfo);`,
     // add representative
-    qOrgganizationValidteRoleToAddRepresentative: `
+    qOrganizationValidteRoleToAddRepresentative: `
             select 
-                userid 
+                userid
             from users_table
             where userid=$1 and ((role_id=1 or role_id=2) 
             or (
