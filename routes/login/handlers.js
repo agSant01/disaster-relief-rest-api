@@ -1,33 +1,37 @@
 const db = require('../../database');
 const querylib = require('./queries');
+const LoginDao = require('./dao');
+const { validate } = require('indicative/validator');
+const postSchemas = require('./post_schema');
+
 exports.postLogin = (req, res, next) => {
     /*
       Validate that the structure of the post has the required fields:
       - Username
       - Password
     */
-
     // Logic to authenticate the user
+    validate(req.body, postSchemas.loginSchema)
+        .then((validatedJson) => {
+            console.log('json', validatedJson);
 
-    /* 
-    The server will return an 200-OK with an User Object
-    */
-    const query = {
-        text: querylib.qLogin,
-        values: [req.body.username, req.body.password],
-    };
-    console.log(query.values);
-    // callback
-    db.query(query, (qerr, qres) => {
-        if (qerr) {
-            res.status(503)
-                .json({ error: qerr.stack })
+            LoginDao.loginUser(validatedJson.username, validatedJson.password)
+                .then((result) => {
+                    console.log('result', result);
+                    res.status(200)
+                        .json(result)
+                        .end();
+                })
+                .catch((error) => {
+                    console.log('error', error);
+                    res.status(503).json({ error: error.stack });
+                });
+        })
+        .catch((error) => {
+            console.log('Json Validation Error', error);
+
+            res.status(400)
+                .json(error)
                 .end();
-        } else {
-            const msg = {
-                logged_in: qres.rows[0],
-            };
-            res.json(msg).end();
-        }
-    });
+        });
 };
