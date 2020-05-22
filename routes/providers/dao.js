@@ -156,8 +156,28 @@ exports.insertOrganizationRepresenative = async (
             console.log(
                 'User do not posses the credentials to add representative to organization'
             );
+            let error = Error(`invalid credential`);
+            error.response_msg = {
+                error: `User with id:'${validatedJson.adminid}' do not posses the credentials to add representative to organization:${organization_id}`,
+            };
+            error.status = 400;
+            throw error;
+        }
 
-            throw Error(`invalid credential`);
+        // validate is representative to add is an individual supplier
+        const result = await db.query(
+            querylib.qOrganizationAddRepresentativeValidateIndividualSupplier
+        );
+
+        if (result.rows.length == 0) {
+            let error = Error(
+                `invalid credential for user '${representative_id}'`
+            );
+            error.status = 400;
+            error.response_msg = {
+                error: `User '${representative_id} is not an individual supplier and cannot be org representative`,
+            };
+            throw error;
         }
 
         const addRepresentative = {
@@ -173,18 +193,29 @@ exports.insertOrganizationRepresenative = async (
 
         await client.query('COMMIT');
 
-        let msg = {
+        const msg = {
             msg: `Added representative to organization successfully.`,
             organization_id: organization_id,
             new_representative_id: representative_id,
         };
 
         return msg;
-    } catch (e) {
+    } catch (error) {
         // only passes here if there is a problem with any query
-        console.log('Error during transaction. Doing Rollback.', e);
+        console.log('Error during transaction. Doing Rollback.', error);
         await client.query('ROLLBACK');
-        throw e;
+
+        if (
+            error.code == '23505' &&
+            error.constraint == 'organization_representative_pkey'
+        ) {
+            error.status = 400;
+            error.response_msg = {
+                error: `Supplier with id:'${validatedJson.representative_id}' is already a representative .`,
+            };
+        }
+
+        throw error;
     } finally {
         console.log('Releasing client.');
         client.release();

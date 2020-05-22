@@ -210,20 +210,9 @@ exports.postAddRepresentative = (req, res, next) => {
                 .catch((error) => {
                     console.log('error', error);
 
-                    if (error.message == 'invalid credential') {
-                        res.status(400)
-                            .json({
-                                error: `User with id:'${validatedJson.adminid}' do not posses the credentials to add representative to organization:${organization_id}`,
-                            })
-                            .end();
-                    } else if (
-                        error.code == '23505' &&
-                        error.constraint == 'organization_representative_pkey'
-                    ) {
-                        res.status(400)
-                            .json({
-                                error: `Supplier with id:'${validatedJson.representative_id}' is already a representative .`,
-                            })
+                    if (error.response_msg) {
+                        res.status(error.status)
+                            .json(error.response_msg)
                             .end();
                     } else {
                         res.status(503)
