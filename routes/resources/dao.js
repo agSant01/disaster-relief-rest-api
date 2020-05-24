@@ -416,9 +416,7 @@ exports.insertResourceRequest = async (userid, city, requested_resources) => {
 
             let error = Error('invalid credential');
 
-            error.response_msg = {
-                error: `User with id: '${userid}' is not a requestor.`,
-            };
+            error.response_msg = `User with id: '${userid}' is not a requestor.`;
             error.status = 401;
             throw error;
         }
@@ -426,9 +424,7 @@ exports.insertResourceRequest = async (userid, city, requested_resources) => {
         if (requesterCity.rowCount == 0) {
             await client.query('ROLLBACK');
             let error = Error('invalid city');
-            error.response_msg = {
-                error: `User with id: '${city}' is not a city.`,
-            };
+            error.response_msg = `User with id: '${city}' is not a city.`;
             error.status = 400;
             throw error;
         }
@@ -509,11 +505,9 @@ exports.insertResourceRequest = async (userid, city, requested_resources) => {
             if (attrbsSet.size > 0) {
                 await client.query('ROLLBACK');
                 let error = Error('missing attributes');
-                error.response_msg = {
-                    error: `Not all attributes specified. Missing: '${Array.from(
-                        attrbsSet
-                    ).join(', ')}'`,
-                };
+                error.response_msg = `Not all attributes specified. Missing: '${Array.from(
+                    attrbsSet
+                ).join(', ')}'`;
                 error.status = 400;
                 throw error;
             }
@@ -577,9 +571,7 @@ exports.insertReservedResource = async (
         if (requesterInfo.rows.length == 0) {
             await client.query('ROLLBACK');
             let error = Error('invalid credential');
-            error.response_msg = {
-                error: `User with userid: '${userid}' is not a requestor.`,
-            };
+            error.response_msg = `User with userid: '${userid}' is not a requestor.`;
             error.status = 400;
             throw error;
         }
@@ -591,9 +583,7 @@ exports.insertReservedResource = async (
         if (requesterCity.rowCount == 0) {
             await client.query('ROLLBACK');
             let error = Error('invalid city');
-            error.response_msg = {
-                error: `User with id: '${city}' is not a city.`,
-            };
+            error.response_msg = `User with id: '${city}' is not a city.`;
             error.status = 400;
             throw error;
         }
@@ -618,9 +608,7 @@ exports.insertReservedResource = async (
                     `resource ${reserve.resource_id} is exhausted`
                 );
                 error.status = 401;
-                error.response_msg = {
-                    error: `Cannot reserve exhausted resource:${reserve.resource_id}.`,
-                };
+                error.response_msg = `Cannot reserve exhausted resource:${reserve.resource_id}.`;
                 throw error;
             }
 
@@ -635,9 +623,7 @@ exports.insertReservedResource = async (
                     'reserving more than remaining for resource',
                     reserves.resource_id
                 );
-                error.response_msg = {
-                    error: `The resource:'${reserve.resource_id}' exists, but the remainint quantity is ${remaingQty} units. Cannot reserve ${reserve.quantity} units.`,
-                };
+                error.response_msg = `The resource:'${reserve.resource_id}' exists, but the remainint quantity is ${remaingQty} units. Cannot reserve ${reserve.quantity} units.`;
                 error.status = 400;
                 throw error;
             }
@@ -705,9 +691,7 @@ exports.insertPurchase = async (
             await client.query('ROLLBACK');
             let error = Error('invalid credential');
             error.status = 400;
-            error.response_msg = {
-                error: `User with userid: '${validatedData.userid}' is not a requestor.`,
-            };
+            error.response_msg = `User with userid: '${userid}' is not a requestor.`;
             throw error;
         }
 
@@ -728,9 +712,7 @@ exports.insertPurchase = async (
                 await client.query('ROLLBACK');
                 let error = Error('invalid credential');
                 error.status = 400;
-                error.response_msg = {
-                    error: `No resource available for purchase with resourceid: ${purchase.resource_id}`,
-                };
+                error.response_msg = `No resource available for purchase with resourceid: ${purchase.resource_id}`;
                 throw error;
             }
 
@@ -742,9 +724,7 @@ exports.insertPurchase = async (
                 await client.query('ROLLBACK');
                 let error = Error('invalid credential');
                 error.status = 400;
-                error.response_msg = {
-                    error: `The resource:'${purchase.resource_id}' exists, but the remainint quantity is ${remaingQty} units. Cannot purchase ${purchase.quantity} units.`,
-                };
+                error.response_msg = `The resource:'${purchase.resource_id}' exists, but the remainint quantity is ${remaingQty} units. Cannot purchase ${purchase.quantity} units.`;
                 throw error;
             }
         }

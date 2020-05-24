@@ -20,6 +20,23 @@ content-type: application/json
     "email": "organization@habitat.humanity"
 }
 
+### valid user role
+POST {{url}}/api/suppliers/organizations HTTP/1.1
+content-type: application/json
+
+{
+    "userid":8,
+    "organization_name": "Habintat 4 Humanity",
+    "address": {
+        "street1": "23 Hudson Ave.",
+        "city": "Luquillo",
+        "zip_code":"00865",
+        "country": "Puerto Rico"
+    },
+    "phone_number": "8983741009",
+    "email": "organization@habitat.humanity"
+}
+
 ### invalid user role, this is admin
 POST {{url}}/api/suppliers/organizations HTTP/1.1
 content-type: application/json

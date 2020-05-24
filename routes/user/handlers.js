@@ -89,17 +89,10 @@ exports.registerUser = (req, res, next) => {
                 })
                 .catch((error) => {
                     console.log('error', error);
-                    console.log('error', error.constraint);
-                    console.log('error', error.code);
 
-                    if (
-                        error.code == '23505' &&
-                        error.constraint == 'users_table_username_key'
-                    ) {
-                        res.status(400)
-                            .json({
-                                error: `Username '${validatedJson.username}' already exists.`,
-                            })
+                    if (error.response_msg) {
+                        res.status(error.status)
+                            .json({ error: error.response_msg })
                             .end();
                     } else {
                         res.status(503)

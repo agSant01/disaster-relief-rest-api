@@ -146,11 +146,21 @@ exports.insertUser = async (
         console.log(msg);
 
         return msg;
-    } catch (e) {
+    } catch (error) {
         // only passes here if there is a problem with any query
         console.log('Error during transaction. Doing Rollback.');
         await client.query('ROLLBACK');
-        throw e;
+
+        if (error.code == '23505') {
+            if (error.constraint == 'users_table_username_key') {
+                error.response_msg = `Username '${username}' already exists.`;
+            } else if (error.constraint == 'users_table_username_key') {
+                error.response_msg = `User with email '${email}' already exists.`;
+            }
+            error.status = 400;
+        }
+
+        throw error;
     } finally {
         console.log('Releasing client.');
         client.release();
