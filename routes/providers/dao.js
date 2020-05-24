@@ -157,9 +157,7 @@ exports.insertOrganizationRepresentative = async (
                 'User do not posses the credentials to add representative to organization'
             );
             let error = Error(`invalid credential`);
-            error.response_msg = {
-                error: `User with id:'${adminid}' do not posses the credentials to add representative to organization:${organization_id}`,
-            };
+            error.response_msg = `User with id:'${adminid}' do not posses the credentials to add representative to organization:${organization_id}`;
             error.status = 400;
             throw error;
         }
@@ -175,9 +173,7 @@ exports.insertOrganizationRepresentative = async (
                 `invalid credential for user '${representative_id}'`
             );
             error.status = 400;
-            error.response_msg = {
-                error: `User '${representative_id}' is not an 'Individual Supplier'. Cannot be Organization representative`,
-            };
+            error.response_msg = `User '${representative_id}' is not an 'Individual Supplier'. Cannot be Organization representative`;
             throw error;
         }
 
@@ -211,9 +207,7 @@ exports.insertOrganizationRepresentative = async (
             error.constraint == 'organization_representative_pkey'
         ) {
             error.status = 400;
-            error.response_msg = {
-                error: `Supplier with id:'${representative_id}' is already a representative .`,
-            };
+            error.response_msg = `Supplier with id:'${representative_id}' is already a representative .`;
         }
 
         throw error;
@@ -248,7 +242,10 @@ exports.insertOrganization = async (
 
         if (supplierInfo.rows.length == 0) {
             console.log('Not a supplier');
-            throw Error('invalid credential');
+            let error = Error('invalid credential');
+            error.status = 400;
+            error.response_msg = `User role is not 'Individual Supplier'. Cannot create organization`;
+            throw error;
         }
 
         const insertOrganization = {
@@ -279,15 +276,27 @@ exports.insertOrganization = async (
             organization_id: orgInfo.rows[0].organization_id,
         };
 
-        res.status(201)
-            .json(msg)
-            .end();
-    } catch (e) {
+        return msg;
+    } catch (error) {
         // only passes here if there is a problem with any query
-        console.log('Error during transaction. Doing Rollback.', e);
-
+        console.log('Error during transaction. Doing Rollback.', error);
         await client.query('ROLLBACK');
-        throw e;
+
+        if (
+            error.code == '23505' &&
+            error.constraint == 'organization_organization_name_key'
+        ) {
+            error.response_msg = `Organization '${organization_name}' already exists .`;
+            error.status = 400;
+        } else if (
+            error.code == '23505' &&
+            error.constraint == 'organization_email_key'
+        ) {
+            error.response_msg = `Organization with email '${email}' already exists .`;
+            error.status = 400;
+        }
+
+        throw error;
     } finally {
         console.log('Releasing client.');
         client.release();

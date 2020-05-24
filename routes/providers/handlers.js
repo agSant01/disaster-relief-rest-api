@@ -138,27 +138,16 @@ exports.postRegisterOrganization = (req, res, next) => {
             )
                 .then((result) => {
                     console.log('result', result);
-                    res.status(200)
+                    res.status(201)
                         .json(result)
                         .end();
                 })
                 .catch((error) => {
                     console.log('error', error);
 
-                    if ((error.message = 'invalid credential')) {
-                        res.status(400)
-                            .json({
-                                error: `User role is not 'Individual Supplier'. Cannot create organization`,
-                            })
-                            .end();
-                    } else if (
-                        error.code == '23505' &&
-                        error.constraint == 'organization_representative_pkey'
-                    ) {
-                        res.status(400)
-                            .json({
-                                error: `Supplier with id:'${validatedJson.representative_id}' is already a representative .`,
-                            })
+                    if (error.response_msg) {
+                        res.status(error.status)
+                            .json({ error: error.response_msg })
                             .end();
                     } else {
                         res.status(503)
@@ -203,7 +192,7 @@ exports.postAddRepresentative = (req, res, next) => {
             )
                 .then((result) => {
                     console.log('result', result);
-                    res.status(200)
+                    res.status(201)
                         .json(result)
                         .end();
                 })
@@ -212,7 +201,7 @@ exports.postAddRepresentative = (req, res, next) => {
 
                     if (error.response_msg) {
                         res.status(error.status)
-                            .json(error.response_msg)
+                            .json({ error: error.response_msg })
                             .end();
                     } else {
                         res.status(503)

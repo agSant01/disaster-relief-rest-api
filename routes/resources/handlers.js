@@ -345,7 +345,7 @@ exports.postResourceRequest = (req, res, next) => {
 
                     if (error.response_msg) {
                         res.status(error.status)
-                            .json(error.response_msg)
+                            .json({ error: error.response_msg })
                             .end();
                     } else {
                         res.status(503)
@@ -387,7 +387,7 @@ exports.postReserveResource = (req, res, next) => {
 
                     if (error.response_msg) {
                         res.status(error.status)
-                            .json(error.response_msg)
+                            .json({ error: error.response_msg })
                             .end();
                     } else {
                         res.status(503)
@@ -429,7 +429,7 @@ exports.postBuyResource = (req, res, next) => {
 
                     if (error.response_msg) {
                         res.status(error.status)
-                            .json(error.response_msg)
+                            .json({ error: error.response_msg })
                             .end();
                     } else {
                         res.status(503)
