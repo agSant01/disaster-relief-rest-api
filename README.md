@@ -146,7 +146,7 @@ to
 ```
 
 ## Contributors
-| <img src="https://firebasestorage.googleapis.com/v0/b/iapconfapp.appspot.com/o/WebPhotos%2Fgab%20image.png?alt=media&token=f4458c23-6a0d-4e6a-852d-bf8656ffb34d" width="150" height="200"> <br> [Gabriel Santiago Guzman][gab_git] | <img src="https://media-exp1.licdn.com/dms/image/C4E03AQEDK6HK17VNUA/profile-displayphoto-shrink_800_800/0?e=1596672000&v=beta&t=8zOTJma3osFIsIuXSP8vYyn2yhbYJepN07AUVhrIRv0" width="150" height="150"> <br> [Luis Romero Sevilla][luis_git] <br> | <img src="https://avatars1.githubusercontent.com/u/33661901" width="150" height="150"> <br> [Valerie Otero Echevarria][valerie_git] <br> |
+| <img src="https://firebasestorage.googleapis.com/v0/b/iapconfapp.appspot.com/o/WebPhotos%2Fgab%20image.png?alt=media&token=f4458c23-6a0d-4e6a-852d-bf8656ffb34d" width="150" height="150"> <br> Gabriel Santiago Guzman <br> [Github Profile][gab_git] | <img src="https://media-exp1.licdn.com/dms/image/C4E03AQEDK6HK17VNUA/profile-displayphoto-shrink_800_800/0?e=1596672000&v=beta&t=8zOTJma3osFIsIuXSP8vYyn2yhbYJepN07AUVhrIRv0" width="150" height="150"> <br> Luis Romero Sevilla <br> [Github Profile][luis_git] <br> | <img src="https://avatars1.githubusercontent.com/u/33661901" width="150" height="150"> <br> Valerie Otero Echevarria <br> [Github Profile][valerie_git] <br> |
 |:---: | :---: | :---: |
 
 [gab_git]: https://github.com/agSant01 'GitHub'
