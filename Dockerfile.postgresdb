@@ -1,0 +1,10 @@
+FROM postgres:12
+
+## If creating an image for a clean Postgres database to do tests, use these lines.
+
+## This will generate a clean database with empty tables.
+COPY ./schema/schema_definition.sql /docker-entrypoint-initdb.d/
+
+## This will populate the database with the minimum required data.
+COPY ./schema/schema_populate.sql /docker-entrypoint-initdb.d/
+
