@@ -1,0 +1,55 @@
+version: "3.3"
+
+services:
+  db:
+    build:
+      context: .
+      dockerfile: ./Dockerfile.postgresdb
+    image: disaster-relief-db-psql:latest
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    expose:
+      - "5432"
+    environment:
+      POSTGRES_PASSWORD: "dev_pass"
+      POSTGRES_USER: "dev_user"
+      POSTGRES_DB: "disaster_relief_db"
+    networks:
+      backend:
+        ipv4_address: 172.16.238.10
+    deploy:
+      replicas: 1
+      update_config:
+        delay: 10s
+      restart_policy:
+        condition: always
+  api:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    image: disaster-relief-api:latest
+    networks:
+      - backend
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: "postgresql://dev_user:dev_pass@172.16.238.10:5432/disaster_relief_db"
+    depends_on:
+      - db
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 2
+        delay: 10s
+      restart_policy:
+        condition: always
+
+networks:
+  backend:
+    ipam:
+      driver: default
+      config:
+        - subnet: "172.16.238.0/24"
+
+volumes:
+  db-data:
